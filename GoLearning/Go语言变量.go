@@ -34,4 +34,15 @@ func main() {
 	 */
 	var g = true
 	fmt.Println(g)
+
+	/*
+	 * := 声明语句进行声明和初始化
+	 */
+	intVal := 1
+	// 相当于
+	var intVal_1 int
+	intVal_1 = 1
+
+	fmt.Println(intVal)
+	fmt.Println(intVal_1)
 }
