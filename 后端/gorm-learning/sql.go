@@ -25,6 +25,27 @@ func toJson(data []byte) map[string]interface{} {
 	return ben
 }
 
+/* 插入数据 */
+func insertData(db *gorm.DB) {
+	sno := "{2,0,2,0,1,2}"
+	student_informat := postgres.Jsonb{[]byte(`{ "name": "许敏浩", "gender": "男", "age": "21", "politic": "共青团员", "fresh": "2", "education": "本科"}`)}
+	other_informat := postgres.Jsonb{[]byte(`{ "source": "大连民族大学", "major": "软件工程", "category": "电子信息"}`)}
+	stu := Student_profile{sno, student_informat, other_informat}
+	db.Create(&stu)
+	fmt.Println("插入成功")
+}
+
+/* 查询数据 */
+func selectData(db *gorm.DB) {
+	var stus []Student_profile
+	/* 获取所有记录 */
+	db.Find(&stus)
+
+	for _, stu := range stus {
+		fmt.Println(stu.Sno, toJson(stu.Student_informat.RawMessage), toJson(stu.Student_informat.RawMessage))
+	}
+}
+
 func main() {
 	/* 连接数据库 */
 	db, err := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=gorm_learning sslmode=disable password=admin")
@@ -39,15 +60,17 @@ func main() {
 	/* 检测连接状态 */
 	if err != nil {
 		panic(err)
+	} else {
+		fmt.Println("连接成功")
 	}
 
-	var stus []Student_profile
-	/* 获取所有记录 */
-	db.Find(&stus)
-
-	for _, stu := range stus {
-		fmt.Println(stu.Sno, toJson(stu.Student_informat.RawMessage), toJson(stu.Student_informat.RawMessage))
+	if !db.HasTable(&Student_profile{}) {
+		db.AutoMigrate(&Student_profile{})
+		fmt.Println("建表成功")
 	}
+
+	/*  插入数据 */
+	insertData(db)
 
 	defer db.Close()
 }
