@@ -35,7 +35,12 @@ func insertData(db *gorm.DB) {
 	fmt.Println("插入成功")
 }
 
-/* 查询数据 */
+/* 查询数据
+ * db.First(&user) 获取第一条记录 //SELECT * FROM users ORDER BY id LIMIT 1;
+ * db.Last(&user) 获取最后一条记录 //SELECT * FROM users ORDER BY id DESC LIMIT 1;
+ * db.Find(&user) 获取所有记录 //SELECT * FROM user;
+ * db.First(&user, 10) 使用逐渐获取记录 // SELECT * FROM users WHERE id=10;
+ */
 func selectData(db *gorm.DB) {
 	var stus []Student_profile
 	/* 获取所有记录 */
@@ -44,6 +49,22 @@ func selectData(db *gorm.DB) {
 	for _, stu := range stus {
 		fmt.Println(stu.Sno, toJson(stu.Student_informat.RawMessage), toJson(stu.Student_informat.RawMessage))
 	}
+}
+
+/* 修改数据
+ * db.Model(&user).Update("name", "hello") 更改单个属性
+ * db.Model(&user).Where("active = ?", true).Update("name", "hello") 组合条件更新单个属性
+ * 这里面这个 ? 就是代表的属性值
+ */
+func updateData(db *gorm.DB) {
+	db.Model(&Student_profile{}).Where("Sno = ?", "{2,0,2,0,1,2}").Update("other_information", postgres.Jsonb{[]byte(`{ "source": "大连民族大学", "major": "人工智能","category": "电子信息"}`)})
+}
+
+/* 删除数据
+ * db.Delete(&email) 删除存在的记录
+ */
+func deleteData(db *gorm.DB) {
+	db.Where("Sno = ?", "{2,0,2,0,1,2}").Delete(&Student_profile{})
 }
 
 func main() {
@@ -70,7 +91,13 @@ func main() {
 	}
 
 	/*  插入数据 */
-	insertData(db)
+	//insertData(db)
+
+	/* 更新数据 */
+	//updateData(db)
+
+	/* 删除数据 */
+	//deleteData(db)
 
 	defer db.Close()
 }
