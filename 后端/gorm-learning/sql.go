@@ -91,7 +91,10 @@ func main() {
 	}
 
 	/*  插入数据 */
-	//insertData(db)
+	insertData(db)
+
+	/* 查询数据 */
+	selectData(db)
 
 	/* 更新数据 */
 	//updateData(db)
