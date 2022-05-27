@@ -36,10 +36,15 @@ func (l *GetUserLogic) GetUser(req *types.LoginReq) (*types.LoginResp, error) {
 
 	// 用gorm查询数据
 	user := models.Userinfo{}
-	err := l.svcCtx.DbEngin.Where("name = ?", req.Username).First(&user).Error
+	unexist := l.svcCtx.DbEngin.Where("name = ?", req.Username).First(&user).RecordNotFound()
 	fmt.Println(user)
-	if err != nil {
-		panic(err)
+
+	//判断用户名密码
+	if unexist {
+		return nil, errors.New("用户名不存在/密码错误")
+	}
+	if req.Password != user.Password {
+		return nil, errors.New("用户名不存在/密码错误")
 	}
 
 	//Jwt
@@ -50,6 +55,9 @@ func (l *GetUserLogic) GetUser(req *types.LoginReq) (*types.LoginResp, error) {
 		now,
 		accessExpire,
 		user.Id)
+	if err != nil {
+		return nil, err
+	}
 
 	return &types.LoginResp{
 		Username:     user.Name,
