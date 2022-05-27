@@ -1,0 +1,40 @@
+syntax = "v1"
+
+info (
+	title: "用户管理"
+	desc: "用户管理"
+	author: "许敏浩"
+	email: "xminao@yeah.net"
+	version: "1.0"
+)
+
+type (
+	RegisterReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Age      int    `json:"age"`
+		Gender   string `json:"gender"`
+	}
+
+	RegisterResp {
+		Msg string `json:"msg"`
+	}
+
+	LoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	LoginResp {
+		Username string `json:"username"`
+		Age      int    `json:"age"`
+		Gender   string `json:"gender"`
+	}
+)
+
+service user-api {
+	@handler signIn
+	post /user/register (RegisterReq) returns (RegisterResp)
+	@handler getUser
+	post /user/login (LoginReq) returns (LoginResp)
+}
