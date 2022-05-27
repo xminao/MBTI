@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package template;
+
+option go_package = "question";
+
+message QuestionReq {
+        int question_id = 1;
+}
+
+message QuestionResp {
+        QuestionDesc string = ;
+        OptionA      interface{} `json:"option_a"`;
+        OptionB      interface{} `json:"option_b"`;
+}
+
+service order {
+        rpc getOrder(OrderReq) returns (OrderResp);
+}
