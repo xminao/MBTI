@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"user/api/internal/models"
 	"user/api/internal/svc"
 	"user/api/internal/types"
 
@@ -16,6 +17,7 @@ type SignInLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
+//添加svcCtx *svc.ServiceContext,因为需要用到里面的DbEngin
 func NewSignInLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SignInLogic {
 	return &SignInLogic{
 		Logger: logx.WithContext(ctx),
@@ -32,6 +34,13 @@ func (l *SignInLogic) SignIn(req *types.RegisterReq) (resp *types.RegisterResp, 
 	}
 
 	//插入数据
+	user := models.Userinfo{
+		Name:     req.Username,
+		Password: req.Password,
+		Age:      int64(req.Age),
+		Gender:   req.Gender,
+	}
+	l.svcCtx.DbEngin.Create(&user)
 
 	return &types.RegisterResp{
 		Msg: "用户注册成功",

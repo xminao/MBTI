@@ -5,11 +5,13 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"user/api/internal/config"
+	"user/api/internal/models"
 )
 
 type ServiceContext struct {
 	Config config.Config
-	//UserModel model.UserinfoModel
+	//GORM的数据库引擎
+	DbEngin *gorm.DB
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,19 +23,22 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Database.Password,
 		c.Database.Name,
 	)
-	// 注意是postgres
+	// 注意是postgres，研究半天才发现是这个错误，写成了postgresql
 	db, err := gorm.Open("postgres", dsn)
+
 	db.SingularTable(true)
+
 	if err != nil {
 		panic(err)
 	} else {
 		fmt.Printf("连接成功")
 	}
 
-	//db.AutoMigrate(&models.User{})
+	// 自动同步更新表结构
+	db.AutoMigrate(&models.Userinfo{})
 
 	return &ServiceContext{
-		Config: c,
-		//UserModel: model.NewUserinfoModel(db),
+		Config:  c,
+		DbEngin: db,
 	}
 }

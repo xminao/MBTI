@@ -10,7 +10,7 @@ info (
 
 type (
 	RegisterReq {
-		Username string `json:"username"`
+		Username string `json:"username`
 		Password string `json:"password"`
 		Age      int    `json:"age"`
 		Gender   string `json:"gender"`
@@ -32,9 +32,13 @@ type (
 	}
 )
 
+//用户接口
 service user-api {
+	//注册
 	@handler signIn
+	// 请求的方式，路由地址 （req请求数据）（resp响应数据）
 	post /user/register (RegisterReq) returns (RegisterResp)
+	//登录
 	@handler getUser
 	post /user/login (LoginReq) returns (LoginResp)
 }

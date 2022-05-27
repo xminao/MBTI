@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72b5271a-4b02-451a-af02-995270f7740b" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/my-go-zero.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="72b5271a-4b02-451a-af02-995270f7740b" name="变更" comment="go-zero使用gorm连接PgSQL">
       <change beforePath="$PROJECT_DIR$/../gorm-learning/go.mod" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../gorm-learning/sql.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/http-server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/api/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/user/api/internal/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/api/internal/logic/signinlogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/user/api/internal/logic/signinlogic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/api/internal/svc/servicecontext.go" beforeDir="false" afterPath="$PROJECT_DIR$/user/api/internal/svc/servicecontext.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/api/user.api" beforeDir="false" afterPath="$PROJECT_DIR$/user/api/user.api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models/userinfo.go" beforeDir="false" afterPath="$PROJECT_DIR$/user/api/internal/models/userinfo.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +55,11 @@
     "last_opened_file_path": "C:/Users/xmina"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Courses_spring_22\database-project\后端\my-go-zero\user\api\internal\models" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
@@ -68,6 +74,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="go-zero使用gorm连接PgSQL" />
+    <option name="LAST_COMMIT_MESSAGE" value="go-zero使用gorm连接PgSQL" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

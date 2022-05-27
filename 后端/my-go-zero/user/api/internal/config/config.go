@@ -17,5 +17,6 @@ type Config struct {
 		Port     int
 		Name     string
 	}
+
 	CacheRedis cache.CacheConf
 }
