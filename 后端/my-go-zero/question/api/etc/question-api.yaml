@@ -1,0 +1,16 @@
+Name: question-api
+Host: 0.0.0.0
+Port: 8888
+
+Database:
+  Type: postgres
+  User: postgres
+  Password: admin
+  Host: localhost
+  Port: 5432
+  Name: mydb
+
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node

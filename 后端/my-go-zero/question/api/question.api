@@ -1,0 +1,29 @@
+syntax = "v1"
+
+info (
+	title: "题库管理"
+	desc: "题库管理"
+	author: "许敏浩"
+	email: "xminao@yeah.net"
+	version: "1.0"
+)
+
+type (
+	QuestionReq {
+		QuestionId int `json:"question_id"`
+	}
+
+	QuestionResp {
+		QuestionDesc interface{} `json:"question_desc"`
+		OptionA      interface{} `json:"option_a"`
+		OptionB      interface{} `json:"option_b"`
+	}
+)
+
+// 题目接口
+service question-api {
+	//注册
+	@handler GetQuestion
+	// 请求的方式，路由地址 （req请求数据）（resp响应数据）
+	post /question (QuestionReq) returns (QuestionResp)
+}
