@@ -20,3 +20,10 @@ Jwt:
   AccessExpire: 3600
   # 生成token的密钥
   AccessSecret: xminao
+
+# 通过etcd自动寻找可用的login服务
+Login:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: login.rpc

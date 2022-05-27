@@ -28,7 +28,7 @@ type (
 	//需要获取token 返回需要添加token信息
 	LoginResp {
 		Username     string `json:"username"`
-		Age          int    `json:"age"`
+		Age          int64  `json:"age"`
 		Gender       string `json:"gender"`
 		Token        string `json:"token"`
 		ExpireTime   int64  `json:"expire_time"`

@@ -1,5 +1,25 @@
 Name: login.rpc
 ListenOn: 127.0.0.1:8080
+
+Database:
+  Type: postgres
+  User: postgres
+  Password: admin
+  Host: localhost
+  Port: 5432
+  Name: mydb
+
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
+
+Jwt:
+  # 生成token的有效期，秒
+  AccessExpire: 3600
+  # 生成token的密钥
+  AccessSecret: xminao
+
 Etcd:
   Hosts:
   - 127.0.0.1:2379

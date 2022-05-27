@@ -11,18 +11,18 @@ import (
 	"user/rpc/login/login"
 )
 
-type LoginServer struct {
+type LoginerServer struct {
 	svcCtx *svc.ServiceContext
-	login.UnimplementedLoginServer
+	login.UnimplementedLoginerServer
 }
 
-func NewLoginServer(svcCtx *svc.ServiceContext) *LoginServer {
-	return &LoginServer{
+func NewLoginerServer(svcCtx *svc.ServiceContext) *LoginerServer {
+	return &LoginerServer{
 		svcCtx: svcCtx,
 	}
 }
 
-func (s *LoginServer) Login(ctx context.Context, in *login.LoginReq) (*login.LoginResp, error) {
+func (s *LoginerServer) Login(ctx context.Context, in *login.LoginReq) (*login.LoginResp, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }

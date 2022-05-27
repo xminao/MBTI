@@ -4,14 +4,19 @@ package login;
 option go_package="./login";
 
 message LoginReq {
-  string username = 1;
-  string password = 2;
+  string Username = 1;
+  string Password = 2;
 }
 
 message LoginResp {
-  string msg = 1;
+  string Username = 1;
+  int64 Age = 2;
+  string Gender = 3;
+  string Token = 4;
+  int64 ExpireTime = 5;
+  int64 RefreshAfter = 6;
 }
 
-service Login {
+service loginer {
   rpc login(LoginReq) returns(LoginResp);
 }
