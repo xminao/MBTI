@@ -53,8 +53,7 @@ func (l *GetUserLogic) GetUser(req *types.LoginReq) (*types.LoginResp, error) {
 	accessSecret := l.svcCtx.Config.Jwt.AccessSecret
 	token, err := l.getJwtToken(accessSecret,
 		now,
-		accessExpire,
-		user.Id)
+		accessExpire)
 	if err != nil {
 		return nil, err
 	}
@@ -70,11 +69,10 @@ func (l *GetUserLogic) GetUser(req *types.LoginReq) (*types.LoginResp, error) {
 
 }
 
-func (l *GetUserLogic) getJwtToken(key string, iat, seconds, userId int64) (string, error) {
+func (l *GetUserLogic) getJwtToken(key string, iat, seconds int64) (string, error) {
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat
-	claims["userId"] = userId
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
 	return token.SignedString([]byte(key))

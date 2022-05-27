@@ -46,8 +46,9 @@ func (l *GetQuestionLogic) GetQuestion(req *types.QuestionReq) (*types.QuestionR
 		return nil, errors.New("题目不存在")
 	}
 
+	//查询req的题目
 	question := models.QuestionBank{}
-	l.svcCtx.DbEngin.Where("question_id").First(&question)
+	l.svcCtx.DbEngin.Where("question_id = ?", req.QuestionId).First(&question)
 
 	return &types.QuestionResp{
 		QuestionDesc: toJson(question.QuestionText.RawMessage)["question_desc"],
