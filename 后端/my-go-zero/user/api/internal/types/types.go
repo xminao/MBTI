@@ -18,7 +18,10 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Username string `json:"username"`
-	Age      int    `json:"age"`
-	Gender   string `json:"gender"`
+	Username     string `json:"username"`
+	Age          int    `json:"age"`
+	Gender       string `json:"gender"`
+	Token        string `json:"token"`
+	ExpireTime   int64  `json:"expire_time"`
+	RefreshAfter int64  `json:"refreshAfter"`
 }

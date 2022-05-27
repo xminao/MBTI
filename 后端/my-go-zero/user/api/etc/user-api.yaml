@@ -14,3 +14,9 @@ CacheRedis:
   - Host: localhost:6379
     Pass: root
     Type: node
+
+Jwt:
+  # 生成token的有效期，秒
+  AccessExpire: 3600
+  # 生成token的密钥
+  AccessSecret: xminao

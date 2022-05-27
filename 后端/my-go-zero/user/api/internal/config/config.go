@@ -19,4 +19,9 @@ type Config struct {
 	}
 
 	CacheRedis cache.CacheConf
+
+	Jwt struct {
+		AccessExpire int64
+		AccessSecret string
+	}
 }
