@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package university;
+option go_package="./university";
+
+message College {
+  int64 college_id = 1;
+  string college_name = 2;
+}
+message CollegeListReq {
+}
+
+message CollegeListResp {
+  repeated College college_list = 1;
+}
+
+service UniversityRpc {
+  rpc CollegeList(CollegeListReq) returns(CollegeListResp);
+}

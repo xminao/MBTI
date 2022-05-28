@@ -1,0 +1,10 @@
+Name: university-api
+Host: 0.0.0.0
+Port: 8888
+
+#user rpc服务发现
+UniversityRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: university.rpc #似乎是通过这个key发现服务，还在想怎么端口一样

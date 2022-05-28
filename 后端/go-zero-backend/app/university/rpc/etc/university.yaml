@@ -1,0 +1,23 @@
+Name: university.rpc
+ListenOn: 127.0.0.1:8080
+
+# 数据库，用PgSQL
+Database:
+  Type: postgres
+  User: postgres
+  Password: admin
+  Host: localhost
+  Port: 5432
+  Name: mydb
+
+#缓存层，用Redis
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
+
+# 服务发现
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: university.rpc

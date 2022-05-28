@@ -1,0 +1,29 @@
+syntax = "v1"
+
+info(
+	title: "学校系统"
+	desc: "学校系统"
+	author: "许敏浩"
+	email: "xminao@yeah.net"
+	version: "v1"
+)
+
+type College {
+	CollegeId   int64  `json:"college_id"`
+	CollegeName string `json:"college_name"`
+}
+
+type (
+	CollegeListReq {
+	}
+
+	CollegeListResp {
+		List []*College `json:"list"`
+	}
+)
+
+service university-api {
+	//获取所有学院信息
+	@handler collegeList
+	post /university/collegelist (CollegeListReq)	returns (CollegeListResp)
+}
