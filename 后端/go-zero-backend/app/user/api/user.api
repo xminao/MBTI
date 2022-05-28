@@ -38,7 +38,6 @@ type (
 service user-api {
 	//注册
 	@handler register
-	//请求方式
 	post /user/register (RegisterReq)	returns (RegisterResp)
 	//登录
 	@handler login

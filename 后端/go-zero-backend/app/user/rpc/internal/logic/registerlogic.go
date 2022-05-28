@@ -26,10 +26,8 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 	}
 }
 
-// 注册逻辑
+// Register 注册逻辑
 func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, error) {
-	// todo: add your logic here and delete this line
-
 	// 判断传入值
 	if len(strings.TrimSpace(in.Username)) == 0 || len(strings.TrimSpace(in.Nickname)) == 0 {
 		return nil, errors.New("用户名/昵称不能为空")
@@ -42,11 +40,11 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 	}
 
 	// 判断是否存在
-	userinfo := models.Userinfo{}
-	unexist := l.svcCtx.DbEngin.Where("username = ?", in.Username).First(&userinfo).RecordNotFound()
+	userInfo := models.Userinfo{}
+	notExist := l.svcCtx.DbEngin.Where("username = ?", in.Username).First(&userInfo).RecordNotFound()
 
-	if unexist {
-		userinfo := models.Userinfo{
+	if notExist {
+		userInfo = models.Userinfo{
 			Model:    gorm.Model{},
 			Username: in.Username,
 			Nickname: in.Nickname,
@@ -54,7 +52,7 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 			Gender:   in.Gender,
 		}
 		//创建记录
-		l.svcCtx.DbEngin.Create(&userinfo)
+		l.svcCtx.DbEngin.Create(&userInfo)
 	} else {
 		return nil, errors.New("用户已经存在")
 	}

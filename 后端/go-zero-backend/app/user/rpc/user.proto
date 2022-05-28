@@ -22,11 +22,12 @@ message LoginReq {
 message LoginResp {
   string username = 1;
   string nickname = 2;
+  string gender = 3;
 }
 
 //rpc服务
-service user {
-  rpc login(LoginReq) returns(LoginResp);
-  rpc register(RegisterReq) returns(RegisterResp);
+service UserRpc {
+  rpc Login(LoginReq) returns(LoginResp);
+  rpc Register(RegisterReq) returns(RegisterResp);
 }
 

@@ -4,30 +4,30 @@
 package server
 
 import (
-	"backend/app/user/rpc/user"
 	"context"
 
 	"backend/app/user/rpc/internal/logic"
 	"backend/app/user/rpc/internal/svc"
+	"backend/app/user/rpc/user"
 )
 
-type UserServer struct {
+type UserRpcServer struct {
 	svcCtx *svc.ServiceContext
 	user.UnimplementedUserRpcServer
 }
 
-func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
-	return &UserServer{
+func NewUserRpcServer(svcCtx *svc.ServiceContext) *UserRpcServer {
+	return &UserRpcServer{
 		svcCtx: svcCtx,
 	}
 }
 
-func (s *UserServer) Login(ctx context.Context, in *user.LoginReq) (*user.LoginResp, error) {
+func (s *UserRpcServer) Login(ctx context.Context, in *user.LoginReq) (*user.LoginResp, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
 
-func (s *UserServer) Register(ctx context.Context, in *user.RegisterReq) (*user.RegisterResp, error) {
+func (s *UserRpcServer) Register(ctx context.Context, in *user.RegisterReq) (*user.RegisterResp, error) {
 	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)
 }
