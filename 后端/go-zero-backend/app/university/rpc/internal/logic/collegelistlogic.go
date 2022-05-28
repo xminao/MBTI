@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"backend/app/university/rpc/internal/models"
+	"backend/app/university/api/internal/models"
 	"backend/app/university/rpc/internal/svc"
 	"backend/app/university/rpc/university"
 	"context"

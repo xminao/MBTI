@@ -10,5 +10,5 @@ type CollegeListReq struct {
 }
 
 type CollegeListResp struct {
-	List []*College `json:"list"`
+	List []College `json:"list"`
 }

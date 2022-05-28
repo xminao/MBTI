@@ -1,8 +1,8 @@
 package svc
 
 import (
+	"backend/app/university/api/internal/models"
 	"backend/app/university/rpc/internal/config"
-	"backend/app/university/rpc/internal/models"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

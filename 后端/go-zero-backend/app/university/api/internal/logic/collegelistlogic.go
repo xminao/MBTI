@@ -3,9 +3,9 @@ package logic
 import (
 	"backend/app/university/api/internal/svc"
 	"backend/app/university/api/internal/types"
-	"backend/app/university/rpc/university"
+	"backend/app/university/models"
 	"context"
-	"github.com/jinzhu/copier"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -24,15 +24,18 @@ func NewCollegeListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Colle
 }
 
 func (l *CollegeListLogic) CollegeList(req *types.CollegeListReq) (*types.CollegeListResp, error) {
-	// 请求- 获取resp
-	collegeListResp, err := l.svcCtx.UniversityRpc.CollegeList(l.ctx, &university.CollegeListReq{})
 
+	// 扫描到college结构体数组
+	var collegeData []types.College
+
+	err := l.svcCtx.DbEngin.Model(&models.CollegeInfo{}).Scan(&collegeData).Error
+
+	fmt.Println(collegeData)
 	if err != nil {
 		return nil, err
 	}
 
-	var resp types.CollegeListResp
-	_ = copier.Copy(&resp, collegeListResp)
-
-	return &resp, nil
+	return &types.CollegeListResp{
+		List: collegeData,
+	}, nil
 }

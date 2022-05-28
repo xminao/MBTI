@@ -18,7 +18,7 @@ type (
 	}
 
 	CollegeListResp {
-		List []*College `json:"list"`
+		List []College `json:"list"`
 	}
 )
 
