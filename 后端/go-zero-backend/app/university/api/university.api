@@ -20,5 +20,5 @@ type (
 
 service university-api {
 	@handler AddCollege
-	get /university/getstudent(AddCollegeReq) returns(AddCollegeResp)
+	post /university/getstudent(AddCollegeReq) returns(AddCollegeResp)
 }
