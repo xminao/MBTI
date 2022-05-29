@@ -7,8 +7,16 @@ import (
 
 type Config struct {
 	rest.RestConf
-	PgSQL struct {
-		DataSource string
+
+	//做yaml映射
+	Database struct {
+		Type     string
+		User     string
+		Password string
+		Host     string
+		Port     int
+		Name     string
 	}
+
 	CacheRedis cache.CacheConf
 }

@@ -1,7 +1,10 @@
 package logic
 
 import (
+	"backend/app/university/models"
 	"context"
+	"errors"
+	"strings"
 
 	"backend/app/university/api/internal/svc"
 	"backend/app/university/api/internal/types"
@@ -23,8 +26,23 @@ func NewAddCollegeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddCol
 	}
 }
 
-func (l *AddCollegeLogic) AddCollege(req *types.AddCollegeReq) (resp *types.AddCollegeResp, err error) {
-	// todo: add your logic here and delete this line
+func (l *AddCollegeLogic) AddCollege(req *types.AddCollegeReq) (*types.AddCollegeResp, error) {
+	if len(strings.TrimSpace(req.CollegeName)) == 0 {
+		return nil, errors.New("学院名字不能为空")
+	}
 
-	return
+	data := models.CollegeInfo{
+		CollegeId:   req.CollegeId,
+		CollegeName: req.CollegeName,
+	}
+
+	err := l.svcCtx.DbEngin.Create(&data).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.AddCollegeResp{
+		Msg: "插入成功",
+	}, nil
 }

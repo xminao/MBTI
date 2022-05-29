@@ -1,0 +1,21 @@
+syntax = "v1"
+
+info (
+	title: // TODO: add title
+	desc: // TODO: add description
+	author: "xminao"
+	email: "xminao@yeah.net"
+)
+
+type request {
+	Username string `json:"username"`
+}
+
+type response {
+	Msg string `json:"msg"`
+}
+
+service question-api {
+	@handler GetUser // TODO: set handler name and delete this comment
+	post /users (request) returns(response)
+}

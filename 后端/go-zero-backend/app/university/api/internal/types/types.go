@@ -2,10 +2,55 @@
 package types
 
 type AddCollegeReq struct {
-	CollegeId   int64  `json:"college_id"`
+	CollegeId   int    `json:"college_id"`
 	CollegeName string `json:"college_name"`
 }
 
 type AddCollegeResp struct {
+	Msg string `json:"msg"`
+}
+
+type AddYearReq struct {
+	Year      int `json:"year"`
+	CollegeId int `json:"college_id"`
+}
+
+type AddYearResp struct {
+	Msg string `json:"msg"`
+}
+
+type AddMajorReq struct {
+	CollegeId int    `json:"college_id"`
+	Year      int    `json:"year"`
+	MajorId   int    `json:"major_id"`
+	MajorName string `json:"major_name"`
+}
+
+type AddMajorResp struct {
+	Msg string `json:"msg"`
+}
+
+type AddClassReq struct {
+	CollegeId int    `json:"college_id"`
+	Year      int    `json:"year"`
+	MajorId   int    `json:"major_id"`
+	ClassId   int    `json:"class_id"`
+	ClassName string `json:"class_name"`
+}
+
+type AddClassResp struct {
+	Msg string `json:"msg"`
+}
+
+type AddStudentReq struct {
+	StudentId   string `json:"student_id"`
+	StudentName string `json:"student_name"`
+	CollegeId   int    `json:"college_id"`
+	Year        int    `json:"year"`
+	MajorId     int    `json:"major_id"`
+	ClassId     int    `json:"class_id"`
+}
+
+type AddStudentResp struct {
 	Msg string `json:"msg"`
 }
