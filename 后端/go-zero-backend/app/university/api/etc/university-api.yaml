@@ -3,23 +3,11 @@ Host: 0.0.0.0
 Port: 8888
 
 # 数据库，用PgSQL
-Database:
-  Type: postgres
-  User: postgres
-  Password: admin
-  Host: localhost
-  Port: 5432
-  Name: mydb
+PgSQL:
+  DataSource: postgres://postgres:admin@localhost:5432/university?sslmode=disable
 
 #缓存层，用Redis
 CacheRedis:
   - Host: localhost:6379
     Pass: root
     Type: node
-
-##user rpc服务发现
-#UniversityRpcConf:
-#  Etcd:
-#    Hosts:
-#      - 127.0.0.1:2379
-#    Key: university.rpc #似乎是通过这个key发现服务，还在想怎么端口一样

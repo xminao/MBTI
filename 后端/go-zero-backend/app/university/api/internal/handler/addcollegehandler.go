@@ -9,16 +9,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func collegeListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func AddCollegeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.CollegeListReq
+		var req types.AddCollegeReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.Error(w, err)
 			return
 		}
 
-		l := logic.NewCollegeListLogic(r.Context(), svcCtx)
-		resp, err := l.CollegeList(&req)
+		l := logic.NewAddCollegeLogic(r.Context(), svcCtx)
+		resp, err := l.AddCollege(&req)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

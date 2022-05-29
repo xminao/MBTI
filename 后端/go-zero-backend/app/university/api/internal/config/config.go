@@ -7,17 +7,8 @@ import (
 
 type Config struct {
 	rest.RestConf
-	// UniversityRpc服务依赖
-	//UniversityRpcConf zrpc.RpcClientConf
-	//做yaml映射
-	Database struct {
-		Type     string
-		User     string
-		Password string
-		Host     string
-		Port     int
-		Name     string
+	PgSQL struct {
+		DataSource string
 	}
-
 	CacheRedis cache.CacheConf
 }
