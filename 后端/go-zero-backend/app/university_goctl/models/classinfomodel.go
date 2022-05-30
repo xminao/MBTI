@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -16,7 +17,10 @@ type (
 		classInfoModel
 
 		CountBuilder(field string) squirrel.SelectBuilder
-		MaxBuilder(field string) squirrel.SelectBuilder
+		FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error)
+		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*ClassInfo, error)
+		MaxRowBuilder(field string) squirrel.SelectBuilder
+		RowBuilder() squirrel.SelectBuilder
 	}
 
 	customClassInfoModel struct {
@@ -31,11 +35,51 @@ func NewClassInfoModel(conn sqlx.SqlConn, c cache.CacheConf) ClassInfoModel {
 	}
 }
 
-// 查询指定列
-func (m *defaultClassInfoModel) CountBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select("COUNT(*)").From(m.table)
+func (m *defaultClassInfoModel) FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*ClassInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp ClassInfo
+	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return &resp, nil
+	default:
+		return nil, err
+	}
 }
 
-func (m *defaultClassInfoModel) MaxBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select("MAX(" + field + ")").From(m.table)
+// 查询COUNT列数量
+func (m *defaultClassInfoModel) FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error) {
+
+	query, values, err := countBuilder.ToSql()
+	if err != nil {
+		return 0, err
+	}
+
+	var resp int64
+	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return 0, err
+	}
+}
+
+// COUNT语句返回列
+
+func (m *defaultClassInfoModel) RowBuilder() squirrel.SelectBuilder {
+	return squirrel.Select(collegeInfoRows).From(m.table)
+}
+
+func (m *defaultClassInfoModel) CountBuilder(field string) squirrel.SelectBuilder {
+	return squirrel.Select("COUNT(" + field + ")").From(m.table)
+}
+
+func (m *defaultClassInfoModel) MaxRowBuilder(field string) squirrel.SelectBuilder {
+	return squirrel.Select(collegeInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
 }
