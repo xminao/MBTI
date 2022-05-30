@@ -11,7 +11,7 @@ type AddCollegeResp struct {
 
 type AddYearReq struct {
 	YearName  string `json:"year_name"`
-	CollegeId int    `json:"college_id"`
+	CollegeId int64  `json:"college_id"`
 }
 
 type AddYearResp struct {
@@ -20,8 +20,8 @@ type AddYearResp struct {
 
 type AddMajorReq struct {
 	MajorName string `json:"major_name"`
-	CollegeId int    `json:"college_id"`
-	YearId    int    `json:"year_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
 }
 
 type AddMajorResp struct {
@@ -30,9 +30,9 @@ type AddMajorResp struct {
 
 type AddClassReq struct {
 	ClassName string `json:"class_name"`
-	CollegeId int    `json:"college_id"`
-	YearId    int    `json:"year_id"`
-	MajorId   int    `json:"major_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
+	MajorId   int64  `json:"major_id"`
 }
 
 type AddClassResp struct {
@@ -41,10 +41,10 @@ type AddClassResp struct {
 
 type AddStudentReq struct {
 	StudentName     string `json:"student_name"`
-	CollegeId       int    `json:"college_id"`
-	YearId          int    `json:"year_id"`
-	MajorId         int    `json:"major_id"`
-	ClassId         int    `json:"class_id"`
+	CollegeId       int64  `json:"college_id"`
+	YearId          int64  `json:"year_id"`
+	MajorId         int64  `json:"major_id"`
+	ClassId         int64  `json:"class_id"`
 	IsBinding       bool   `json:"is_binding"`
 	BindingUsername string `json:"binding_username"`
 }

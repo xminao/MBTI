@@ -18,7 +18,7 @@ type (
 		CountBuilder(field string) squirrel.SelectBuilder
 		FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error)
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*CollegeInfo, error)
-		MaxBuilder(field string) squirrel.SelectBuilder
+		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 	}
 
@@ -79,6 +79,6 @@ func (m *defaultCollegeInfoModel) CountBuilder(field string) squirrel.SelectBuil
 	return squirrel.Select("COUNT(" + field + ")").From(m.table)
 }
 
-func (m *defaultCollegeInfoModel) MaxBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select("MAX(" + field + ")").From(m.table)
+func (m *defaultCollegeInfoModel) MaxRowBuilder(field string) squirrel.SelectBuilder {
+	return squirrel.Select(collegeInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
 }

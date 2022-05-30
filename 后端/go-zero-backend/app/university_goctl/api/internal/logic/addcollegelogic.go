@@ -3,11 +3,12 @@ package logic
 import (
 	"backend/app/university_goctl/api/internal/svc"
 	"backend/app/university_goctl/api/internal/types"
+	"backend/app/university_goctl/models"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 	"strings"
+	"time"
 )
 
 type AddCollegeLogic struct {
@@ -30,39 +31,31 @@ func (l *AddCollegeLogic) AddCollege(req *types.AddCollegeReq) (*types.AddColleg
 		return nil, errors.New("学院名不能为空")
 	}
 
-	maxBuilder := l.svcCtx.CollegeInfoModel.RowBuilder()
-	data, err := l.svcCtx.CollegeInfoModel.FindOneByQuery(l.ctx, maxBuilder)
-	fmt.Println(data)
-	if err != nil {
-		return nil, nil
-	}
-	return nil, nil
+	countBuilder := l.svcCtx.CollegeInfoModel.CountBuilder("*")
+	count, err := l.svcCtx.CollegeInfoModel.FindCount(l.ctx, countBuilder)
 
-	//countBuilder := l.svcCtx.CollegeInfoModel.CountBuilder("*")
-	//count, err := l.svcCtx.CollegeInfoModel.FindCount(l.ctx, countBuilder)
-	//fmt.Println(count)
-	//college := new(models.CollegeInfo)
-	//// 获取最新的ID，并+1
-	//if count == 0 {
-	//	college.CollegeId = 1
-	//} else {
-	//	maxBuilder := l.svcCtx.CollegeInfoModel.CountBuilder("*")
-	//	LatestRecord, err := l.svcCtx.CollegeInfoModel.FindOneByQuery(l.ctx, maxBuilder)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	college.CollegeId = LatestRecord.CollegeId + 1
-	//}
-	//
-	//college.CollegeName = req.CollegeName
-	//college.CreatedAt = time.Now()
-	//
-	//_, err = l.svcCtx.CollegeInfoModel.Insert(l.ctx, college)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//return &types.AddCollegeResp{
-	//	Msg: "插入成功",
-	//}, nil
+	college := new(models.CollegeInfo)
+
+	if count == 0 {
+		college.CollegeId = 1
+	} else {
+		maxBuilder := l.svcCtx.CollegeInfoModel.MaxRowBuilder("created_at")
+		LatestRecord, err := l.svcCtx.CollegeInfoModel.FindOneByQuery(l.ctx, maxBuilder)
+		if err != nil {
+			return nil, err
+		}
+		college.CollegeId = LatestRecord.CollegeId + 1
+	}
+
+	college.CollegeName = req.CollegeName
+	college.CreatedAt = time.Now()
+
+	_, err = l.svcCtx.CollegeInfoModel.Insert(l.ctx, college)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.AddCollegeResp{
+		Msg: "插入成功",
+	}, nil
 }
