@@ -20,6 +20,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*StudentInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*StudentInfo, error)
 	}
 
 	customStudentInfoModel struct {
@@ -31,6 +32,23 @@ type (
 func NewStudentInfoModel(conn sqlx.SqlConn, c cache.CacheConf) StudentInfoModel {
 	return &customStudentInfoModel{
 		defaultStudentInfoModel: newStudentInfoModel(conn, c),
+	}
+}
+
+func (m *defaultStudentInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*StudentInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []*StudentInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 
@@ -72,7 +90,7 @@ func (m *defaultStudentInfoModel) FindCount(ctx context.Context, countBuilder sq
 // COUNT语句返回列
 
 func (m *defaultStudentInfoModel) RowBuilder() squirrel.SelectBuilder {
-	return squirrel.Select(collegeInfoRows).From(m.table)
+	return squirrel.Select(studentInfoRows).From(m.table)
 }
 
 func (m *defaultStudentInfoModel) CountBuilder(field string) squirrel.SelectBuilder {
@@ -80,5 +98,5 @@ func (m *defaultStudentInfoModel) CountBuilder(field string) squirrel.SelectBuil
 }
 
 func (m *defaultStudentInfoModel) MaxRowBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select(collegeInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
+	return squirrel.Select(studentInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
 }

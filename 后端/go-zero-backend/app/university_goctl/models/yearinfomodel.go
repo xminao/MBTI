@@ -20,6 +20,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*YearInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*YearInfo, error)
 	}
 
 	customYearInfoModel struct {
@@ -31,6 +32,23 @@ type (
 func NewYearInfoModel(conn sqlx.SqlConn, c cache.CacheConf) YearInfoModel {
 	return &customYearInfoModel{
 		defaultYearInfoModel: newYearInfoModel(conn, c),
+	}
+}
+
+func (m *defaultYearInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*YearInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []*YearInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 

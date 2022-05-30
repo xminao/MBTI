@@ -28,9 +28,9 @@ var (
 type (
 	studentInfoModel interface {
 		Insert(ctx context.Context, data *StudentInfo) (sql.Result, error)
-		FindOne(ctx context.Context, studentId int64) (*StudentInfo, error)
+		FindOne(ctx context.Context, studentId string) (*StudentInfo, error)
 		Update(ctx context.Context, data *StudentInfo) error
-		Delete(ctx context.Context, studentId int64) error
+		Delete(ctx context.Context, studentId string) error
 	}
 
 	defaultStudentInfoModel struct {
@@ -39,7 +39,7 @@ type (
 	}
 
 	StudentInfo struct {
-		StudentId       int64          `db:"student_id"`       // 学号
+		StudentId       string         `db:"student_id"`       // 学号
 		StudentName     string         `db:"student_name"`     // 姓名
 		CollegeId       int64          `db:"college_id"`       // 所属学院
 		YearId          int64          `db:"year_id"`          // 年级
@@ -67,7 +67,7 @@ func (m *defaultStudentInfoModel) Insert(ctx context.Context, data *StudentInfo)
 	return ret, err
 }
 
-func (m *defaultStudentInfoModel) FindOne(ctx context.Context, studentId int64) (*StudentInfo, error) {
+func (m *defaultStudentInfoModel) FindOne(ctx context.Context, studentId string) (*StudentInfo, error) {
 	publicStudentInfoStudentIdKey := fmt.Sprintf("%s%v", cachePublicStudentInfoStudentIdPrefix, studentId)
 	var resp StudentInfo
 	err := m.QueryRowCtx(ctx, &resp, publicStudentInfoStudentIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
@@ -93,7 +93,7 @@ func (m *defaultStudentInfoModel) Update(ctx context.Context, data *StudentInfo)
 	return err
 }
 
-func (m *defaultStudentInfoModel) Delete(ctx context.Context, studentId int64) error {
+func (m *defaultStudentInfoModel) Delete(ctx context.Context, studentId string) error {
 	publicStudentInfoStudentIdKey := fmt.Sprintf("%s%v", cachePublicStudentInfoStudentIdPrefix, studentId)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where student_id = $1", m.table)

@@ -20,6 +20,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*MajorInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*MajorInfo, error)
 	}
 
 	customMajorInfoModel struct {
@@ -31,6 +32,23 @@ type (
 func NewMajorInfoModel(conn sqlx.SqlConn, c cache.CacheConf) MajorInfoModel {
 	return &customMajorInfoModel{
 		defaultMajorInfoModel: newMajorInfoModel(conn, c),
+	}
+}
+
+func (m *defaultMajorInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*MajorInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []*MajorInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 
@@ -72,7 +90,7 @@ func (m *defaultMajorInfoModel) FindCount(ctx context.Context, countBuilder squi
 // COUNT语句返回列
 
 func (m *defaultMajorInfoModel) RowBuilder() squirrel.SelectBuilder {
-	return squirrel.Select(yearInfoRows).From(m.table)
+	return squirrel.Select(majorInfoRows).From(m.table)
 }
 
 func (m *defaultMajorInfoModel) CountBuilder(field string) squirrel.SelectBuilder {
@@ -80,5 +98,5 @@ func (m *defaultMajorInfoModel) CountBuilder(field string) squirrel.SelectBuilde
 }
 
 func (m *defaultMajorInfoModel) MaxRowBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select(yearInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
+	return squirrel.Select(majorInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
 }

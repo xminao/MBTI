@@ -20,6 +20,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*CollegeInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*CollegeInfo, error)
 	}
 
 	customCollegeInfoModel struct {
@@ -31,6 +32,23 @@ type (
 func NewCollegeInfoModel(conn sqlx.SqlConn, c cache.CacheConf) CollegeInfoModel {
 	return &customCollegeInfoModel{
 		defaultCollegeInfoModel: newCollegeInfoModel(conn, c),
+	}
+}
+
+func (m *defaultCollegeInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*CollegeInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []*CollegeInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 

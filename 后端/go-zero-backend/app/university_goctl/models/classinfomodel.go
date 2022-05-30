@@ -21,6 +21,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*ClassInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*ClassInfo, error)
 	}
 
 	customClassInfoModel struct {
@@ -32,6 +33,23 @@ type (
 func NewClassInfoModel(conn sqlx.SqlConn, c cache.CacheConf) ClassInfoModel {
 	return &customClassInfoModel{
 		defaultClassInfoModel: newClassInfoModel(conn, c),
+	}
+}
+
+func (m *defaultClassInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*ClassInfo, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []*ClassInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 
@@ -73,7 +91,7 @@ func (m *defaultClassInfoModel) FindCount(ctx context.Context, countBuilder squi
 // COUNT语句返回列
 
 func (m *defaultClassInfoModel) RowBuilder() squirrel.SelectBuilder {
-	return squirrel.Select(collegeInfoRows).From(m.table)
+	return squirrel.Select(classInfoRows).From(m.table)
 }
 
 func (m *defaultClassInfoModel) CountBuilder(field string) squirrel.SelectBuilder {
@@ -81,5 +99,5 @@ func (m *defaultClassInfoModel) CountBuilder(field string) squirrel.SelectBuilde
 }
 
 func (m *defaultClassInfoModel) MaxRowBuilder(field string) squirrel.SelectBuilder {
-	return squirrel.Select(collegeInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
+	return squirrel.Select(classInfoRows).From(m.table).OrderBy(field + " DESC").Limit(1)
 }

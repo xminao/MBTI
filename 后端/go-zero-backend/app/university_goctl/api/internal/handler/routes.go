@@ -37,6 +37,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/university/addstudent",
 				Handler: AddStudentHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getcollegelist",
+				Handler: GetCollegeListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getyearlist",
+				Handler: GetYearListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getmajorlist",
+				Handler: GetMajorListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getclasslist",
+				Handler: GetClassListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getstudentlist",
+				Handler: GetStudentListHandler(serverCtx),
+			},
 		},
 	)
 }

@@ -40,6 +40,40 @@ type AddClassResp struct {
 }
 
 type AddStudentReq struct {
+	StudentId   string `json:"student_id"`
+	StudentName string `json:"student_name"`
+	CollegeId   int64  `json:"college_id"`
+	YearId      int64  `json:"year_id"`
+	MajorId     int64  `json:"major_id"`
+	ClassId     int64  `json:"class_id"`
+}
+
+type AddStudentResp struct {
+	Msg string `json:"msg"`
+}
+
+type College struct {
+	CollegeId   int64  `json:"college_id"`
+	CollegeName string `json:"college_name"`
+}
+
+type Year struct {
+	YearId   int64  `json:"year_id"`
+	YearName string `json:"year_name"`
+}
+
+type Major struct {
+	MajorId   int64  `json:"major_id"`
+	MajorName string `json:"major_name"`
+}
+
+type Class struct {
+	ClassId   int64  `json:"class_id"`
+	ClassName string `json:"class_name"`
+}
+
+type Student struct {
+	StudentId       string `json:"student_id"`
 	StudentName     string `json:"student_name"`
 	CollegeId       int64  `json:"college_id"`
 	YearId          int64  `json:"year_id"`
@@ -49,6 +83,41 @@ type AddStudentReq struct {
 	BindingUsername string `json:"binding_username"`
 }
 
-type AddStudentResp struct {
-	Msg string `json:"msg"`
+type GetCollegeListReq struct {
+}
+
+type GetCollegeListResp struct {
+	CollegeList []College `json:"college_list"`
+}
+
+type GetYearListReq struct {
+	CollegeId int64 `json:"college_id"`
+}
+
+type GetYearListResp struct {
+	YearList []Year `json:"year_list"`
+}
+
+type GetMajorListReq struct {
+	YearId int64 `json:"year_id"`
+}
+
+type GetMajorListResp struct {
+	MajorList []Major `json:"major_list"`
+}
+
+type GetClassListReq struct {
+	MajorId int64 `json:"major_id"`
+}
+
+type GetClassListResp struct {
+	ClassList []Class `json:"class_list"`
+}
+
+type GetStudentListReq struct {
+	ClassId int64 `json:"class_id"`
+}
+
+type GetStudentListResp struct {
+	StudentList []Student `json:"student_list"`
 }
