@@ -1,0 +1,87 @@
+syntax = "v1"
+
+info (
+	title: "许敏浩"
+	desc: "学校管理"
+	author: "xminao"
+	email: "xminao@yeah.net"
+)
+
+type (
+	AddCollegeReq {
+		CollegeName string `json:"college_name"`
+	}
+
+	AddCollegeResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	AddYearReq {
+		YearName  string `json:"year_name"`
+		CollegeId int    `json:"college_id"`
+	}
+
+	AddYearResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	AddMajorReq {
+		MajorName string `json:"major_name"`
+		CollegeId int    `json:"college_id"`
+		YearId    int    `json:"year_id"`
+	}
+
+	AddMajorResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	AddClassReq {
+		ClassName string `json:"class_name"`
+		CollegeId int    `json:"college_id"`
+		YearId    int    `json:"year_id"`
+		MajorId   int    `json:"major_id"`
+	}
+
+	AddClassResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	AddStudentReq {
+		StudentName     string `json:"student_name"`
+		CollegeId       int    `json:"college_id"`
+		YearId          int    `json:"year_id"`
+		MajorId         int    `json:"major_id"`
+		ClassId         int    `json:"class_id"`
+		IsBinding       bool   `json:"is_binding"`
+		BindingUsername string `json:"binding_username"`
+	}
+
+	AddStudentResp {
+		Msg string `json:"msg"`
+	}
+)
+
+service university-api {
+	@handler AddCollege
+	post /university/addcollege (AddCollegeReq) returns(AddCollegeResp)
+	
+	@handler AddYear
+	post /university/addyear (AddYearReq) returns(AddYearResp)
+	
+	@handler AddMajor
+	post /university/addmajor (AddMajorReq) returns(AddMajorResp)
+	
+	@handler AddClass
+	post /university/addclass (AddClassReq) returns(AddClassResp)
+	
+	@handler AddStudent
+	post /university/addstudent (AddStudentReq) returns(AddStudentResp)
+}
