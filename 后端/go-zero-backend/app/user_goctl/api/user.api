@@ -8,6 +8,12 @@ info(
 	version: "v1"
 )
 
+type JwtToken {
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
+
 type (
 	RegisterReq {
 		Username string `json:"username"`
@@ -28,7 +34,8 @@ type (
 	}
 
 	LoginResp {
-		Msg string `json:"msg"`
+		Msg string   `json:"msg"`
+		Jwt JwtToken `json:"jwt_token"`
 	}
 )
 

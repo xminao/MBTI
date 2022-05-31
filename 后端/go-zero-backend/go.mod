@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/Masterminds/squirrel v1.5.3
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/jinzhu/copier v0.3.5
 	github.com/jinzhu/gorm v1.9.16
 	github.com/lib/pq v1.10.4

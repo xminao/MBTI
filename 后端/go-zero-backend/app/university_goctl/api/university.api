@@ -148,6 +148,10 @@ type (
 	}
 )
 
+// need jwt
+@server (
+	jwt: Auth
+)
 service university-api {
 	@handler AddCollege
 	post /university/addcollege (AddCollegeReq) returns(AddCollegeResp)
@@ -163,7 +167,10 @@ service university-api {
 	
 	@handler AddStudent
 	post /university/addstudent (AddStudentReq) returns(AddStudentResp)
-	
+}
+
+// no need jwt
+service university-api {
 	@handler GetCollegeList
 	get /university/getcollegelist (GetCollegeListReq) returns(GetCollegeListResp)
 	

@@ -1,6 +1,6 @@
 Name: question-api
 Host: 0.0.0.0
-Port: 8888
+Port: 8887
 
 #Pg数据库
 PgSQL:
