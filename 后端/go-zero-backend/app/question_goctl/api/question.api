@@ -1,0 +1,47 @@
+syntax = "v1"
+
+info (
+	title: "许敏浩"
+	desc: "学校管理"
+	author: "xminao"
+	email: "xminao@yeah.net"
+)
+
+type Question {
+	QuestionId   int64  `json:"question_id"`
+	QuestionDesc string `json:"question_desc"`
+	OptionA      string `json:"option_a_desc"`
+	OptionB      string `json:"option_b_desc"`
+}
+
+type (
+	GetQuestionReq {
+		QuestionId int `json:"question_id"`
+	}
+
+	GetQuestionResp {
+		QuestionInfo Question `json:"question_info"`
+	}
+)
+
+type (
+	CreateQuestionReq {
+		QuestionDesc  string `json:"question_desc"`
+		OptionADesc   string `json:"option_a_desc"`
+		OptionATarget string `json:"option_a_target"`
+		OptionBDesc   string `json:"option_b_desc"`
+		OptionBTarget string `json:"option_b_target"`
+	}
+
+	CreateQuestionResp {
+		Msg string `json:"msg"`
+	}
+)
+
+service question-api {
+	@handler GetQuestion
+	get /question/get (GetQuestionReq) returns(GetQuestionResp)
+	
+	@handler CreateQuestion
+	post /question/create (CreateQuestionReq) returns (CreateQuestionResp)
+}

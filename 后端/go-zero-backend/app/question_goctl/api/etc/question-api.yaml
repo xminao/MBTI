@@ -1,0 +1,13 @@
+Name: question-api
+Host: 0.0.0.0
+Port: 8888
+
+#Pg数据库
+PgSQL:
+  DataSource: postgres://postgres:admin@localhost:5432/question?sslmode=disable
+
+#缓存层，用Redis
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
