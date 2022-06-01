@@ -57,6 +57,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 		Password:  req.Password,
 		Gender:    req.Gender,
 		CreatedAt: time.Now(),
+		AuthGroup: "default",
 	})
 	if err != nil {
 		return nil, err

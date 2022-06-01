@@ -46,6 +46,7 @@ type (
 		Password  string    `db:"password"` // 密码
 		Gender    string    `db:"gender"`   // 性别
 		CreatedAt time.Time `db:"created_at"`
+		AuthGroup string    `db:"auth_group"` // 认证权限
 	}
 )
 
@@ -60,8 +61,8 @@ func (m *defaultUserInfoModel) Insert(ctx context.Context, data *UserInfo) (sql.
 	publicUserInfoNicknameKey := fmt.Sprintf("%s%v", cachePublicUserInfoNicknamePrefix, data.Nickname)
 	publicUserInfoUsernameKey := fmt.Sprintf("%s%v", cachePublicUserInfoUsernamePrefix, data.Username)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5)", m.table, userInfoRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Username, data.Nickname, data.Password, data.Gender, data.CreatedAt)
+		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5, $6)", m.table, userInfoRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.Username, data.Nickname, data.Password, data.Gender, data.CreatedAt, data.AuthGroup)
 	}, publicUserInfoNicknameKey, publicUserInfoUsernameKey)
 	return ret, err
 }
@@ -108,7 +109,7 @@ func (m *defaultUserInfoModel) Update(ctx context.Context, data *UserInfo) error
 	publicUserInfoUsernameKey := fmt.Sprintf("%s%v", cachePublicUserInfoUsernamePrefix, data.Username)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where username = $1", m.table, userInfoRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Username, data.Nickname, data.Password, data.Gender, data.CreatedAt)
+		return conn.ExecCtx(ctx, query, data.Username, data.Nickname, data.Password, data.Gender, data.CreatedAt, data.AuthGroup)
 	}, publicUserInfoNicknameKey, publicUserInfoUsernameKey)
 	return err
 }

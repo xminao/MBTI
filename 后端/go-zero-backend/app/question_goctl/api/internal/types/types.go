@@ -9,7 +9,7 @@ type Question struct {
 }
 
 type GetQuestionReq struct {
-	QuestionId int `json:"question_id"`
+	QuestionId int `form:"id"`
 }
 
 type GetQuestionResp struct {
@@ -25,5 +25,13 @@ type CreateQuestionReq struct {
 }
 
 type CreateQuestionResp struct {
+	Msg string `json:"msg"`
+}
+
+type DeleteQuestionReq struct {
+	QuestionId int64 `form:"id"`
+}
+
+type DeleteQuestionResp struct {
 	Msg string `json:"msg"`
 }

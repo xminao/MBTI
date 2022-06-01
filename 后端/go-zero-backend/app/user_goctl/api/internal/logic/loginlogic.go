@@ -4,6 +4,7 @@ import (
 	"backend/app/user_goctl/models"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"strings"
 	"time"
@@ -38,10 +39,12 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 
 	//type models.UserInfo
 	user, err := l.svcCtx.UserInfoModel.FindOne(l.ctx, req.Username)
+	fmt.Println(user)
 	if err == models.ErrNotFound {
 		return nil, errors.New("用户不存在")
 	}
 	if user.Password != req.Password {
+		l.svcCtx.UserInfoModel.DeleteCache(l.ctx, req.Username)
 		return nil, errors.New("密码错误")
 	}
 
@@ -49,11 +52,11 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 	now := time.Now().Unix()                          //Unix??
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire //get expire
 	// call getJwtToken func to create jwt token
-	jwtToken, err := l.getJwtToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, user.Username)
+	jwtToken, err := l.getJwtToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, user.Username, user.AuthGroup)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println(user.AuthGroup)
 	//return msg and token_info
 	return &types.LoginResp{
 		Msg: "登录成功",
@@ -66,11 +69,12 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 }
 
 // get jwt token
-func (l *LoginLogic) getJwtToken(secretKey string, iat, seconds int64, userName string) (string, error) {
+func (l *LoginLogic) getJwtToken(secretKey string, iat, seconds int64, userName, authGroup string) (string, error) {
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat
 	claims["userName"] = userName
+	claims["authGroup"] = authGroup
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
 	return token.SignedString([]byte(secretKey))

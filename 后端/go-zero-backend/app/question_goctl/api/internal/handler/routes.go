@@ -13,15 +13,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
-				Path:    "/question/get",
-				Handler: GetQuestionHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodPost,
 				Path:    "/question/create",
 				Handler: CreateQuestionHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/question/delete",
+				Handler: DeleteQuestionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/question/get",
+				Handler: GetQuestionHandler(serverCtx),
+			},
 		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }
