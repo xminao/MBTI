@@ -8,6 +8,12 @@ info(
 	version: "v1"
 )
 
+type UserInfo {
+	Username string `json:"username"`
+	Nickname string `json:"nickname"`
+	Gender   string `json:"gender"`
+}
+
 type JwtToken {
 	AccessToken  string `json:"access_token"`
 	AccessExpire int64  `json:"access_expire"`
@@ -39,6 +45,16 @@ type (
 	}
 )
 
+type (
+	GetUserInfoReq {
+		Username string `json:"username"`
+	}
+
+	GetUserInfoResp {
+		UserInfoResp UserInfo `json:"userinfo"`
+	}
+)
+
 //用户服务API(接口)
 service user-api {
 	//注册
@@ -47,4 +63,7 @@ service user-api {
 	//登录
 	@handler login
 	post /user/login (LoginReq) returns (LoginResp)
+	//获取详细信息
+	@handler getuserinfo
+	get /user/getuserinfo (GetUserInfoReq) returns (GetUserInfoResp)
 }

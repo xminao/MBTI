@@ -39,7 +39,6 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 
 	//type models.UserInfo
 	user, err := l.svcCtx.UserInfoModel.FindOne(l.ctx, req.Username)
-	fmt.Println(user)
 	if err == models.ErrNotFound {
 		return nil, errors.New("用户不存在")
 	}

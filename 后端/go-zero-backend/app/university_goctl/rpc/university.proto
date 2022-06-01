@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package university;
+option go_package="./university";
+
+message Request {
+  string ping = 1;
+}
+
+message Response {
+  string pong = 1;
+}
+
+service University {
+  rpc Ping(Request) returns(Response);
+}

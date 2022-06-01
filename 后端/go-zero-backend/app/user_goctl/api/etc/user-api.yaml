@@ -16,3 +16,9 @@ CacheRedis:
 Auth:
   AccessSecret: 9429d707-f96e-4bc0-8ef6-249e1251cd92
   AccessExpire: 86400
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
