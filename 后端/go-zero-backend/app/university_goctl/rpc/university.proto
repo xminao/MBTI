@@ -3,14 +3,16 @@ syntax = "proto3";
 package university;
 option go_package="./university";
 
-message Request {
-  string ping = 1;
+message GetStudentInfoReq {
+  string studentId = 1;
 }
 
-message Response {
-  string pong = 1;
+message GetStudentInfoResp {
+  string studentId = 1;
+  string studentName = 2;
+  string bindingUsername = 3;
 }
 
-service University {
-  rpc Ping(Request) returns(Response);
+service UniversityRpc {
+  rpc GetStudentInfo (GetStudentInfoReq) returns(GetStudentInfoResp);
 }

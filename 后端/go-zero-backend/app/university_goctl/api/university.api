@@ -148,6 +148,16 @@ type (
 	}
 )
 
+type (
+	GetStudentInfoReq {
+		StudentId string `json:"student_id"`
+	}
+
+	GetStudentInfoResp {
+		StudentInfo Student `json:"student_info"`
+	}
+)
+
 // need jwt
 @server (
 	jwt: Auth
@@ -167,6 +177,9 @@ service university-api {
 	
 	@handler AddStudent
 	post /university/addstudent (AddStudentReq) returns(AddStudentResp)
+	
+	@handler GetStudentInfo
+	get /university/getstudentinfo (GetStudentInfoReq) returns (GetStudentInfoResp)
 }
 
 // no need jwt

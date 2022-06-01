@@ -37,6 +37,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/university/addstudent",
 				Handler: AddStudentHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/university/getstudentinfo",
+				Handler: GetStudentInfoHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

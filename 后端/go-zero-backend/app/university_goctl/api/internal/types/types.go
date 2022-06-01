@@ -121,3 +121,11 @@ type GetStudentListReq struct {
 type GetStudentListResp struct {
 	StudentList []Student `json:"student_list"`
 }
+
+type GetStudentInfoReq struct {
+	StudentId string `json:"student_id"`
+}
+
+type GetStudentInfoResp struct {
+	StudentInfo Student `json:"student_info"`
+}
