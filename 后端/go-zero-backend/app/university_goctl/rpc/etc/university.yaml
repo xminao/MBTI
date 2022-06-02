@@ -1,0 +1,16 @@
+Name: university.rpc
+ListenOn: 127.0.0.1:8081
+#postgre sql
+PgSQL:
+  DataSource: postgres://postgres:admin@localhost:5432/university?sslmode=disable
+
+#cache use Redis
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: university.rpc
