@@ -40,7 +40,7 @@ instance.interceptors.response.use(
     },
     error =>{
         if(error.response){
-            let ERRS = error.response.status                                            //这个是状态码
+            let ERRS = error.response.status                                       //这个是状态码
             let MSG = error.response.data.msg.msg
             let errdata = ERRS == 401 ? MSG :'服务器发生错误'                           //判断返回的是不是等于401，如果是，返回服务器发生错误
             switch(ERRS){

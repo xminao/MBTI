@@ -14,9 +14,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 //请求地址
 import urls from '@/api/api.js'
-app.config.compilerOptions.$urls = urls
+app.config.globalProperties.$urls = urls
 //请求方法
 import request from '@/api/request.js'
-app.config.compilerOptions.$request = request
+app.config.globalProperties.$request = request
 
 app.mount('#app')

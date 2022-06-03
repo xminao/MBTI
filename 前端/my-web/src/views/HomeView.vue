@@ -72,9 +72,9 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { defineComponent, reactive, ref, getCurrentInstance } from 'vue';
+import { reactive, ref, getCurrentInstance } from 'vue';
 
-export default defineComponent({
+export default {
   setup () {
     const login = '登录'
     const router = useRouter()
@@ -99,8 +99,12 @@ export default defineComponent({
 
     const {proxy} = getCurrentInstance()
 
-    const signin = ()=> {
-      console.log(th)
+    //async await成对
+    const signin = async()=> {
+      const obj = {"username":form.username, "password":form.passwd}
+      console.log(obj)
+      const res = await new proxy.$request(proxy.$urls.m().login, obj).modepost()
+      console.log(res)
     }
     
 
@@ -108,7 +112,7 @@ export default defineComponent({
   },
   
   name: 'HomeView',
-});
+};
 </script>
 
 <style scoped lang="less">
