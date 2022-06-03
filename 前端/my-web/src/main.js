@@ -1,0 +1,22 @@
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import ElementPlus from 'element-plus'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import 'element-plus/dist/index.css'
+
+const app = createApp(App)
+app.use(router)
+app.use(ElementPlus)
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
+
+//请求地址
+import urls from '@/api/api.js'
+app.config.compilerOptions.$urls = urls
+//请求方法
+import request from '@/api/request.js'
+app.config.compilerOptions.$request = request
+
+app.mount('#app')
