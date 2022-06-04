@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+//import HomeView from '../views/HomeView.vue'
+import Main from '../views/Main.vue'
 import Test from '../components/Test.vue'
 import Type from '../components/Type.vue'
 import Login from '../components/Login.vue'
@@ -9,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: Main,
     redirect: '/test',
     children: [{ path: '/test', component: Test, meta: { requiresAuth: false}}, 
                { path: '/type', component: Type, meta: { requiresAuth: true}}, 

@@ -1,23 +1,12 @@
 <template>
-    <div class="test">
-        <img src="../assets/homepage.png" />
-    </div>
-    <div>
-        <span sytle="font-size:20px;"> 许敏浩 </span>
-    </div>
+    <el-image style="width: 100%; height: 408px;" :src="require('../assets/homepage.png')" :fit="fill"/>
+
+    <el-container>
+        <el-aside width="200px">Aside</el-aside>
+        <el-main>Main</el-main>
+    </el-container>
 </template>
 
 <style scoped lang="less">
-    .test {
-        position:relative;
-        display: flex;
-        justify-content: flex-start;
-        width: 100%;
-        height: 500px;
-    }
-    .test img {
-        position: relative;
-        width: 100%;
-        height: 408px;
-    }
+
 </style>
