@@ -21,4 +21,16 @@ const router = createRouter({
   routes
 })
 
+
+// router.beforeEach((to) => {
+//   // 根据token判断是否登录
+//   let token = localStorage.getItem('Token');
+//   // 有token但是访问的是登录页 => 强制去首页
+//   if (token && to.path === '/test')
+//       return "/";
+//   // 没有token但是访问的是首页 => 强制去登录页
+//   else if (!token && to.path !== '/login')
+//       return "/";
+// });
+
 export default router

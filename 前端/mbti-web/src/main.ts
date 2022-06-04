@@ -8,8 +8,12 @@ import 'element-plus/dist/index.css'
 const app = createApp(App)
 app.use(router)
 app.use(ElementPlus)
-app.mount('#app')
-
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+
+//请求地址
+import urls from './api/api.ts'
+
+
+app.mount('#app')

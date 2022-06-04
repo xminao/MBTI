@@ -2,6 +2,9 @@
     <div class="test">
         <img src="../assets/homepage.png" />
     </div>
+    <div>
+        <span sytle="font-size:20px;"> 许敏浩 </span>
+    </div>
 </template>
 
 <style scoped lang="less">

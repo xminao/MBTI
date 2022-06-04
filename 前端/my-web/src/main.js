@@ -18,5 +18,7 @@ app.config.globalProperties.$urls = urls
 //请求方法
 import request from '@/api/request.js'
 app.config.globalProperties.$request = request
+// import axios from '@/api/axios'
+// app.config.globalProperties.$http = axios
 
 app.mount('#app')

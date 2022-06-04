@@ -28,6 +28,7 @@
               v-model="logindialog" 
               title="登录" 
               center="true"
+              @close="signin"
               width=40%>
               <el-form :model="form">
                 <el-form-item 
@@ -54,7 +55,7 @@
                   <el-button
                     id="login"
                     type="primary" 
-                    @click="signin"
+                    @click="signin()"
                     color="#88619A"
                     >登录</el-button>
                 </span>
@@ -73,6 +74,9 @@
 <script>
 import { useRouter } from 'vue-router';
 import { reactive, ref, getCurrentInstance } from 'vue';
+import { ElMessage } from 'element-plus';
+import axios from "axios"
+import qs from "qs"
 
 export default {
   setup () {
@@ -99,15 +103,95 @@ export default {
 
     const {proxy} = getCurrentInstance()
 
+    const closeDialog = () =>{
+      logindialog = false
+    }
+
     //async await成对
     const signin = async()=> {
+      if (form.username.length == 0) {
+        ElMessage({
+          message: "用户名不能为空",
+          type: 'warning',
+        })
+        return
+      }
+      if (form.passwd.length == 0) {
+        ElMessage({
+          message: "密码不能为空",
+          type: 'warning',
+        })
+        return
+      }
+
       const obj = {"username":form.username, "password":form.passwd}
-      console.log(obj)
-      const res = await new proxy.$request(proxy.$urls.m().login, obj).modepost()
+      const res = await new proxy.$request(proxy.$urls.m().login, obj).post()
       console.log(res)
+      localStorage.setItem('token', res.data.jwt_token.access_token)
+
+      const obj_info = {"username":form.username} 
+      const info_res = await new proxy.$request(proxy.$urls.m().getuserinfo, obj_info).get()
+      console.log(info_res.data)
+
+      // var login_url = "http://localhost:8888/user/login";
+      // var login_data = {}
+      // axios({
+      //   method: 'post',
+      //   url: login_url,
+      //   data: obj,
+      //   headers: {
+      //     'Content-Type':'application/json'
+      //   }
+      // })
+      // .then(res => {
+      //   login_data = res.data
+      // })
+
+      // console.log(login_data)
+
+      // //草，他妈的，这里get不能传json，草他妈的
+      // const obj_info = {"username":form.username}
+      // var info_url = "http://localhost:8888/user/getuserinfo";
+      // var info_data = {}
+      // axios({
+      //   method: 'get',
+      //   url: info_url,
+      //   //get用params post用data
+      //   params: obj_info,
+      //   headers: {
+      //     'Content-Type':'application/json'
+      //   }
+      //         }).then(res => {
+      //             info_data = res.data
+      // })
+      // console.log(info_data)
+      if (msg != "登录成功") { //不是登录成功
+        ElMessage({
+          message: msg,
+          type: 'warning',
+        })
+      } else { //登录成功，跳转
+        ElMessage({
+          message: msg,
+          type: 'success',
+        })
+       // localStorage.setItem('token', res.data.jwt_token.access_token)
+        //const info_obj = {"username":form.username}
+        //.log(info_obj)
+        //const info = await new proxy.$request(proxy.$urls.m().getuserinfo, {"username": "xminao2"}).modeget()
+        //console.log(info)
+        //延迟三秒刷新
+        setTimeout(()=>{
+          router.push({
+            path: '/type'
+         })
+        }, 2000)
+        setTimeout(()=>{
+          location.reload()
+        }, 2000)
+        }
     }
     
-
     return {login, onSubmit, form, signin, logindialog, formLabelWidth}
   },
   

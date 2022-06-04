@@ -6,12 +6,10 @@ const urls = class{
     static m(){
         const register = `${url}/user/register`
         const login = `${url}/user/login`
-        const getuserinfo = `${url}/user/getuserinfo`
 
         return {
             register,
-            login,
-            getuserinfo
+            login
         }
     }
 

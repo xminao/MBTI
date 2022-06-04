@@ -34,11 +34,11 @@
                   label="用户名" 
                   :label-width="formLabelWidth"
                   size="large">
-                </el-form-item>
-                <el-input 
+                  <el-input 
                     v-model="form.username" 
                     autocomplete="off"
                     style="width:300px;"/>
+                </el-form-item>
                 <el-form-item label="密码" :label-width="formLabelWidth" style="font-size: 30px">
                   <el-input 
                     v-model="form.passwd" 
@@ -149,7 +149,7 @@ export default defineComponent({
   }
   .el-main{
     height: 100%;
-    background-color: #008B8B;
+    background-color: #4298B4;
     color: rgb(221, 6, 6);text-align: center;line-height: 0px;
   }
 </style>
