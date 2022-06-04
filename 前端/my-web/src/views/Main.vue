@@ -1,6 +1,5 @@
 <template>
   <div class="common-layout">
-    <el-scrollbar>
     <el-container>
       <el-header>
           <div class="logo">
@@ -63,12 +62,10 @@
           </el-dialog>
         </el-header>
 
-      <el-main>
-          <router-view/>
-      </el-main>
-      <el-footer>Footer</el-footer>
+        <el-main>
+            <router-view/>
+        </el-main>
     </el-container>
-    </el-scrollbar>
   </div>
 </template>
 
@@ -98,6 +95,11 @@ export default {
     }
 
     .el-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
         height: 100%;
     }
 
@@ -125,19 +127,20 @@ export default {
        width: 450px;
     }
 
-
     .el-main {
         background-color: #4298B4;
+        position: relative;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
         width: 100%;
-        height: 100%
-    }
-    .screen {
         height: 100%;
-        width: 100%;
     }
 
     .el-footer {
         background-color: #477777;
         height: 40px;
+        align-items: center;
     }
 </style>
