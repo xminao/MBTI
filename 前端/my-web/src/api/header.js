@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 //创建axios通用配置
 let instance = axios.create({
     responseType:"json",
@@ -28,29 +28,25 @@ let instance = axios.create({
 //tp拦截，在axios发出请求之后
 instance.interceptors.response.use(
     response =>{
-        return response
+        return response.data
     },
     error =>{
+        console.log(error.response)
         if(error.response){
-            let ERRS = error.response.status                                       //这个是状态码
-            let MSG = error.response.data.msg.msg
-            let errdata = ERRS == 401 ? MSG :'服务器发生错误'                           //判断返回的是不是等于401，如果是，返回服务器发生错误
-            switch(ERRS){
-                case 401:                                                               //没权限
-                    ElMessageBox.alert(errdata,'提示',{
-                        confirmButtonText: '好的',
-                        type:"error"
-                    })
-                    // .then(res=>{
-                        
-                    // })
-                    // .catch(err=>{
+            let errcode = error.response.data.code
+            let msg = error.response.data.msg
 
-                    // })
+            switch (errcode) {
+                case 100007:
+                    ElMessage({
+                        message: msg,
+                        type: 'warning',
+                    })
                     break;
             }
         }
-        return Promise.reject(error.response.data)
+        return Promise.reject(error.response)
     }
 )
+
 export default instance

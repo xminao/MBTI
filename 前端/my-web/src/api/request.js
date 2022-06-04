@@ -1,6 +1,4 @@
-import axios from 'axios'
 import instance from './header'
-import qs from "qs"
 
 const request = class {
     constructor(url, arg) {
