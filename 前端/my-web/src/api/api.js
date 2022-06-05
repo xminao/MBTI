@@ -1,17 +1,21 @@
 //所有请求接口
 
-const url = "http://localhost:8888"
-
 const urls = class{
     static m(){
-        const register = `${url}/user/register`
-        const login = `${url}/user/login`
-        const getuserinfo = `${url}/user/getuserinfo`
+        const user = "http://localhost:8888"
+        const register = `${user}/user/register`
+        const login = `${user}/user/login`
+        const getuserinfo = `${user}/user/getuserinfo`
 
+        const question = "http://localhost:8887"
+        const getquestion = `${question}/question/get`
+        const getquestionidlist = `${question}/question/getidlist`
         return {
             register,
             login,
-            getuserinfo
+            getuserinfo,
+            getquestion,
+            getquestionidlist,
         }
     }
 

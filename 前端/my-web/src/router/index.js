@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Home from '../components/Home.vue'
 import Type from '../components/Type.vue'
 import User from '../components/User.vue'
+import Test from '../components/Test.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     redirect: '/home',
     children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
                { path: '/type', component: Type, meta: { requiresAuth: true}}, 
+               { path: '/test', component: Test, meta: { requiresAuth: true}}, 
                { path: '/user', component: User, meta: { requiresAuth: true}}], 
   },
 ]
