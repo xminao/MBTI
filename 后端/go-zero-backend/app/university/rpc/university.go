@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"backend/app/university_goctl/rpc/internal/config"
-	"backend/app/university_goctl/rpc/internal/server"
-	"backend/app/university_goctl/rpc/internal/svc"
-	"backend/app/university_goctl/rpc/university"
+	"backend/app/university/rpc/internal/config"
+	"backend/app/university/rpc/internal/server"
+	"backend/app/university/rpc/internal/svc"
+	"backend/app/university/rpc/university"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"

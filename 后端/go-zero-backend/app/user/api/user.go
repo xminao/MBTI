@@ -1,15 +1,14 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-
 	"backend/app/user/api/internal/config"
 	"backend/app/user/api/internal/handler"
 	"backend/app/user/api/internal/svc"
-
+	"flag"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	"net/http"
 )
 
 var configFile = flag.String("f", "etc/user-api.yaml", "the config file")
@@ -21,11 +20,16 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	ctx := svc.NewServiceContext(c)
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, notAllowedFn, "http://localhost:8081"))
 	defer server.Stop()
 
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
+}
+
+// 解决跨域问题
+func notAllowedFn(w http.ResponseWriter) {
+	w.Header().Add("Access-Control-Allow-Headers", "x-token")
 }

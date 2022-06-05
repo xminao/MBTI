@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/jinzhu/copier"
 
-	"backend/app/university_goctl/api/internal/svc"
-	"backend/app/university_goctl/api/internal/types"
+	"backend/app/university/api/internal/svc"
+	"backend/app/university/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

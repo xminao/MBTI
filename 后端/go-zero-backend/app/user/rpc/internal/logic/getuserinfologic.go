@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"backend/app/university_goctl/models"
+	"backend/app/university/models"
 	"backend/app/user/rpc/internal/svc"
 	"backend/app/user/rpc/user"
 

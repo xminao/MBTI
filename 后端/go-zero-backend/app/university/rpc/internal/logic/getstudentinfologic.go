@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 
-	"backend/app/university_goctl/rpc/internal/svc"
-	"backend/app/university_goctl/rpc/university"
+	"backend/app/university/rpc/internal/svc"
+	"backend/app/university/rpc/university"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

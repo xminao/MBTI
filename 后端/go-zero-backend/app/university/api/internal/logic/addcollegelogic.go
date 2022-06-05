@@ -1,9 +1,9 @@
 package logic
 
 import (
-	"backend/app/university_goctl/api/internal/svc"
-	"backend/app/university_goctl/api/internal/types"
-	"backend/app/university_goctl/models"
+	"backend/app/university/api/internal/svc"
+	"backend/app/university/api/internal/types"
+	"backend/app/university/models"
 	"context"
 	"errors"
 	"fmt"

@@ -20,6 +20,7 @@ type (
 		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*QuestionInfo, error)
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
+		GetIDList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]int64, error)
 	}
 
 	customQuestionInfoModel struct {
@@ -31,6 +32,29 @@ type (
 func NewQuestionInfoModel(conn sqlx.SqlConn, c cache.CacheConf) QuestionInfoModel {
 	return &customQuestionInfoModel{
 		defaultQuestionInfoModel: newQuestionInfoModel(conn, c),
+	}
+}
+
+func (m *defaultQuestionInfoModel) GetIDList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]int64, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var list []*QuestionInfo
+	err = m.QueryRowsNoCacheCtx(ctx, &list, query, values...)
+
+	var resp []int64
+	for _, value := range list {
+		resp = append(resp, value.QuestionId)
+	}
+
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
 	}
 }
 

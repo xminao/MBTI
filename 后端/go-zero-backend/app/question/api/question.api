@@ -25,6 +25,15 @@ type (
 )
 
 type (
+	GetQuestionIdListReq {
+	}
+
+	GetQuestionIdListResp {
+		QuestionIdList []int64 `json:"question_id_list"`
+	}
+)
+
+type (
 	CreateQuestionReq {
 		QuestionDesc  string `json:"question_desc"`
 		OptionADesc   string `json:"option_a_desc"`
@@ -60,4 +69,7 @@ service question-api {
 	
 	@handler GetQuestion
 	get /question/get (GetQuestionReq) returns(GetQuestionResp)
+	
+	@handler GetQuestionIdList
+	get /question/getidlist (GetQuestionIdListReq) returns (GetQuestionIdListResp)
 }

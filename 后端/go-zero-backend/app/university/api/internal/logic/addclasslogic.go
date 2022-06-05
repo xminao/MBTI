@@ -1,14 +1,14 @@
 package logic
 
 import (
-	"backend/app/university_goctl/models"
+	"backend/app/university/models"
 	"context"
 	"errors"
 	"strings"
 	"time"
 
-	"backend/app/university_goctl/api/internal/svc"
-	"backend/app/university_goctl/api/internal/types"
+	"backend/app/university/api/internal/svc"
+	"backend/app/university/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

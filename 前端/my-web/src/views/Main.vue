@@ -453,7 +453,9 @@ export default {
     }
 
     .el-main {
-        background-color: #4298B4;
+        //background-color: #4298B4;
+        background-color: #fff;
+        padding: 0%;
         position: relative;
         left: 0;
         right: 0;

@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"backend/app/university_goctl/api/internal/config"
-	"backend/app/university_goctl/api/internal/handler"
-	"backend/app/university_goctl/api/internal/svc"
+	"backend/app/university/api/internal/config"
+	"backend/app/university/api/internal/handler"
+	"backend/app/university/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

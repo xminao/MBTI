@@ -1,8 +1,8 @@
 package svc
 
 import (
-	"backend/app/university_goctl/api/internal/config"
-	"backend/app/university_goctl/models"
+	"backend/app/university/api/internal/config"
+	"backend/app/university/models"
 	_ "github.com/lib/pq"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )

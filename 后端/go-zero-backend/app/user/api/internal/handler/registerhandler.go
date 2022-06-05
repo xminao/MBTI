@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"backend/util/result"
 	"net/http"
 
 	"backend/app/user/api/internal/logic"
@@ -19,10 +20,11 @@ func registerHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewRegisterLogic(r.Context(), svcCtx)
 		resp, err := l.Register(&req)
-		if err != nil {
-			httpx.Error(w, err)
-		} else {
-			httpx.OkJson(w, resp)
-		}
+		//if err != nil {
+		//	httpx.Error(w, err)
+		//} else {
+		//	httpx.OkJson(w, resp)
+		//}
+		result.HttpResult(r, w, resp, err)
 	}
 }

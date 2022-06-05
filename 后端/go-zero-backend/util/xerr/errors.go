@@ -9,8 +9,8 @@ import (
 */
 
 type CodeError struct {
-	errCode uint32
-	errMsg  string
+	errCode uint32 `json:"errcode"`
+	errMsg  string `json:"errmsg"`
 }
 
 //返回给前端的错误码

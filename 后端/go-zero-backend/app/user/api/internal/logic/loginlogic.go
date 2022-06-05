@@ -2,10 +2,11 @@ package logic
 
 import (
 	"backend/app/user/models"
+	"backend/util/xerr"
 	"context"
-	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/pkg/errors"
 	"strings"
 	"time"
 
@@ -40,11 +41,11 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 	//type models.UserInfo
 	user, err := l.svcCtx.UserInfoModel.FindOne(l.ctx, req.Username)
 	if err == models.ErrNotFound {
-		return nil, errors.New("用户不存在")
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "用户不存在哟")
 	}
 	if user.Password != req.Password {
 		l.svcCtx.UserInfoModel.DeleteCache(l.ctx, req.Username)
-		return nil, errors.New("密码错误")
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "密码错啦")
 	}
 
 	// Jwt
@@ -53,12 +54,14 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 	// call getJwtToken func to create jwt token
 	jwtToken, err := l.getJwtToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, user.Username, user.AuthGroup)
 	if err != nil {
-		return nil, err
+		return nil, xerr.NewErrCode(xerr.TOKEN_GENERATE_ERROR)
 	}
 	fmt.Println(user.AuthGroup)
 	//return msg and token_info
 	return &types.LoginResp{
-		Msg: "登录成功",
+		Msg:      "登录成功",
+		Username: user.Username,
+		Nickname: user.Nickname,
 		Jwt: types.JwtToken{
 			AccessToken:  jwtToken,
 			AccessExpire: now + accessExpire,

@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"backend/app/university_goctl/rpc/internal/logic"
-	"backend/app/university_goctl/rpc/internal/svc"
-	"backend/app/university_goctl/rpc/university"
+	"backend/app/university/rpc/internal/logic"
+	"backend/app/university/rpc/internal/svc"
+	"backend/app/university/rpc/university"
 )
 
 type UniversityRpcServer struct {

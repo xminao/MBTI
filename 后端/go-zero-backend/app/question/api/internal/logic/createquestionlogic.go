@@ -1,15 +1,15 @@
 package logic
 
 import (
-	"backend/app/question_goctl/models"
+	"backend/app/question/models"
 	"context"
 	"encoding/json"
 	"errors"
 	"strings"
 	"time"
 
-	"backend/app/question_goctl/api/internal/svc"
-	"backend/app/question_goctl/api/internal/types"
+	"backend/app/question/api/internal/svc"
+	"backend/app/question/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

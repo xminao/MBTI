@@ -4,7 +4,7 @@ package handler
 import (
 	"net/http"
 
-	"backend/app/question_goctl/api/internal/svc"
+	"backend/app/question/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )
@@ -26,6 +26,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/question/get",
 				Handler: GetQuestionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/question/getidlist",
+				Handler: GetQuestionIdListHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

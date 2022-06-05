@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"backend/app/university_goctl/api/internal/logic"
-	"backend/app/university_goctl/api/internal/svc"
-	"backend/app/university_goctl/api/internal/types"
+	"backend/app/university/api/internal/logic"
+	"backend/app/university/api/internal/svc"
+	"backend/app/university/api/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 

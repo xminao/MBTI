@@ -2,6 +2,7 @@ package logic
 
 import (
 	"backend/app/user/models"
+	"backend/util/xerr"
 	"context"
 	"errors"
 	"strings"
@@ -47,11 +48,20 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 	}
 
 	//type models.UserInfo
-	_, err := l.svcCtx.UserInfoModel.FindOne(l.ctx, req.Username)
+	user, err := l.svcCtx.UserInfoModel.FindOne(l.ctx, req.Username)
 	// not found
 	// simple , need to change
 	if err != nil && err != models.ErrNotFound {
 		return nil, errors.New(err.Error())
+	}
+
+	if user != nil {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "用户名已经被注册咯，换一个吧")
+	}
+
+	stu, err := l.svcCtx.UserInfoModel.FindOneByBindingStudentId(l.ctx, req.BindingStudentId)
+	if stu != nil {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "学号已经绑定别的用户啦")
 	}
 
 	_, err = l.svcCtx.UserInfoModel.Insert(l.ctx, &models.UserInfo{
@@ -62,13 +72,14 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 		CreatedAt:        time.Now(),
 		UpdateAt:         time.Now(),
 		AuthGroup:        "default",
-		BindingStudentId: "unbind",
+		BindingStudentId: req.BindingStudentId,
 	})
 	if err != nil {
-		return nil, err
+		return nil, xerr.NewErrCode(xerr.DB_ERROR)
 	}
 
 	return &types.RegisterResp{
-		Msg: "注册成功",
+		Nickname: req.NickName,
+		Msg:      "注册成功",
 	}, nil
 }

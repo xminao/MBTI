@@ -16,6 +16,13 @@ type GetQuestionResp struct {
 	QuestionInfo Question `json:"question_info"`
 }
 
+type GetQuestionIdListReq struct {
+}
+
+type GetQuestionIdListResp struct {
+	QuestionIdList []int64 `json:"question_id_list"`
+}
+
 type CreateQuestionReq struct {
 	QuestionDesc  string `json:"question_desc"`
 	OptionADesc   string `json:"option_a_desc"`

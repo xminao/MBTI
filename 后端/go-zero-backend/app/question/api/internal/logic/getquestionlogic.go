@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 
-	"backend/app/question_goctl/api/internal/svc"
-	"backend/app/question_goctl/api/internal/types"
+	"backend/app/question/api/internal/svc"
+	"backend/app/question/api/internal/types"
 
-	"backend/app/question_goctl/models"
+	"backend/app/question/models"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
