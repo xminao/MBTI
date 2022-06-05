@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 //import HomeView from '../views/HomeView.vue'
 import Main from '../views/Main.vue'
-import Test from '../components/Test.vue'
+import Home from '../components/Home.vue'
 import Type from '../components/Type.vue'
-import Login from '../components/Login.vue'
+import User from '../components/User.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -11,10 +11,10 @@ const routes = [
     path: '/',
     name: 'home',
     component: Main,
-    redirect: '/test',
-    children: [{ path: '/test', component: Test, meta: { requiresAuth: false}}, 
+    redirect: '/home',
+    children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
                { path: '/type', component: Type, meta: { requiresAuth: true}}, 
-               { path: '/login', component: Login, meta: { requiresAuth: true}}], 
+               { path: '/user', component: User, meta: { requiresAuth: true}}], 
   },
 ]
 
@@ -27,7 +27,7 @@ const router = createRouter({
 //路由守卫
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth == true) {
-    if (localStorage.getItem('token') != undefined) {
+    if (localStorage.getItem('token') != '') {
       next()
     } else {
       ElMessageBox.alert('没有权限访问，请登录','出错啦',{
@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
         type:"error",
         center: true,
       })
-      router.push('/test')
+      router.push('/home')
     }
   } else {
     // 放过去
