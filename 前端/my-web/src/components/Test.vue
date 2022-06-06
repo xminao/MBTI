@@ -18,7 +18,9 @@
 
 <div class="test" v-if="start == true && finish == false">
     <el-container class="step">
-        <el-progress :percentage="per" :stroke-width="20" :format="format" />
+        <el-progress :percentage="per" :stroke-width="20">
+            {{question_form.progress}}
+        </el-progress>
   </el-container>
   <el-container class="title">
       <span><br/><br/><font face="微软雅黑" size="6" color="#696969">{{question_form.desc}}</font></span>
@@ -56,7 +58,7 @@ export default ({
         const index = ref(0)
         const per = ref(0)
         let finish = ref(false)
-        //let result = ref('')
+        const ques_count = ref(0)
 
         
 
@@ -108,6 +110,7 @@ export default ({
             desc: '',
             option_a: '',
             option_b: '',
+            progress: '',
         })
 
 
@@ -120,6 +123,7 @@ export default ({
             question_form.desc = res.question_info.question_desc
             question_form.option_a = res.question_info.option_a_desc
             question_form.option_b = res.question_info.option_b_desc
+            question_form.progress = '0' + '/' + idList.length
         }
 
         
@@ -173,13 +177,10 @@ export default ({
             if (index.value == num-1) {
                 per.value = 100
                 getResult()
-                console.log(result_form)
                 finish.value = true
                 goResult(result.data) //去往结果页
                 return
             }
-
-            console.log(result_form)
 
             //如果还有下一道题，初始化下一道题目的信息
             index.value++
@@ -189,10 +190,9 @@ export default ({
             question_form.option_a = res.question_info.option_a_desc
             question_form.option_b = res.question_info.option_b_desc
 
+            question_form.progress = index.value + '/' + num
             per.value = (index.value/num)*100
         }
-
-        const format = (percentage) => (percentage === 100 ? '完成' : `${percentage}%`)
 
         const goResult=(param)=> {
             router.push({ name:'result', params: { type: param}})
@@ -211,7 +211,7 @@ export default ({
             button_select, 
             active, 
             goResult,
-            format}
+            }
     },
 })
 </script>

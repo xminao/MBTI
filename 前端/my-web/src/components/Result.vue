@@ -3,7 +3,7 @@
         class="result"
         >
         <el-aside>
-            <el-image style="width: 350px; height: 350px;" :src="imgsrc" :fit="fill"/>
+            <el-image style="width: 350px; height: 350px;" :src="attri.imgsrc" :fit="fill"/>
         </el-aside>
         <el-main>
             <div class="content">
@@ -30,25 +30,26 @@ export default({
         let attri = reactive({
             name: '',
             label: '',
+            imgsrc: '',
         })
 
         const types = {
-            INTJ: '建筑师',
-            INTP: '逻辑学家',
-            ENTJ: '指挥官',
-            ENTP: '辩论家',
-            ENFJ: '主人公',
-            INFJ: '倡导者',
-            INFP: '调停者',
-            ENFP: '竞选者',
-            ISTJ: '物流师',
-            ISFJ: '守卫者',
-            ESTJ: '总经理',
-            ESFJ: '执政官',
-            ISTP: '鉴赏家',
-            ISFP: '探险家',
-            ESTP: '企业家',
-            ESFP: '表演者',
+            INTJ: '建 筑 师',
+            INTP: '逻 辑 学 家',
+            ENTJ: '指 挥 官',
+            ENTP: '辩 论 家',
+            ENFJ: '主 人 公',
+            INFJ: '倡 导 者',
+            INFP: '调 停 者',
+            ENFP: '竞 选 者',
+            ISTJ: '物 流 师',
+            ISFJ: '守 卫 者',
+            ESTJ: '总 经 理',
+            ESFJ: '执 政 官',
+            ISTP: '鉴 赏 家',
+            ISFP: '探 险 家',
+            ESTP: '企 业 家',
+            ESFP: '表 演 者',
         }
 
         const colors = {
@@ -82,8 +83,6 @@ export default({
                     name: '#584164',
                     label: '#90759F',
                 },
-                images: {
-                }
             },
         }
 
@@ -111,12 +110,11 @@ export default({
         let group = getGroup(result)
         attri.label = result
         attri.name = types[result]
+        attri.imgsrc = require('../assets/' + result + '.png')
         // 结果的界面的颜色
         let bcolor = colors[group].bg
         let name_color = colors[group].name
         let label_color = colors[group].label
-
-        let imgsrc = require('../assets/enfj.png')
 
         return {
             router,
@@ -125,7 +123,6 @@ export default({
             label_color,
             attri,
             goTest,
-            imgsrc,
         }
     },
 })
@@ -172,7 +169,7 @@ export default({
     #name {
         font-size: 60px;
         color: v-bind(name_color);
-        font-family: 微软雅黑;
+        font-family: 幼圆;
         font-weight: bold;  
     }
 
@@ -180,7 +177,8 @@ export default({
         font-size: 60px;
         color: v-bind(label_color);
         font-family: 华文琥珀;
-        font-weight: bold;  
+        font-weight: bold; 
+        line-height: 30px
     }
 
     // .box-card {
