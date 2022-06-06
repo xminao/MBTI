@@ -215,7 +215,8 @@ export default {
 
         //判断用户是否登录
         let login_status = ref(false)
-        if (localStorage.getItem('token').length > 0) {
+        
+        if (localStorage.getItem('token')) {
           login_status.value = true
         }
 

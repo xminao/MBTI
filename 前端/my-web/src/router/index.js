@@ -5,6 +5,7 @@ import Home from '../components/Home.vue'
 import Type from '../components/Type.vue'
 import User from '../components/User.vue'
 import Test from '../components/Test.vue'
+import Result from '../components/Result.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
     children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
                { path: '/type', component: Type, meta: { requiresAuth: true}}, 
                { path: '/test', component: Test, meta: { requiresAuth: true}}, 
+               { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 
                { path: '/user', component: User, meta: { requiresAuth: true}}], 
   },
 ]
@@ -29,7 +31,7 @@ const router = createRouter({
 //路由守卫
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth == true) {
-    if (localStorage.getItem('token') != '') {
+    if (localStorage.getItem('token')) {
       next()
     } else {
       ElMessageBox.alert('没有权限访问，请登录','出错啦',{

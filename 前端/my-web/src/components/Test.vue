@@ -10,7 +10,7 @@
         id="startbutton"
         color="#cc9933"
         type="info"
-        @click="start = true;select('')">
+        @click="start = true;initQues()">
             开始答题
         </el-button>
     </el-container>
@@ -41,32 +41,24 @@
   </el-container>
 </div>
 
-<div class="end" v-if="finish == true">
-    <el-container class="endtitle">
-        <div id="endtext">
-        <span><font face="微软雅黑" size="10" color="#fff">完成答题啦</font></span>
-        </div>
-    </el-container>
-        
-    <el-container class="endcontent">
-        {{result_form}} {{result}}
-    </el-container>
-</div>
-
 </template>
 
 <script>
 import { reactive, ref, getCurrentInstance } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default ({
     setup() {
+        const router = useRouter()
         const active = ref(0)
         const button_select = ref(false)
         const start = ref(false)
         const index = ref(0)
         const per = ref(0)
         let finish = ref(false)
-        let result = ref('')
+        //let result = ref('')
+
+        
 
         const {proxy} = getCurrentInstance()
 
@@ -81,29 +73,33 @@ export default ({
             P: 0,
         })
 
+        let result = reactive({
+            data: '',
+        })
+
         let getResult=()=> {
             if (result_form.E > result_form.I) {
-                result = result + 'E'
+                result.data = result.data  + 'E'
             } else {
                 result = result + 'I'
             }
 
             if (result_form.S > result_form.N) {
-                result = result + 'S'
+                result.data  = result.data  + 'S'
             } else {
-                result = result + 'N'
+                result.data  = result.data  + 'N'
             }
 
             if (result_form.T > result_form.F) {
-                result = result + 'T'
+                result.data  = result.data  + 'T'
             } else {
-                result = result + 'F'
+                result.data  = result.data  + 'F'
             }
 
             if (result_form.J > result_form.P) {
-                result = result + 'J'
+                result.data  = result.data  + 'J'
             } else {
-                result = result + 'P'
+                result.data  = result.data  + 'P'
             }
         }
 
@@ -114,37 +110,33 @@ export default ({
             option_b: '',
         })
 
-        const getidList=async()=> {
-            const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
-            return listres
-        }
 
-        const select=async(option)=> {
-            if (option != '') {
-                index.value++
-            }
+        //初始化第一道题目
+        const initQues=async()=> {
             const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
             const idList = listres.question_id_list
-            const num = idList.length
-            if (index.value >= num) {
-                per.value = (index.value/num)*100
-                getResult()
-                console.log(result)
-                finish.value = true
-                return
-            }
             const obj = {"id":idList[index.value]}
             const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
             question_form.desc = res.question_info.question_desc
             question_form.option_a = res.question_info.option_a_desc
             question_form.option_b = res.question_info.option_b_desc
+        }
+
+        
+        // 选择题目
+        const select=async(option)=> {
+            //根据索引index获取当前题目的信息
+            const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
+            const idList = listres.question_id_list
+            let obj = {"id":idList[index.value]}
+            let res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+            // 分析传进的选项option A or B
             let target
             if (option == 'A') {
                 target = res.question_info.option_a_target
             } else if (option == 'B') {
                 target = res.question_info.option_b_target
             }
-
             switch (target) {
                 case 'E':
                     result_form.E++
@@ -173,15 +165,38 @@ export default ({
                 default:
                     break;
             }
-            //console.log(result_form)
-           // index.value++
-            per.value = (index.value/listres.question_id_list.length)*100
+
+            //判断是否有下一题，如果有则初始化下一题
+            const num = idList.length //获取题目数量
+            //如果没有下一道题了（一共n题，索引为n-1则尽头）
+            if (index.value == num-1) {
+                per.value = 100
+                getResult()
+                finish.value = true
+                goResult(result.data) //去往结果页
+                return
+            }
+
+            //如果还有下一道题，初始化下一道题目的信息
+            index.value++
+            obj = {"id":idList[index.value]}
+            res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+            question_form.desc = res.question_info.question_desc
+            question_form.option_a = res.question_info.option_a_desc
+            question_form.option_b = res.question_info.option_b_desc
+
+            per.value = (index.value/num)*100
         }
 
         const format = (percentage) => (percentage === 100 ? '完成' : `${percentage}%`)
 
+        const goResult=(param)=> {
+            router.push({ name:'result', params: { type: param}})
+        }
+
         return {
             select,
+            initQues,
             per,
             index,
             start,
@@ -191,6 +206,7 @@ export default ({
             result,
             button_select, 
             active, 
+            goResult,
             format}
     },
 })
