@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 //import HomeView from '../views/HomeView.vue'
 import Main from '../views/Main.vue'
-import Home from '../components/Home.vue'
-import Question from '../components/Management/Question.vue'
-import User from '../components/Management/User.vue'
-import Test from '../components/Test.vue'
-import Result from '../components/Result.vue'
+import Home from '../views/Home.vue'
+import Question from '../views/Management/Question.vue'
+import User from '../views/Management/User.vue'
+import Test from '../views/Test.vue'
+import Result from '../views/Result.vue'
+import University from '../views/Management/University.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -16,7 +17,8 @@ const routes = [
     redirect: '/home',
     children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
                { path: '/question', component: Question, meta: { requiresAuth: true}}, 
-               { path: '/test', component: Test, meta: { requiresAuth: true}}, 
+               { path: '/test', component: Test, meta: { requiresAuth: true}},
+               { path: '/university', component: University, meta: { requiresAuth: true}},
                { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 
                { path: '/user', component: User, meta: { requiresAuth: true}}], 
   },
