@@ -35,7 +35,7 @@
     <el-radio-group v-model="option" size="large">
         <button class="button"
             label="B" 
-            @click="select('A')"
+            @click="select('B')"
             >{{question_form.option_b}}</button>
     </el-radio-group>
   </el-container>
@@ -81,7 +81,7 @@ export default ({
             if (result_form.E > result_form.I) {
                 result.data = result.data  + 'E'
             } else {
-                result = result + 'I'
+                result.data = result.data + 'I'
             }
 
             if (result_form.S > result_form.N) {
@@ -137,6 +137,7 @@ export default ({
             } else if (option == 'B') {
                 target = res.question_info.option_b_target
             }
+            console.log(target)
             switch (target) {
                 case 'E':
                     result_form.E++
@@ -172,10 +173,13 @@ export default ({
             if (index.value == num-1) {
                 per.value = 100
                 getResult()
+                console.log(result_form)
                 finish.value = true
                 goResult(result.data) //去往结果页
                 return
             }
+
+            console.log(result_form)
 
             //如果还有下一道题，初始化下一道题目的信息
             index.value++

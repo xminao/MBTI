@@ -1,12 +1,14 @@
 <template>
-    <el-container class="result">
+    <el-container 
+        class="result"
+        >
         <el-aside>
-            <el-image style="width: 350px; height: 350px;" :src="require('../assets/enfj-protagonist.png')" :fit="fill"/>
+            <el-image style="width: 350px; height: 350px;" :src="imgsrc" :fit="fill"/>
         </el-aside>
         <el-main>
             <div class="content">
-            <p id="name">{{type.name}}</p>
-            <p id="label">{{type.label}}</p>
+            <p id="name">{{attri.name}}</p>
+            <p id="label">{{attri.label}}</p>
             </div>
         </el-main>
     </el-container>
@@ -25,12 +27,16 @@ export default({
             router.push('/test')
         }
 
-        let type = reactive({
+        let attri = reactive({
             name: '',
             label: '',
         })
 
         const types = {
+            INTJ: '建筑师',
+            INTP: '逻辑学家',
+            ENTJ: '指挥官',
+            ENTP: '辩论家',
             ENFJ: '主人公',
             INFJ: '倡导者',
             INFP: '调停者',
@@ -45,14 +51,81 @@ export default({
             ESFP: '表演者',
         }
 
+        const colors = {
+            analysts: {
+                bg: '#E7DFEA',
+                name: '#584164',
+                label: '#90759F',
+            },
+            diplomats: {
+                bg: '#D6ECE3',
+                name: '#35785D',
+                label: '#99C26C',
+            },
+            sentinels: {
+                bg: '#D9EAF0',
+                name: '#369395',
+                label: '#71CACC',
+            },
+            explorers: {
+                bg: '#F9EED7',
+                name: '#BE8F00',
+                label: '#F4D65D',
+            },
+        }
+
+        const test = {
+            analysts: {
+                analysts: ['INTJ', 'INTP', 'ENTJ', 'ENTP'],
+                colors: {
+                    bg: '#E7DFEA',
+                    name: '#584164',
+                    label: '#90759F',
+                },
+                images: {
+                }
+            },
+        }
+
+        const groups = {
+            analysts: ['INTJ', 'INTP', 'ENTJ', 'ENTP'],
+            diplomats: ['INFJ', 'INFP', 'ENFJ', 'ENFP'],
+            sentinels: ['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'],
+            explorers: ['ISTP', 'ISFP', 'ESTP', 'ESFP'],
+        }
+
+        const getGroup=(type)=>{
+            let i
+            let j
+            for (i in groups) {
+                for (j=0; j<4; j++) {
+                    if (groups[i][j] == type) {
+                        return i
+                    }
+                }
+            }
+            return
+        }
+
         let result = route.params.type
-        type.label = result
-        type.name = types[result]
+        let group = getGroup(result)
+        attri.label = result
+        attri.name = types[result]
+        // 结果的界面的颜色
+        let bcolor = colors[group].bg
+        let name_color = colors[group].name
+        let label_color = colors[group].label
+
+        let imgsrc = require('../assets/enfj.png')
 
         return {
             router,
-            type,
+            bcolor,
+            name_color,
+            label_color,
+            attri,
             goTest,
+            imgsrc,
         }
     },
 })
@@ -62,7 +135,7 @@ export default({
 <style scoped lang="less">
     .result {
         justify-content: center;
-        background-color: #D6ECE3;
+        background-color: v-bind(bcolor);
         height: 100%;
         width: 100%;
         padding-left: 15%;
@@ -98,14 +171,14 @@ export default({
 
     #name {
         font-size: 60px;
-        color: #99C26C;
+        color: v-bind(name_color);
         font-family: 微软雅黑;
         font-weight: bold;  
     }
 
     #label {
         font-size: 60px;
-        color: #B8C645;
+        color: v-bind(label_color);
         font-family: 华文琥珀;
         font-weight: bold;  
     }
