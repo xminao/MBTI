@@ -34,22 +34,22 @@ export default({
         })
 
         const types = {
-            INTJ: '建 筑 师',
-            INTP: '逻 辑 学 家',
-            ENTJ: '指 挥 官',
-            ENTP: '辩 论 家',
-            ENFJ: '主 人 公',
-            INFJ: '倡 导 者',
-            INFP: '调 停 者',
-            ENFP: '竞 选 者',
-            ISTJ: '物 流 师',
-            ISFJ: '守 卫 者',
-            ESTJ: '总 经 理',
-            ESFJ: '执 政 官',
-            ISTP: '鉴 赏 家',
-            ISFP: '探 险 家',
-            ESTP: '企 业 家',
-            ESFP: '表 演 者',
+            INTJ: '建筑师',
+            INTP: '逻辑学家',
+            ENTJ: '指挥官',
+            ENTP: '辩论家',
+            ENFJ: '主人公',
+            INFJ: '倡导者',
+            INFP: '调停者',
+            ENFP: '竞选者',
+            ISTJ: '物流师',
+            ISFJ: '守卫者',
+            ESTJ: '总经理',
+            ESFJ: '执政官',
+            ISTP: '鉴赏家',
+            ISFP: '探险家',
+            ESTP: '企业家',
+            ESFP: '表演者',
         }
 
         const colors = {

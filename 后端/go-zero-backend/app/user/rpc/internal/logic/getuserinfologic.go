@@ -27,6 +27,7 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserInfoResp, error) {
+	//加一个jwt管理员验证得
 	if len(strings.TrimSpace(in.Username)) == 0 {
 		return nil, errors.New("用户名不能为空")
 	}

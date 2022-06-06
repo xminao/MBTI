@@ -26,3 +26,8 @@ func (s *UserRpcServer) GetUserInfo(ctx context.Context, in *user.GetUserInfoReq
 	l := logic.NewGetUserInfoLogic(ctx, s.svcCtx)
 	return l.GetUserInfo(in)
 }
+
+func (s *UserRpcServer) GetUserList(ctx context.Context, in *user.GetUserListReq) (*user.GetUserListResp, error) {
+	l := logic.NewGetUserListLogic(ctx, s.svcCtx)
+	return l.GetUserList(in)
+}

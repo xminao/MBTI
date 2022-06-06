@@ -14,7 +14,7 @@
           >
           <el-menu-item index="/home"><List style="width: 1em; height: 1em; margin-right: 8px" />人格测试</el-menu-item>
           <el-menu-item> </el-menu-item>
-          <el-menu-item index="/type"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
+          <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
           <el-menu-item> </el-menu-item>
           <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
           </el-menu>

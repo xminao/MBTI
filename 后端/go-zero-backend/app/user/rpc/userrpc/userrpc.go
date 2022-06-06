@@ -15,9 +15,13 @@ import (
 type (
 	GetUserInfoReq  = user.GetUserInfoReq
 	GetUserInfoResp = user.GetUserInfoResp
+	GetUserListReq  = user.GetUserListReq
+	GetUserListResp = user.GetUserListResp
+	User            = user.User
 
 	UserRpc interface {
 		GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
+		GetUserList(ctx context.Context, in *GetUserListReq, opts ...grpc.CallOption) (*GetUserListResp, error)
 	}
 
 	defaultUserRpc struct {
@@ -34,4 +38,9 @@ func NewUserRpc(cli zrpc.Client) UserRpc {
 func (m *defaultUserRpc) GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error) {
 	client := user.NewUserRpcClient(m.cli.Conn())
 	return client.GetUserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUserRpc) GetUserList(ctx context.Context, in *GetUserListReq, opts ...grpc.CallOption) (*GetUserListResp, error) {
+	client := user.NewUserRpcClient(m.cli.Conn())
+	return client.GetUserList(ctx, in, opts...)
 }

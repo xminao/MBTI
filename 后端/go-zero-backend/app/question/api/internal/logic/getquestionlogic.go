@@ -42,6 +42,8 @@ func (l *GetQuestionLogic) GetQuestion(req *types.GetQuestionReq) (*types.GetQue
 		QuestionDesc: question.QuestionDesc,
 		OptionA:      option["option_a_desc"],
 		OptionB:      option["option_b_desc"],
+		TargetA:      option["option_a_target"],
+		TargetB:      option["option_b_target"],
 	}
 
 	return &types.GetQuestionResp{

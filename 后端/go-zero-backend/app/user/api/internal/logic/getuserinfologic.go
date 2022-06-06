@@ -23,7 +23,7 @@ func NewGetuserinfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Getus
 }
 
 func (l *GetuserinfoLogic) Getuserinfo(req *types.GetUserInfoReq) (*types.GetUserInfoResp, error) {
-
+	// 加一个jwt验证
 	user, err := l.svcCtx.UserRpc.GetUserInfo(l.ctx, &userrpc.GetUserInfoReq{
 		Username: req.Username,
 	})

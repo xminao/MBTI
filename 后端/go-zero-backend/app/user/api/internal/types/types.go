@@ -2,10 +2,14 @@
 package types
 
 type UserInfo struct {
-	Username         string `json:"username"`
-	Nickname         string `json:"nickname"`
-	Gender           string `json:"gender"`
-	BindingStudentId string `json:"binding_student_id"`
+	Username         string `json:"username"`           // 用户名
+	Nickname         string `json:"nickname"`           // 昵称
+	Password         string `json:"password"`           // 密码
+	Gender           string `json:"gender"`             // 性别
+	AuthGroup        string `json:"auth_group"`         // 认证权限
+	BindingStudentId string `json:"binding_student_id"` // 绑定的学号
+	CreatedAt        int64  `json:"created_at"`         // 创建时间
+	UpdateAt         int64  `json:"update_at"`          // 更新时间
 }
 
 type JwtToken struct {
@@ -45,4 +49,11 @@ type GetUserInfoReq struct {
 
 type GetUserInfoResp struct {
 	UserInfoResp UserInfo `json:"userinfo"`
+}
+
+type GetUserListReq struct {
+}
+
+type GetUserListResp struct {
+	UserList []UserInfo `json:"userlist"`
 }
