@@ -74,29 +74,40 @@ type College {
 }
 
 type Year {
-	YearId   int64  `json:"year_id"`
-	YearName string `json:"year_name"`
+	YearId    int64  `json:"year_id"`
+	CollegeId int64  `json:"college_id"`
+	YearName  string `json:"year_name"`
 }
 
 type Major {
 	MajorId   int64  `json:"major_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
 	MajorName string `json:"major_name"`
 }
 
 type Class {
 	ClassId   int64  `json:"class_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
+	MajorId   int64  `json:"major_id"`
 	ClassName string `json:"class_name"`
 }
 
 type Student {
-	StudentId       string `json:"student_id"`
-	StudentName     string `json:"student_name"`
-	CollegeId       int64  `json:"college_id"`
-	YearId          int64  `json:"year_id"`
-	MajorId         int64  `json:"major_id"`
-	ClassId         int64  `json:"class_id"`
+	StudentId   string `json:"student_id"`
+	StudentName string `json:"student_name"`
+	College     string `json:"college"`
+	Year        string `json:"year"`
+	Major       string `json:"major"`
+	Class       string `json:"class"`
+	//	CollegeId       int64  `json:"college_id"`
+	//	YearId          int64  `json:"year_id"`
+	//	MajorId         int64  `json:"major_id"`
+	//	ClassId         int64  `json:"class_id"`
 	IsBinding       bool   `json:"is_binding"`
 	BindingUsername string `json:"binding_username"`
+	CreatedAt       int64  `json:"created_at"`
 }
 
 type (
@@ -110,7 +121,7 @@ type (
 
 type (
 	GetYearListReq {
-		CollegeId int64 `json:"college_id"`
+		CollegeId int64 `form:"college_id"`
 	}
 
 	GetYearListResp {
@@ -120,7 +131,7 @@ type (
 
 type (
 	GetMajorListReq {
-		YearId int64 `json:"year_id"`
+		YearId int64 `form:"year_id"`
 	}
 
 	GetMajorListResp {
@@ -130,7 +141,7 @@ type (
 
 type (
 	GetClassListReq {
-		MajorId int64 `json:"major_id"`
+		MajorId int64 `form:"major_id"`
 	}
 
 	GetClassListResp {
@@ -140,7 +151,6 @@ type (
 
 type (
 	GetStudentListReq {
-		ClassId int64 `json:"class_id"`
 	}
 
 	GetStudentListResp {
@@ -150,7 +160,7 @@ type (
 
 type (
 	GetStudentInfoReq {
-		StudentId string `json:"student_id"`
+		StudentId string `form:"student_id"`
 	}
 
 	GetStudentInfoResp {

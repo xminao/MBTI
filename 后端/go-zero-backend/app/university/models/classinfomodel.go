@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -22,6 +23,7 @@ type (
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*ClassInfo, error)
+		GetClassName(ctx context.Context, classId int64) string
 	}
 
 	customClassInfoModel struct {
@@ -34,6 +36,20 @@ func NewClassInfoModel(conn sqlx.SqlConn, c cache.CacheConf) ClassInfoModel {
 	return &customClassInfoModel{
 		defaultClassInfoModel: newClassInfoModel(conn, c),
 	}
+}
+
+func (m *defaultClassInfoModel) GetClassName(ctx context.Context, classId int64) string {
+	publicClassInfoClassIdKey := fmt.Sprintf("%s%v", cachePublicClassInfoClassIdPrefix, classId)
+	var resp ClassInfo
+	err := m.QueryRowCtx(ctx, &resp, publicClassInfoClassIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where class_id = $1 limit 1", classInfoRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, classId)
+	})
+
+	if err != nil {
+		return ""
+	}
+	return resp.ClassName
 }
 
 func (m *defaultClassInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*ClassInfo, error) {

@@ -4,6 +4,7 @@ import (
 	"backend/app/user/rpc/internal/svc"
 	"backend/app/user/rpc/user"
 	"context"
+	"fmt"
 	"github.com/jinzhu/copier"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -39,6 +40,7 @@ func (l *GetUserListLogic) GetUserList(in *user.GetUserListReq) (*user.GetUserLi
 			var temp user.User
 			_ = copier.Copy(&temp, item)
 			resp = append(resp, &temp)
+			fmt.Println(item.CreatedAt)
 		}
 	}
 

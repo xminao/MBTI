@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 
 	"backend/app/university/api/internal/config"
 	"backend/app/university/api/internal/handler"
@@ -21,11 +22,16 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	ctx := svc.NewServiceContext(c)
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, notAllowedFn, "http://localhost:8081"))
 	defer server.Stop()
 
 	handler.RegisterHandlers(server, ctx)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
+}
+
+// 解决跨域问题
+func notAllowedFn(w http.ResponseWriter) {
+	w.Header().Add("Access-Control-Allow-Headers", "x-token")
 }

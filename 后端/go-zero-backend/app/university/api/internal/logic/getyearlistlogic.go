@@ -31,14 +31,16 @@ func (l *GetYearListLogic) GetYearList(req *types.GetYearListReq) (*types.GetYea
 	}
 	// need trans, from CollegeInfo to College (type equal,but name not)
 	//
+
 	var resp []types.Year
 	if len(yearList) > 0 {
 		for _, item := range yearList {
 			//user college id to get
 			if item.CollegeId == req.CollegeId {
 				resp = append(resp, types.Year{
-					YearId:   item.YearId,
-					YearName: item.YearName,
+					YearId:    item.YearId,
+					YearName:  item.YearName,
+					CollegeId: item.CollegeId,
 				})
 			}
 		}

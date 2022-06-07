@@ -58,29 +58,36 @@ type College struct {
 }
 
 type Year struct {
-	YearId   int64  `json:"year_id"`
-	YearName string `json:"year_name"`
+	YearId    int64  `json:"year_id"`
+	CollegeId int64  `json:"college_id"`
+	YearName  string `json:"year_name"`
 }
 
 type Major struct {
 	MajorId   int64  `json:"major_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
 	MajorName string `json:"major_name"`
 }
 
 type Class struct {
 	ClassId   int64  `json:"class_id"`
+	CollegeId int64  `json:"college_id"`
+	YearId    int64  `json:"year_id"`
+	MajorId   int64  `json:"major_id"`
 	ClassName string `json:"class_name"`
 }
 
 type Student struct {
 	StudentId       string `json:"student_id"`
 	StudentName     string `json:"student_name"`
-	CollegeId       int64  `json:"college_id"`
-	YearId          int64  `json:"year_id"`
-	MajorId         int64  `json:"major_id"`
-	ClassId         int64  `json:"class_id"`
+	College         string `json:"college"`
+	Year            string `json:"year"`
+	Major           string `json:"major"`
+	Class           string `json:"class"`
 	IsBinding       bool   `json:"is_binding"`
 	BindingUsername string `json:"binding_username"`
+	CreatedAt       int64  `json:"created_at"`
 }
 
 type GetCollegeListReq struct {
@@ -91,7 +98,7 @@ type GetCollegeListResp struct {
 }
 
 type GetYearListReq struct {
-	CollegeId int64 `json:"college_id"`
+	CollegeId int64 `form:"college_id"`
 }
 
 type GetYearListResp struct {
@@ -99,7 +106,7 @@ type GetYearListResp struct {
 }
 
 type GetMajorListReq struct {
-	YearId int64 `json:"year_id"`
+	YearId int64 `form:"year_id"`
 }
 
 type GetMajorListResp struct {
@@ -107,7 +114,7 @@ type GetMajorListResp struct {
 }
 
 type GetClassListReq struct {
-	MajorId int64 `json:"major_id"`
+	MajorId int64 `form:"major_id"`
 }
 
 type GetClassListResp struct {
@@ -115,7 +122,6 @@ type GetClassListResp struct {
 }
 
 type GetStudentListReq struct {
-	ClassId int64 `json:"class_id"`
 }
 
 type GetStudentListResp struct {
@@ -123,7 +129,7 @@ type GetStudentListResp struct {
 }
 
 type GetStudentInfoReq struct {
-	StudentId string `json:"student_id"`
+	StudentId string `form:"student_id"`
 }
 
 type GetStudentInfoResp struct {

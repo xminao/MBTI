@@ -40,6 +40,8 @@ func (l *GetMajorListLogic) GetMajorList(req *types.GetMajorListReq) (*types.Get
 				resp = append(resp, types.Major{
 					MajorId:   item.MajorId,
 					MajorName: item.MajorName,
+					CollegeId: item.MajorId,
+					YearId:    item.YearId,
 				})
 			}
 		}

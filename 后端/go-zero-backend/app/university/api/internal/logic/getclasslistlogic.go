@@ -1,10 +1,9 @@
 package logic
 
 import (
-	"context"
-
 	"backend/app/university/api/internal/svc"
 	"backend/app/university/api/internal/types"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,6 +31,7 @@ func (l *GetClassListLogic) GetClassList(req *types.GetClassListReq) (*types.Get
 	}
 	// need trans, from CollegeInfo to College (type equal,but name not)
 	//
+
 	var resp []types.Class
 	if len(classList) > 0 {
 		for _, item := range classList {
@@ -40,6 +40,9 @@ func (l *GetClassListLogic) GetClassList(req *types.GetClassListReq) (*types.Get
 				resp = append(resp, types.Class{
 					ClassId:   item.ClassId,
 					ClassName: item.ClassName,
+					CollegeId: item.CollegeId,
+					YearId:    item.YearId,
+					MajorId:   item.MajorId,
 				})
 			}
 		}

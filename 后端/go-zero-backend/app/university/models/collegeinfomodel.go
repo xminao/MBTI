@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -21,6 +22,7 @@ type (
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*CollegeInfo, error)
+		GetCollegeName(ctx context.Context, id int64) string
 	}
 
 	customCollegeInfoModel struct {
@@ -33,6 +35,20 @@ func NewCollegeInfoModel(conn sqlx.SqlConn, c cache.CacheConf) CollegeInfoModel 
 	return &customCollegeInfoModel{
 		defaultCollegeInfoModel: newCollegeInfoModel(conn, c),
 	}
+}
+
+func (m *defaultCollegeInfoModel) GetCollegeName(ctx context.Context, collegeId int64) string {
+	publicCollegeInfoCollegeIdKey := fmt.Sprintf("%s%v", cachePublicCollegeInfoCollegeIdPrefix, collegeId)
+	var resp CollegeInfo
+	err := m.QueryRowCtx(ctx, &resp, publicCollegeInfoCollegeIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where college_id = $1 limit 1", collegeInfoRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, collegeId)
+	})
+	if err != nil {
+		return ""
+	}
+
+	return resp.CollegeName
 }
 
 func (m *defaultCollegeInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*CollegeInfo, error) {

@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -21,6 +22,7 @@ type (
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*YearInfo, error)
+		GetYearName(ctx context.Context, collegeId int64) string
 	}
 
 	customYearInfoModel struct {
@@ -33,6 +35,20 @@ func NewYearInfoModel(conn sqlx.SqlConn, c cache.CacheConf) YearInfoModel {
 	return &customYearInfoModel{
 		defaultYearInfoModel: newYearInfoModel(conn, c),
 	}
+}
+
+func (m *defaultYearInfoModel) GetYearName(ctx context.Context, yearId int64) string {
+	publicYearInfoYearIdKey := fmt.Sprintf("%s%v", cachePublicYearInfoYearIdPrefix, yearId)
+	var resp YearInfo
+	err := m.QueryRowCtx(ctx, &resp, publicYearInfoYearIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where year_id = $1 limit 1", yearInfoRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, yearId)
+	})
+	if err != nil {
+		return ""
+	}
+
+	return resp.YearName
 }
 
 func (m *defaultYearInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*YearInfo, error) {

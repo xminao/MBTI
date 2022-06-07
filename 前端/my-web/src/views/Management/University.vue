@@ -1,15 +1,22 @@
 <template>
-  <el-radio-group v-model="tableLayout">
-     <el-tree-select v-model="value" :data="list.data" :render-after-expand="false" />
+  <el-radio-group>
+     <el-tree-select 
+     v-model="value" 
+     accordion 
+     :data="list.data" 
+     placeholder="请选择"
+     :render-after-expand="false"
+     @node-click="getNodeValue"
+    check-strictly/>
   </el-radio-group>
-  <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
+  <el-table :data="table.data" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
     <el-table-column fixed type="index" :index="indexMethod" />
     <el-table-column id="id" prop="student_id" sortable label="学号"/>
     <el-table-column prop="student_name" label="姓名" />
-    <el-table-column prop="college_name" label="学院" />
-    <el-table-column prop="year_name"  label="年级"/>
-    <el-table-column prop="major_name" label="专业" />
-    <el-table-column prop="class_name" label="班级" />
+    <el-table-column prop="college_id" label="学院" />
+    <el-table-column prop="year_id"  label="年级"/>
+    <el-table-column prop="major_id" label="专业" />
+    <el-table-column prop="class_id" label="班级" />
   </el-table>
 </template>
 
@@ -22,6 +29,7 @@ export default ({
         const router = useRouter()
         const {proxy} = getCurrentInstance()
         const index = ref(0)
+        const value = ref('')
 
         const defaultProps = {  
             children: "children",  //"children"内的每个对象解析为一个子项;
@@ -44,7 +52,6 @@ export default ({
 
         const handleCollege=(parm)=> {
             let data = []
-
         }
 
         const func=async()=> {
@@ -93,6 +100,7 @@ export default ({
             for (let i=0; i<datas.length; i++) {
                 list.data.push({
                     "id": datas[i].college_id,
+                    "value": datas[i].college_id + '',
                     "label": datas[i].college_name,
                     "children": []
                 })
@@ -108,6 +116,7 @@ export default ({
                             for (let k=0; k<yearres.year_list.length; k++) {
                                 list.data[j].children.push({
                                     "id": yearres.year_list[k].year_id,
+                                    "value": datas[i].college_id + '-' + yearres.year_list[k].year_id,
                                     "label": yearres.year_list[k].year_name,
                                     "children": []
                                 })
@@ -119,6 +128,7 @@ export default ({
                                     for (let l=0; l<majorres.major_list.length; l++) {
                                         list.data[j].children[k].children.push({
                                             "id": majorres.major_list[l].major_id,
+                                            "value": datas[i].college_id + '-' + yearres.year_list[k].year_id + '-' + majorres.major_list[l].major_id,
                                             "label": majorres.major_list[l].major_name,
                                             "children": []
                                         })
@@ -129,8 +139,9 @@ export default ({
                                             for (let n=0; n<classres.class_list.length; n++) {
                                                 list.data[j].children[k].children[l].children.push({
                                                     "id": classres.class_list[n].class_id,
+                                                    "value": datas[i].college_id + '-' + yearres.year_list[k].year_id + '-' + majorres.major_list[l].major_id + '-' + classres.class_list[n].class_id,
                                                     "label": classres.class_list[n].class_name,
-                                                    "children": []
+                                                    //"children": []
                                                 })
                                             }
                                         }
@@ -151,12 +162,63 @@ export default ({
             return true
         }
 
+        let table = reactive({
+            data: []
+        })
+
+        const getStuList=async(node, id)=> {
+            const listres = await new proxy.$request(proxy.$urls.m().getstudentlist).get()
+            if (listres.student_list != null) {
+                if (node == 1) { //学院
+                    //const collegeres = await new proxy.$request(proxy.$urls.m().getcollegelist).get()
+                    for (let i=0; i<listres.student_list.length; i++) {
+                        if (listres.student_list[i].college_id == id) {
+                            table.data.push(listres.student_list[i])
+                            // for (let j=0; j<collegeres.college_list.length; j++) {
+                            //     if (collegeres.college_list[j].college_id == id) {
+                            //         table.data[i]["college_name"] = collegeres.college_list[j].college_name
+                            //     }
+                            // }
+                        }
+                    }
+                } else if (node == 3) { //年级
+                    for (let i=0; i<listres.student_list.length; i++) {
+                        if (listres.student_list[i].year_id == id) {
+                            table.data.push(listres.student_list[i])
+                        }
+                    }
+                } else if (node == 5) { //专业
+                    for (let i=0; i<listres.student_list.length; i++) {
+                        if (listres.student_list[i].major_id == id) {
+                            table.data.push(listres.student_list[i])
+                        }
+                    }
+                } else if (node == 7) { //班级
+                    for (let i=0; i<listres.student_list.length; i++) {
+                        if (listres.student_list[i].class_id == id) {
+                            table.data.push(listres.student_list[i])
+                        }
+                    }
+                }
+            }
+            console.log(table.data)
+        }
+
+
+        const getNodeValue=(val)=> {
+            table.data = []
+            getStuList(val.value.length, val.id)
+        }
+
         return {
+            getNodeValue,
             getH,
             list,
             result,
             goHome,
             index,
+            value,
+            table,
             defaultProps,
             handleNodeClick,
         }
@@ -170,6 +232,15 @@ export default ({
     width: 100%;
     height: 100%;
     background-color: #000;
+}
+
+.el-table {
+    padding-top: 5px;
+}
+
+.el-radio-group {
+    padding-left: 15px;
+    width: 20%;
 }
 
 

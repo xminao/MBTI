@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"fmt"
 	"github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -21,6 +22,7 @@ type (
 		MaxRowBuilder(field string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 		GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*MajorInfo, error)
+		GetMajorName(ctx context.Context, majorId int64) string
 	}
 
 	customMajorInfoModel struct {
@@ -33,6 +35,19 @@ func NewMajorInfoModel(conn sqlx.SqlConn, c cache.CacheConf) MajorInfoModel {
 	return &customMajorInfoModel{
 		defaultMajorInfoModel: newMajorInfoModel(conn, c),
 	}
+}
+
+func (m *defaultMajorInfoModel) GetMajorName(ctx context.Context, majorId int64) string {
+	publicMajorInfoMajorIdKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorIdPrefix, majorId)
+	var resp MajorInfo
+	err := m.QueryRowCtx(ctx, &resp, publicMajorInfoMajorIdKey, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) error {
+		query := fmt.Sprintf("select %s from %s where major_id = $1 limit 1", majorInfoRows, m.table)
+		return conn.QueryRowCtx(ctx, v, query, majorId)
+	})
+	if err != nil {
+		return ""
+	}
+	return resp.MajorName
 }
 
 func (m *defaultMajorInfoModel) GetList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*MajorInfo, error) {
