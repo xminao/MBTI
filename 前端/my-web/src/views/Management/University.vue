@@ -13,10 +13,10 @@
     <el-table-column fixed type="index" :index="indexMethod" />
     <el-table-column id="id" prop="student_id" sortable label="学号"/>
     <el-table-column prop="student_name" label="姓名" />
-    <el-table-column prop="college_id" label="学院" />
-    <el-table-column prop="year_id"  label="年级"/>
-    <el-table-column prop="major_id" label="专业" />
-    <el-table-column prop="class_id" label="班级" />
+    <el-table-column prop="college_name" label="学院" />
+    <el-table-column prop="year_name"  label="年级"/>
+    <el-table-column prop="major_name" label="专业" />
+    <el-table-column prop="class_name" label="班级" />
   </el-table>
 </template>
 
@@ -152,8 +152,6 @@ export default ({
                     }
                 }
             }
-
-            console.log(list.data)
         }
 
         test()
@@ -169,39 +167,46 @@ export default ({
         const getStuList=async(node, id)=> {
             const listres = await new proxy.$request(proxy.$urls.m().getstudentlist).get()
             if (listres.student_list != null) {
+                for (let i=0; i<listres.student_list.length; i++) {
+                    const temp = listres.student_list
+                    table.data.push(temp[i])
+                    table.data[i]["college_name"] = JSON.parse(temp[i].college).college_name
+                    table.data[i]["year_name"] = JSON.parse(listres.student_list[i].year).year_name
+                    table.data[i]["major_name"] = JSON.parse(listres.student_list[i].major).major_name
+                    table.data[i]["class_name"] = JSON.parse(listres.student_list[i].class).class_name
+                   // console.log(table.data)
+                }
                 if (node == 1) { //学院
-                    //const collegeres = await new proxy.$request(proxy.$urls.m().getcollegelist).get()
-                    for (let i=0; i<listres.student_list.length; i++) {
-                        if (listres.student_list[i].college_id == id) {
-                            table.data.push(listres.student_list[i])
-                            // for (let j=0; j<collegeres.college_list.length; j++) {
-                            //     if (collegeres.college_list[j].college_id == id) {
-                            //         table.data[i]["college_name"] = collegeres.college_list[j].college_name
-                            //     }
-                            // }
+                    for (let k=0; k<table.data.length; k++) {
+                        if (JSON.parse(table.data[k].college).college_id != id) {
+                            table.data.splice(k, 1);
+                            k--;
                         }
                     }
                 } else if (node == 3) { //年级
-                    for (let i=0; i<listres.student_list.length; i++) {
-                        if (listres.student_list[i].year_id == id) {
-                            table.data.push(listres.student_list[i])
+                    for (let k=0; k<table.data.length; k++) {
+                        if (JSON.parse(table.data[k].year).year_id != id) {
+                            table.data.splice(k, 1);
+                            k--;
                         }
                     }
                 } else if (node == 5) { //专业
-                    for (let i=0; i<listres.student_list.length; i++) {
-                        if (listres.student_list[i].major_id == id) {
-                            table.data.push(listres.student_list[i])
+                    for (let k=0; k<table.data.length; k++) {
+                        if (JSON.parse(table.data[k].major).major_id != id) {
+                            table.data.splice(k, 1);
+                            k--;
                         }
                     }
                 } else if (node == 7) { //班级
-                    for (let i=0; i<listres.student_list.length; i++) {
-                        if (listres.student_list[i].class_id == id) {
-                            table.data.push(listres.student_list[i])
+                    for (let k=0; k<table.data.length; k++) {
+                        if (JSON.parse(table.data[k].class).class_id != id) {
+                            table.data.splice(k, 1);
+                            k--;
                         }
                     }
                 }
             }
-            console.log(table.data)
+            //console.log(table.data)
         }
 
 

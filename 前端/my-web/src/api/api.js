@@ -17,6 +17,7 @@ const urls = class{
         const getyearlist =  `${university}/university/getyearlist`
         const getmajorlist =  `${university}/university/getmajorlist`
         const getclasslist =  `${university}/university/getclasslist`
+        const getstudentlist = `${university}/university/getstudentlist`
         return {
             register,
             login,
@@ -28,6 +29,7 @@ const urls = class{
             getyearlist,
             getmajorlist,
             getclasslist,
+            getstudentlist,
         }
     }
 
