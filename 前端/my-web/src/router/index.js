@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Home from '../views/Home.vue'
 import Question from '../views/Management/Question.vue'
 import User from '../views/Management/User.vue'
+import Management from '../views/Management/Management.vue'
 import Test from '../views/Test.vue'
 import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
@@ -16,12 +17,26 @@ const routes = [
     component: Main,
     redirect: '/home',
     children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
-               { path: '/question', component: Question, meta: { requiresAuth: true}}, 
+               //{ path: '/question', component: Question, meta: { requiresAuth: true}}, 
                { path: '/test', component: Test, meta: { requiresAuth: true}},
-               { path: '/university', component: University, meta: { requiresAuth: true}},
+               { path: '/management', 
+                 component: Management, 
+                 meta: { requiresAuth: true},
+                 children: [
+                  { path: '/question', component: Question, meta: { requiresAuth: true}},
+                  { path: '/user', component: User, meta: { requiresAuth: true}},
+                  { path: '/university', component: University, meta: { requiresAuth: true}},
+                 ]},
                { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 
-               { path: '/user', component: User, meta: { requiresAuth: true}}], 
+               ], 
   },
+  // {
+  //   path: '/management',
+  //   component: Management,
+  //   children: [
+  //     { path: '/question', component: Question, meta: { requiresAuth: true}},
+  //   ]
+  // }
 ]
 
 const router = createRouter({

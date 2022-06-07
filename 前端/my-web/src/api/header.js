@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 //创建axios通用配置
+//token失效问题
 let instance = axios.create({
     responseType:"json",
     timeout: 1000,

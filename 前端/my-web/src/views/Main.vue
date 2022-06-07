@@ -17,6 +17,10 @@
           <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
           <el-menu-item> </el-menu-item>
           <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
+          <template v-if="admin">
+            <el-menu-item> </el-menu-item>
+            <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
+          </template>
           </el-menu>
           <el-button
             v-show="!login_status"
@@ -209,6 +213,8 @@ export default {
         //路由
         const router = useRouter()
         const {proxy} = getCurrentInstance()
+        const admin = ref(false)
+        const menu_width = ref('450px')
 
         let dialog = ref(false)
         let reg_dialog = ref(false)
@@ -263,6 +269,8 @@ export default {
             })
             localStorage.setItem('token', res.data.jwt_token.access_token)
             login_status.value = true
+            admin.value = true
+            menu_width.value = '700px'
             close_dialog()
         }
         //注册函数
@@ -380,6 +388,8 @@ export default {
             login_form, 
             register_form, 
             login, 
+            admin,
+            menu_width,
             register }
     },
     //name: 'Main'
@@ -450,7 +460,7 @@ export default {
         height: 44px;
     }
     .el-menu-demo {
-       width: 450px;
+       width: v-bind(menu_width);
     }
 
     .el-main {

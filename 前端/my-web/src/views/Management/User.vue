@@ -1,4 +1,5 @@
 <template>
+<el-container>
   <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
     <el-table-column fixed type="index" :index="indexMethod" />
     <el-table-column id="id" prop="username" sortable label="用户名"/>
@@ -8,6 +9,7 @@
     <el-table-column prop="auth_group" label="用户组" />
     <el-table-column prop="binding_student_id" label="绑定学号" />
   </el-table>
+</el-container>
 </template>
 
 <script>
@@ -38,31 +40,6 @@ export default ({
         }
 
         func()
-        
-        // //递归
-        // const getQuesList=async(idlist, i)=> {
-            
-        //     console.log("哈哈哈哈")
-        //     if (i == idlist.length) {
-        //         return
-        //     }
-
-        //     const obj = {"id":idlist[i]}
-        //     const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
-        //     tableData.value = tableData.value.push(res.question_info)
-        //     getQuesList(idlist, i+1)
-        // }
-
-        // //递归
-        // const getQuesCount=async()=> {
-        //     const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
-        //     const idList = listres.question_id_list
-        //     return idList
-        // }
-        // getQuesCount().then(res=>{
-        //     getQuesList(res, 0)
-        // })
-
         const goHome=()=> {
             router.push('/home')
         }
@@ -79,5 +56,8 @@ export default ({
 </script>
 
 <style scoped lang="less">
+.el-container {
+    width: 100%;
+}
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
-  <el-table-column fixed id="id" prop="question_id" sortable label="题目序号" width="150"/>
+  <el-table-column fixed id="id" prop="question_id" label="题目序号" width="100"/>
     <el-table-column prop="question_desc" label="题目描述" />
     <el-table-column prop="option_a_desc" label="选项A" />
     <el-table-column prop="option_a_target" sortable  label="倾向" width="100"/>

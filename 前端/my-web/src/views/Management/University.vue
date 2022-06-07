@@ -1,49 +1,16 @@
 <template>
-    <el-container>
-        <el-aside>
-              <!-- <el-menu
-                default-active="aaa"
-                class="el-menu-vertical-demo"
-                :collapse="isCollapse"
-                unique-opened
-                @open='index="aaa"'
-                @close="handleClose">
-
-                    <template v-for="item in list.data" :key="item">
-                        <el-sub-menu :index="item.id">
-                            <template #title>{{item.label}}</template>
-                                <template v-for="item in list.data" :key="item">
-                                    <el-sub-menu :index="item.id">
-                                        <template #title>{{item.label}}</template>
-                                    </el-sub-menu>
-                                </template>
-                        </el-sub-menu>
-                    </template>
-
-
-
-                    <mean-treee :data="item"></mean-treee>
-
-                </el-menu> -->
-                <el-tree 
-                    :data="list.data" 
-                    :props="defaultProps"
-                    accordion
-                    :default-expand-all="false"
-                    @node-click="handleNodeClick" />
-        </el-aside>
-
-        <el-main>
-            <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
-            <el-table-column fixed id="id" prop="question_id" sortable label="题目序号" width="150"/>
-                <el-table-column prop="question_desc" label="题目描述" />
-                <el-table-column prop="option_a_desc" label="选项A" />
-                <el-table-column prop="option_a_target" sortable  label="倾向" width="100"/>
-                <el-table-column prop="option_b_desc" label="选项B" />
-                <el-table-column prop="option_b_target" sortable  label="倾向" width="100"/>
-            </el-table>
-        </el-main>
-    </el-container>
+  <el-radio-group v-model="tableLayout">
+     <el-tree-select v-model="value" :data="list.data" :render-after-expand="false" />
+  </el-radio-group>
+  <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
+    <el-table-column fixed type="index" :index="indexMethod" />
+    <el-table-column id="id" prop="student_id" sortable label="学号"/>
+    <el-table-column prop="student_name" label="姓名" />
+    <el-table-column prop="college_name" label="学院" />
+    <el-table-column prop="year_name"  label="年级"/>
+    <el-table-column prop="major_name" label="专业" />
+    <el-table-column prop="class_name" label="班级" />
+  </el-table>
 </template>
 
 <script>
@@ -62,8 +29,11 @@ export default ({
         };
 
         const handleNodeClick=(data)=>{
-            router.push(data.url);  //本例中我们拿取url属性做跳转;
+            //router.push(data.url);
+
         };
+
+        //const map = new Map(Object.entries(mapObj));
 
         let result = reactive({
             college_table: [],
@@ -72,10 +42,16 @@ export default ({
             class_table: [],
         })
 
+        const handleCollege=(parm)=> {
+            let data = []
+
+        }
+
         const func=async()=> {
-            let listres = await new proxy.$request(proxy.$urls.m().getcollegelist).get()
-            let datas = listres.college_list
+            const collegeres = await new proxy.$request(proxy.$urls.m().getcollegelist).get()
+            let datas = collegeres.college_list
             for (let i=0; i<datas.length; i++) {
+                datas = collegeres.college_list
                 result.college_table.push(datas[i])
 
                 //获取该学院的年级列表
@@ -83,12 +59,23 @@ export default ({
                 const yearres = await new proxy.$request(proxy.$urls.m().getyearlist, yearobj).get()
                 //该学院有年级
                 if (yearres.year_list != null) {
-                    result.year_table.push({[datas[i].college_id]: yearres.year_list})
+                    datas = yearres.year_list
+                    for (let k=0; k<yearres.year_list.length; k++) {
+                        var str = toString(datas[k].college_id)
+                        if (result.year_table.length == 0) {
+                            result.year_table.push({str : datas[k]})
+                        } else {
+                            for (let h=0; h<result.year_table.length; h++) {
+                                //if (result.year_table[h])
+                            }
+                        }
+                    }
                 }
             }
+            console.log(result.year_table.length)
         }
 
-        func()
+        //func()
         
 
         const goHome=()=> {
@@ -109,31 +96,48 @@ export default ({
                     "label": datas[i].college_name,
                     "children": []
                 })
-                // 获取该专业年级列表，放进第二层
+                // 获取该学院年级列表，放进第二层
                 const yearobj = {"college_id": datas[i].college_id}
                 const yearres = await new proxy.$request(proxy.$urls.m().getyearlist, yearobj).get()
-                // 如果该专业存在年级
+                // 如果该学院存在年级
                 if (yearres.year_list != null) {
-                    //遍历第一层，找到该插入的地方
                     for (let j=0; j<list.data.length; j++) {
                         //如果找到学院，则插入年级信息
                         if (datas[i].college_id == list.data[j].id) {
-                            console.log(yearres.year_list.length)
+                            //console.log(yearres.year_list.length)
                             for (let k=0; k<yearres.year_list.length; k++) {
                                 list.data[j].children.push({
                                     "id": yearres.year_list[k].year_id,
                                     "label": yearres.year_list[k].year_name,
                                     "children": []
                                 })
+                                // 获取该年级的专业列表，放进第三层
+                                const majorobj = {"year_id": yearres.year_list[k].year_id}
+                                const majorres = await new proxy.$request(proxy.$urls.m().getmajorlist, majorobj).get()
+                                //如果该年级存在专业
+                                if (majorres.major_list != null) {
+                                    for (let l=0; l<majorres.major_list.length; l++) {
+                                        list.data[j].children[k].children.push({
+                                            "id": majorres.major_list[l].major_id,
+                                            "label": majorres.major_list[l].major_name,
+                                            "children": []
+                                        })
+                                        // 获取该专业的班级列表，放进第四层
+                                        const classobj = {"major_id": majorres.major_list[l].major_id}
+                                        const classres = await new proxy.$request(proxy.$urls.m().getclasslist, classobj).get()
+                                        if (classres.class_list != null) {
+                                            for (let n=0; n<classres.class_list.length; n++) {
+                                                list.data[j].children[k].children[l].children.push({
+                                                    "id": classres.class_list[n].class_id,
+                                                    "label": classres.class_list[n].class_name,
+                                                    "children": []
+                                                })
+                                            }
+                                        }
+                                    }
+                               }
                             }
-                            // data[j].children.push({
-                            //     "id": yearres.year_list.id
-                            // })
                         }
-                        //console.log(data[j].id)
-                    //    if (data[i].id == yearres.year_list.year_id) {
-                    //        console.log("哈哈哈哈")
-                    //    }
                     }
                 }
             }
@@ -143,8 +147,12 @@ export default ({
 
         test()
 
+        const getH=(param)=> {
+            return true
+        }
 
         return {
+            getH,
             list,
             result,
             goHome,
@@ -161,14 +169,7 @@ export default ({
 .el-container {
     width: 100%;
     height: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
-    background-color: #fff;
-}
-
-.el-aside {
-    width: 20%;
-    background-color: #FFCCCC;
+    background-color: #000;
 }
 
 
