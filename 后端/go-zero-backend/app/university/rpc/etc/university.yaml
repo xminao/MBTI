@@ -1,5 +1,5 @@
 Name: university.rpc
-ListenOn: 127.0.0.1:8081
+ListenOn: 0.0.0.0:8083
 #postgre sql
 PgSQL:
   DataSource: postgres://postgres:admin@localhost:5432/university?sslmode=disable

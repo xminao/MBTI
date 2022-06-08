@@ -6,7 +6,6 @@ import (
 	"backend/app/data/models"
 	"backend/util/xerr"
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -48,11 +47,10 @@ func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTes
 		data.Id = LatestRecord.Id + 1
 	}
 
-	fmt.Println(data.Id)
-
 	data.Username = req.Username
 	data.Type = req.Type
-	data.CreatedAt = time.Now().String()
+	data.StudentId = req.StudentId
+	data.CreatedAt = time.Now()
 
 	_, err = l.svcCtx.TestDataModel.Insert(l.ctx, data)
 	if err != nil {

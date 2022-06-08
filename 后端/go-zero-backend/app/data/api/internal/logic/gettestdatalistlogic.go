@@ -38,8 +38,8 @@ func (l *GetTestDataListLogic) GetTestDataList(req *types.GetTestDataListReq) (*
 			//_ = copier.Copy(&temp, item.)
 			// 我真他妈服啦，time类型 copier不能复制\
 			temp.Username = item.Username
-			temp.StudentId =
-			temp.Time = item.CreatedAt
+			//学号
+			temp.Time = item.CreatedAt.String()
 			temp.Type = item.Type
 			resp = append(resp, temp)
 		}

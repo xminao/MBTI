@@ -9,8 +9,9 @@ info (
 
 type (
 	AddTestDataReq {
-		Username string `json:"username"`
-		Type     string `json:"type"`
+		Username  string `json:"username"`
+		Type      string `json:"type"`
+		StudentId string `json:"student_id"`
 	}
 
 	AddTestDataResp {

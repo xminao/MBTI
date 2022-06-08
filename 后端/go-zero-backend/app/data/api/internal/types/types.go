@@ -2,8 +2,9 @@
 package types
 
 type AddTestDataReq struct {
-	Username string `json:"username"`
-	Type     string `json:"type"`
+	Username  string `json:"username"`
+	Type      string `json:"type"`
+	StudentId string `json:"student_id"`
 }
 
 type AddTestDataResp struct {

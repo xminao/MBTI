@@ -12,6 +12,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
 	"strings"
+	"time"
 )
 
 var (
@@ -37,10 +38,11 @@ type (
 	}
 
 	TestData struct {
-		Id        int64  `db:"id"`
-		Username  string `db:"username"`
-		Type      string `db:"type"`
-		CreatedAt string `db:"created_at"`
+		Id        int64     `db:"id"`
+		Username  string    `db:"username"`
+		Type      string    `db:"type"`
+		CreatedAt time.Time `db:"created_at"`
+		StudentId string    `db:"student_id"`
 	}
 )
 
@@ -54,8 +56,8 @@ func newTestDataModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultTestDataMode
 func (m *defaultTestDataModel) Insert(ctx context.Context, data *TestData) (sql.Result, error) {
 	publicTestDataIdKey := fmt.Sprintf("%s%v", cachePublicTestDataIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4)", m.table, testDataRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Id, data.Username, data.Type, data.CreatedAt)
+		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5)", m.table, testDataRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.Id, data.Username, data.Type, data.CreatedAt, data.StudentId)
 	}, publicTestDataIdKey)
 	return ret, err
 }
@@ -81,7 +83,7 @@ func (m *defaultTestDataModel) Update(ctx context.Context, data *TestData) error
 	publicTestDataIdKey := fmt.Sprintf("%s%v", cachePublicTestDataIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where id = $1", m.table, testDataRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Id, data.Username, data.Type, data.CreatedAt)
+		return conn.ExecCtx(ctx, query, data.Id, data.Username, data.Type, data.CreatedAt, data.StudentId)
 	}, publicTestDataIdKey)
 	return err
 }

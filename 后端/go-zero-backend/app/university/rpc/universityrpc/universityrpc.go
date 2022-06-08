@@ -15,6 +15,7 @@ import (
 type (
 	GetStudentInfoReq  = university.GetStudentInfoReq
 	GetStudentInfoResp = university.GetStudentInfoResp
+	Student            = university.Student
 
 	UniversityRpc interface {
 		GetStudentInfo(ctx context.Context, in *GetStudentInfoReq, opts ...grpc.CallOption) (*GetStudentInfoResp, error)
