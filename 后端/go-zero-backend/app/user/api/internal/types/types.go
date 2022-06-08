@@ -57,3 +57,10 @@ type GetUserListReq struct {
 type GetUserListResp struct {
 	UserList []UserInfo `json:"userlist"`
 }
+
+type VerifyTokenReq struct {
+}
+
+type VerifyTokenResp struct {
+	Username string `json:"username"`
+}

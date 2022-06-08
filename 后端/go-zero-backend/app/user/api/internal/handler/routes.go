@@ -22,6 +22,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/user/getuserlist",
 				Handler: getuserlistHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/user/verifytoken",
+				Handler: VerifyTokenHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

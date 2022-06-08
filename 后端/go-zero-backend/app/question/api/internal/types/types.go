@@ -44,3 +44,16 @@ type DeleteQuestionReq struct {
 type DeleteQuestionResp struct {
 	Msg string `json:"msg"`
 }
+
+type EditQuestionReq struct {
+	QuestionId   int64  `json:"question_id"`
+	QuestionDesc string `json:"question_desc"`
+	OptionA      string `json:"option_a_desc"`
+	TargetA      string `json:"option_a_target"`
+	OptionB      string `json:"option_b_desc"`
+	TargetB      string `json:"option_b_target"`
+}
+
+type EditQuestionResp struct {
+	Msg string `json:"msg"`
+}

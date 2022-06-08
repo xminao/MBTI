@@ -32,6 +32,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/question/getidlist",
 				Handler: GetQuestionIdListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/question/edit",
+				Handler: EditQuestionHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

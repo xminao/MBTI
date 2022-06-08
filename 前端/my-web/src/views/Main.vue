@@ -17,10 +17,8 @@
           <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
           <el-menu-item> </el-menu-item>
           <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
-          <template v-if="admin">
-            <el-menu-item> </el-menu-item>
-            <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
-          </template>
+          <el-menu-item> </el-menu-item>
+          <el-menu-item v-if="admin" index="/management"><Setting style="width: 1em; height: 1em; margin-right: 8px" />后台管理</el-menu-item>
           </el-menu>
           <el-button
             v-show="!login_status"
@@ -213,8 +211,10 @@ export default {
         //路由
         const router = useRouter()
         const {proxy} = getCurrentInstance()
-        const admin = ref(false)
+        const admin = ref(true)
         const menu_width = ref('450px')
+
+        //router.push({ name:'home', params: { username: "哈哈哈哈"}})
 
         let dialog = ref(false)
         let reg_dialog = ref(false)
@@ -269,8 +269,7 @@ export default {
             })
             localStorage.setItem('token', res.data.jwt_token.access_token)
             login_status.value = true
-            admin.value = true
-            menu_width.value = '700px'
+            //admin.value = true
             close_dialog()
         }
         //注册函数
@@ -357,6 +356,7 @@ export default {
                 center: true,
             })
         }
+
 
         //验证规则
         // const validatePass = (rule, value, callback) => {
@@ -460,7 +460,7 @@ export default {
         height: 44px;
     }
     .el-menu-demo {
-       width: v-bind(menu_width);
+       width: 650px;
     }
 
     .el-main {
@@ -481,4 +481,5 @@ export default {
         height: 40px;
         align-items: center;
     }
+
 </style>

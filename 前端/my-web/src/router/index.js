@@ -13,12 +13,12 @@ import { ElMessageBox } from 'element-plus'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'main',
     component: Main,
     redirect: '/home',
-    children: [{ path: '/home', component: Home, meta: { requiresAuth: false}}, 
+    children: [{ path: '/home', name: 'home', component: Home, meta: { requiresAuth: false}}, 
                //{ path: '/question', component: Question, meta: { requiresAuth: true}}, 
-               { path: '/test', component: Test, meta: { requiresAuth: true}},
+               { path: '/test', name: 'test',component: Test, meta: { requiresAuth: true}},
                { path: '/management', 
                  component: Management, 
                  meta: { requiresAuth: true},

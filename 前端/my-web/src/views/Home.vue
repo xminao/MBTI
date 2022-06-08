@@ -14,22 +14,26 @@
     </el-container>
     <el-container class="tips">
         <span><font color="#FFF"><br/>这将花费约 10 分钟</font></span>
+        <span><font color="#FFF"><br/>{{result}}</font></span>
     </el-container>
         <el-image style="width: 100%; height: 390px;" :src="require('../assets/home.png')" :fit="fill"/>
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+import {ref, watch} from 'vue'
+import { useRouter, useRoute } from 'vue-router';
 
 export default({
     setup() {
         const router = useRouter()
+        const route = useRoute()
 
         const goTest=()=> {
             router.push('/test')
         }
 
         return {
+            route,
             router,
             goTest,
         }

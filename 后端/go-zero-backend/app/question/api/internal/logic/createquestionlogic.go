@@ -28,6 +28,13 @@ func NewCreateQuestionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cr
 	}
 }
 
+type Option struct {
+	OptionADesc   string `json:"option_a_desc"`
+	OptionATarget string `json:"option_a_target"`
+	OptionBDesc   string `json:"option_b_desc"`
+	OptionBTarget string `json:"option_b_target"`
+}
+
 func (l *CreateQuestionLogic) CreateQuestion(req *types.CreateQuestionReq) (*types.CreateQuestionResp, error) {
 	if len(strings.TrimSpace(req.QuestionDesc)) == 0 {
 		return nil, errors.New("题目描述不能为空")
@@ -50,12 +57,6 @@ func (l *CreateQuestionLogic) CreateQuestion(req *types.CreateQuestionReq) (*typ
 	}
 
 	// generate json for insert
-	type Option struct {
-		OptionADesc   string `json:"option_a_desc"`
-		OptionATarget string `json:"option_a_target"`
-		OptionBDesc   string `json:"option_b_desc"`
-		OptionBTarget string `json:"option_b_target"`
-	}
 
 	option, err := json.Marshal(Option{
 		OptionADesc:   req.OptionADesc,

@@ -2,7 +2,7 @@ syntax = "v1"
 
 info (
 	title: "许敏浩"
-	desc: "学校管理"
+	desc: "题库管理"
 	author: "xminao"
 	email: "xminao@yeah.net"
 )
@@ -59,6 +59,21 @@ type (
 	}
 )
 
+type (
+	EditQuestionReq {
+		QuestionId   int64  `json:"question_id"`
+		QuestionDesc string `json:"question_desc"`
+		OptionA      string `json:"option_a_desc"`
+		TargetA      string `json:"option_a_target"`
+		OptionB      string `json:"option_b_desc"`
+		TargetB      string `json:"option_b_target"`
+	}
+
+	EditQuestionResp {
+		Msg string `json:"msg"`
+	}
+)
+
 @server (
 	jwt: Auth
 )
@@ -74,4 +89,7 @@ service question-api {
 	
 	@handler GetQuestionIdList
 	get /question/getidlist (GetQuestionIdListReq) returns (GetQuestionIdListResp)
+	
+	@handler EditQuestion
+	post /question/edit (EditQuestionReq) returns (EditQuestionResp)
 }

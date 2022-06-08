@@ -83,7 +83,7 @@ func (l *GetStudentListLogic) GetStudentList(req *types.GetStudentListReq) (*typ
 				Major:           string(major),
 				Class:           string(class),
 				IsBinding:       false,
-				BindingUsername: "",
+				BindingUsername: item.BindingUsername.String,
 				CreatedAt:       time.Now().Unix(),
 			}
 			resp = append(resp, temp)

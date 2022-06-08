@@ -73,6 +73,14 @@ type (
 	}
 )
 
+type (
+	VerifyTokenReq {
+	}
+	VerifyTokenResp {
+		Username string `json:"username"`
+	}
+)
+
 @server (
 	jwt: Auth
 )
@@ -81,6 +89,8 @@ service user-api {
 	get /user/getuserinfo (GetUserInfoReq) returns (GetUserInfoResp)
 	@handler getuserlist
 	get /user/getuserlist (GetUserListReq) returns (GetUserListResp)
+	@handler VerifyToken
+	get /user/verifytoken (VerifyTokenReq) returns (VerifyTokenResp)
 }
 
 service user-api {

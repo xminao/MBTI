@@ -17,6 +17,7 @@
     <el-table-column prop="year_name"  label="年级"/>
     <el-table-column prop="major_name" label="专业" />
     <el-table-column prop="class_name" label="班级" />
+    <el-table-column prop="binding_username" label="用户名" />
   </el-table>
 </template>
 
@@ -166,6 +167,7 @@ export default ({
 
         const getStuList=async(node, id)=> {
             const listres = await new proxy.$request(proxy.$urls.m().getstudentlist).get()
+            console.log(listres.student_list)
             if (listres.student_list != null) {
                 for (let i=0; i<listres.student_list.length; i++) {
                     const temp = listres.student_list
