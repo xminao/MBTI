@@ -11,7 +11,7 @@ let instance = axios.create({
     },
 })
 
-//tp拦截，在axios发出请求之前每一个接口携带token去后端校验身份
+// tp拦截，在axios发出请求之前每一个接口携带token去后端校验身份
 // instance.interceptors.request.use(
 //     config =>{
 //         console.log(config.headers)
@@ -37,14 +37,20 @@ instance.interceptors.response.use(
             let errcode = error.response.data.code
             let msg = error.response.data.msg
 
-            switch (errcode) {
-                case 100007:
-                    ElMessage({
-                        message: msg,
-                        type: 'warning',
-                    })
-                    break;
-            }
+            // switch (errcode) {
+            //     case 100007:
+            //         ElMessage({
+            //             message: msg,
+            //             type: 'warning',
+            //         })
+            //         break;
+            //     case 100008:
+
+            // }
+            ElMessage({
+                message: msg,
+                type: 'warning',
+            })
         }
         return Promise.reject(error.response)
     }

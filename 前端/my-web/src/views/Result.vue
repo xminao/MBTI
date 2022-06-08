@@ -16,12 +16,13 @@
 
 <script>
 import { useRouter, useRoute } from 'vue-router';
-import { reactive } from 'vue'
+import { reactive, getCurrentInstance } from 'vue'
 
 export default({
     setup() {
         const router = useRouter()
         const route = useRoute()
+        const {proxy} = getCurrentInstance()
 
         const goTest=()=> {
             router.push('/test')
@@ -31,6 +32,9 @@ export default({
             name: '',
             label: '',
             imgsrc: '',
+            bcolor: '',
+            name_color: '',
+            label_color: ''
         })
 
         const types = {
@@ -106,21 +110,33 @@ export default({
             return
         }
 
-        let result = route.params.type
-        let group = getGroup(result)
-        attri.label = result
-        attri.name = types[result]
-        attri.imgsrc = require('../assets/' + result + '.png')
-        // 结果的界面的颜色
-        let bcolor = colors[group].bg
-        let name_color = colors[group].name
-        let label_color = colors[group].label
+
+        const getTypeRecord=async()=> {
+            const res = await new proxy.$request(proxy.$urls.m().getlatestdata).get()
+            let result = res.type
+            let group = getGroup(result)
+            attri.label = result
+            attri.name = types[result]
+            attri.imgsrc = require('../assets/' + result + '.png')
+            // 结果的界面的颜色
+            attri.bcolor = colors[group].bg
+            attri.name_color = colors[group].name
+            attri.label_color = colors[group].label
+        }
+
+        getTypeRecord()
+
+        // let group = getGroup(result)
+        // attri.label = result
+        // attri.name = types[result]
+        // attri.imgsrc = require('../assets/' + result + '.png')
+        // // 结果的界面的颜色
+        // let bcolor = colors[group].bg
+        // let name_color = colors[group].name
+        // let label_color = colors[group].label
 
         return {
             router,
-            bcolor,
-            name_color,
-            label_color,
             attri,
             goTest,
         }
@@ -132,7 +148,7 @@ export default({
 <style scoped lang="less">
     .result {
         justify-content: center;
-        background-color: v-bind(bcolor);
+        background-color: v-bind("attri.bcolor");
         height: 100%;
         width: 100%;
         padding-left: 15%;
@@ -168,14 +184,14 @@ export default({
 
     #name {
         font-size: 60px;
-        color: v-bind(name_color);
+        color: v-bind("attri.name_color");
         font-family: 幼圆;
         font-weight: bold;  
     }
 
     #label {
         font-size: 60px;
-        color: v-bind(label_color);
+        color: v-bind("attri.label_color");
         font-family: 华文琥珀;
         font-weight: bold; 
         line-height: 30px

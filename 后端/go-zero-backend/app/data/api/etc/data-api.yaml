@@ -1,0 +1,18 @@
+Name: data-api
+Host: 0.0.0.0
+Port: 8886
+
+#Pg数据库
+PgSQL:
+  DataSource: postgres://postgres:admin@localhost:5432/data?sslmode=disable
+
+#缓存层，用Redis
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
+
+#Auth use uuid
+Auth:
+  AccessSecret: 9429d707-f96e-4bc0-8ef6-249e1251cd92
+  AccessExpire: 86400

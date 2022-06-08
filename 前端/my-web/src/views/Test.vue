@@ -48,6 +48,7 @@
 <script>
 import { reactive, ref, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
+import qs from "qs"
 
 export default ({
     setup() {
@@ -194,8 +195,13 @@ export default ({
             per.value = (index.value/num)*100
         }
 
-        const goResult=(param)=> {
-            router.push({ name:'result', params: { type: param}})
+        const goResult=async(param)=> {
+            const token = await new proxy.$request(proxy.$urls.m().verifytoken).get()
+            const token_obj = {"username": token.username}
+            const userres= await new proxy.$request(proxy.$urls.m().getuserinfo, token_obj).get()
+            const obj = {"username":token.username, "type":param, "student_id": userres.data.userinfo.binding_student_id}
+            await new proxy.$request(proxy.$urls.m().addtestdata, JSON.stringify(obj)).post()
+            router.push('/result')
         }
 
         return {

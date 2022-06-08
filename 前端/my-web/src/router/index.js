@@ -8,6 +8,7 @@ import Management from '../views/Management/Management.vue'
 import Test from '../views/Test.vue'
 import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
+import Data from '../views/Management/Data.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -25,6 +26,7 @@ const routes = [
                  children: [
                   { path: '/question', component: Question, meta: { requiresAuth: true}},
                   { path: '/user', component: User, meta: { requiresAuth: true}},
+                  { path: '/data', component: Data, meta: { requiresAuth: true}},
                   { path: '/university', component: University, meta: { requiresAuth: true}},
                  ]},
                { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 

@@ -1,0 +1,59 @@
+syntax = "v1"
+
+info (
+	title: "许敏浩"
+	desc: "题库管理"
+	author: "xminao"
+	email: "xminao@yeah.net"
+)
+
+type (
+	AddTestDataReq {
+		Username string `json:"username"`
+		Type     string `json:"type"`
+	}
+
+	AddTestDataResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type Data {
+	Username  string `json:"username"`
+	StudentId string `json:"student_id"`
+	Type      string `json:"type"`
+	Time      string `json:"time"`
+}
+
+type (
+	GetTestDataListReq {
+	}
+
+	GetTestDataListResp {
+		List []Data `json:"data_list"`
+	}
+)
+
+type (
+	GetLatestDataReq {
+		//		Username string `form:"username"`
+	}
+
+	GetLatestDataResp {
+		Type string `json:"type"`
+	}
+)
+
+@server (
+	jwt: Auth
+)
+service data-api {
+	@handler AddTestData
+	post /data/add (AddTestDataReq) returns (AddTestDataResp)
+	
+	@handler GetTestDataList
+	get /data/getlist (GetTestDataListReq) returns (GetTestDataListResp)
+	
+	@handler GetLatestData
+	get /data/get (GetLatestDataReq) returns (GetLatestDataResp)
+}

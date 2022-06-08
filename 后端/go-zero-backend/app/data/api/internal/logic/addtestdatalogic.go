@@ -1,0 +1,63 @@
+package logic
+
+import (
+	"backend/app/data/api/internal/svc"
+	"backend/app/data/api/internal/types"
+	"backend/app/data/models"
+	"backend/util/xerr"
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
+
+type AddTestDataLogic struct {
+	logx.Logger
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
+}
+
+func NewAddTestDataLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddTestDataLogic {
+	return &AddTestDataLogic{
+		Logger: logx.WithContext(ctx),
+		ctx:    ctx,
+		svcCtx: svcCtx,
+	}
+}
+
+func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTestDataResp, error) {
+
+	countBuilder := l.svcCtx.TestDataModel.CountBuilder("*")
+	count, err := l.svcCtx.TestDataModel.FindCount(l.ctx, countBuilder)
+
+	if err != nil {
+		return nil, xerr.NewErrCode(xerr.DB_ERROR)
+	}
+
+	data := new(models.TestData)
+
+	if count == 0 {
+		data.Id = 1
+	} else {
+		maxBuilder := l.svcCtx.TestDataModel.MaxRowBuilder("created_at")
+		LatestRecord, err := l.svcCtx.TestDataModel.FindOneByQuery(l.ctx, maxBuilder)
+		if err != nil {
+			return nil, err
+		}
+		data.Id = LatestRecord.Id + 1
+	}
+
+	fmt.Println(data.Id)
+
+	data.Username = req.Username
+	data.Type = req.Type
+	data.CreatedAt = time.Now().String()
+
+	_, err = l.svcCtx.TestDataModel.Insert(l.ctx, data)
+	if err != nil {
+		return nil, xerr.NewErrCode(xerr.DB_ERROR)
+	}
+
+	return &types.AddTestDataResp{Msg: "添加成功"}, nil
+}

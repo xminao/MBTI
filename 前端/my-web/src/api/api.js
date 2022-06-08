@@ -20,9 +20,11 @@ const urls = class{
         const getmajorlist =  `${university}/university/getmajorlist`
         const getclasslist =  `${university}/university/getclasslist`
         const getstudentlist = `${university}/university/getstudentlist`
+        const getstudentinfo = `${university}/university/getstudentinfo`
 
         const data = "http://localhost:8886"
         const addtestdata =  `${data}/data/add`
+        const getdatalist = `${data}/data/getlist`
         const getlatestdata = `${data}/data/get`
         return {
             register,
@@ -40,6 +42,8 @@ const urls = class{
             editquestion,
             addtestdata,
             getlatestdata,
+            getdatalist,
+            getstudentinfo,
         }
     }
 
