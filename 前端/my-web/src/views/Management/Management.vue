@@ -25,7 +25,7 @@
                     <el-sub-menu index="datas">
                         <template #title>数据统计</template>
                         <el-menu-item index="/data">测试数据</el-menu-item>
-                        <el-menu-item index="/pie">可视化</el-menu-item>
+                        <el-menu-item index="/pies">可视化</el-menu-item>
                     </el-sub-menu>
                 </el-menu>
         </el-aside>

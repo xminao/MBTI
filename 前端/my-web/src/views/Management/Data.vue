@@ -48,11 +48,10 @@ export default ({
             indexMethod(0)
             const listres = await new proxy.$request(proxy.$urls.m().getdatalist).get()
             const datas = listres.data_list
-            console.log(datas)
             for (let i=0; i<datas.length; i++) {
                 result.table.push(datas[i])
-                // options.datas.push(datas[i].selection)
             }
+            console.log(result.table)
         }
 
         func()
@@ -61,8 +60,6 @@ export default ({
         }
 
         const handleClick=(parm)=> {
-            //console.log(parm.time)
-            //console.log(options.datas[1])
             for (let i=0; i<result.table.length; i++) {
                 if (result.table[i]['time'] == parm.time) {
                     dialogTableVisible.value = true

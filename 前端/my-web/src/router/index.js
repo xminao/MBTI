@@ -10,6 +10,8 @@ import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
 import Data from '../views/Management/Data.vue'
 import Pie from '../views/Management/Pie.vue'
+
+import Pies from '../views/Management/Pies.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -26,6 +28,7 @@ const routes = [
                  meta: { requiresAuth: true,
                          roles:['admin']},
                  children: [
+                  { path: '/pies', component: Pies, meta: { requiresAuth: true}},
                   { path: '/question', component: Question, meta: { requiresAuth: true}},
                   { path: '/user', component: User, meta: { requiresAuth: true}},
                   { path: '/pie', component: Pie, meta: { requiresAuth: true}},
