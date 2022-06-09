@@ -4,7 +4,7 @@
     <el-table-column fixed type="index" :index="indexMethod" />
     <el-table-column id="id" prop="username" sortable label="用户名"/>
     <el-table-column prop="nickname" label="昵称" />
-    <el-table-column prop="password" label="密码" />
+    <!-- <el-table-column prop="password" label="密码" /> -->
     <el-table-column prop="gender"  label="性别"/>
     <el-table-column prop="auth_group" label="用户组" />
     <el-table-column prop="binding_student_id" label="绑定学号" />

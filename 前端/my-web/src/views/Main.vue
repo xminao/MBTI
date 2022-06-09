@@ -14,11 +14,11 @@
           >
           <el-menu-item index="/home"><List style="width: 1em; height: 1em; margin-right: 8px" />人格测试</el-menu-item>
           <el-menu-item> </el-menu-item>
-          <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
-          <el-menu-item> </el-menu-item>
-          <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
-          <el-menu-item> </el-menu-item>
-          <el-menu-item v-if="admin" index="/management"><Setting style="width: 1em; height: 1em; margin-right: 8px" />后台管理</el-menu-item>
+          <!-- <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
+          <el-menu-item> </el-menu-item> -->
+          <!-- <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
+          <el-menu-item> </el-menu-item> -->
+          <el-menu-item index="/management"><Setting style="width: 1em; height: 1em; margin-right: 8px" />后台管理</el-menu-item>
           </el-menu>
           <el-button
             v-show="!login_status"
@@ -267,11 +267,11 @@ export default {
                 type: 'success',
                 center: true,
             })
+            if (res.data.username == 'xminao') {
+              localStorage.setItem('user', 'xminao')
+            }
             localStorage.setItem('token', res.data.jwt_token.access_token)
             login_status.value = true
-            if (res.data.auth_group == 'admin') {
-                admin.value = true
-            }
             close_dialog()
         }
         //注册函数

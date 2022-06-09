@@ -29,17 +29,13 @@ const routes = [
                  children: [
                   { path: '/question', component: Question, meta: { requiresAuth: true}},
                   { path: '/user', component: User, meta: { requiresAuth: true}},
+                  { path: '/pie', component: Pie, meta: { requiresAuth: true}},
                   { path: '/data', component: Data, meta: { requiresAuth: true}},
                   { path: '/university', component: University, meta: { requiresAuth: true}},
                  ]},
                { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 
                ], 
   },
-  {
-    path: '/pie',
-    name: 'pie',
-    component: Pie
-  }
   // {
   //   path: '/management',
   //   component: Management,
@@ -57,6 +53,16 @@ const router = createRouter({
 
 //路由守卫
 router.beforeEach((to, from, next) => {
+  if (to.path == '/management') {
+    if (localStorage.getItem('user') != 'xminao') {
+      ElMessageBox.alert('没有权限访问，请登录','出错啦',{
+        confirmButtonText: '好的',
+        type:"error",
+        center: true,
+      })
+      router.push('/home')
+    }
+  }
   if (to.meta.requiresAuth == true) {
     if (localStorage.getItem('token')) {
       next()
