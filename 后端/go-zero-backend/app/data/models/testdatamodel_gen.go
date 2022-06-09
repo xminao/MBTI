@@ -6,7 +6,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jinzhu/gorm/dialects/postgres"
 	"strings"
 	"time"
 
@@ -40,12 +39,12 @@ type (
 	}
 
 	TestData struct {
-		Id        int64          `db:"id"`
-		Username  string         `db:"username"`
-		Type      string         `db:"type"`
-		CreatedAt time.Time      `db:"created_at"`
-		StudentId string         `db:"student_id"`
-		Selection postgres.Jsonb `db:"selection"`
+		Id        int64     `db:"id"`
+		Username  string    `db:"username"`
+		Type      string    `db:"type"`
+		CreatedAt time.Time `db:"created_at"`
+		StudentId string    `db:"student_id"`
+		Selection []string  `db:"selection"`
 	}
 )
 

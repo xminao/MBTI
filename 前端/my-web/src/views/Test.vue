@@ -138,7 +138,7 @@ export default ({
             let obj = {"id":idList[index.value]}
             let res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
 
-            selection.push({"question_id": idList[index.value], "selection": option})
+            selection.push({"id":idList[index.value], "option":option})
             // 分析传进的选项option A or B
             let target
             if (option == 'A') {
@@ -203,7 +203,7 @@ export default ({
             const token = await new proxy.$request(proxy.$urls.m().verifytoken).get()
             const token_obj = {"username": token.username}
             const userres= await new proxy.$request(proxy.$urls.m().getuserinfo, token_obj).get()
-            const obj = {"username":token.username, "type":param, "student_id": userres.data.userinfo.binding_student_id, "selection": selection.toString(2)}
+            const obj = {"username":token.username, "type":param, "student_id": userres.data.userinfo.binding_student_id, "selection": JSON.stringify(selection)}
             await new proxy.$request(proxy.$urls.m().addtestdata, JSON.stringify(obj)).post()
             router.push('/result')
         }
