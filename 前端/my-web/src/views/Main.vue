@@ -211,7 +211,7 @@ export default {
         //路由
         const router = useRouter()
         const {proxy} = getCurrentInstance()
-        const admin = ref(true)
+        const admin = ref(false)
         const menu_width = ref('450px')
 
         //router.push({ name:'home', params: { username: "哈哈哈哈"}})
@@ -269,7 +269,9 @@ export default {
             })
             localStorage.setItem('token', res.data.jwt_token.access_token)
             login_status.value = true
-            //admin.value = true
+            if (res.data.auth_group == 'admin') {
+                admin.value = true
+            }
             close_dialog()
         }
         //注册函数

@@ -1,0 +1,107 @@
+syntax = "v1"
+
+info (
+	title: "许敏浩"
+	desc: "题库管理"
+	author: "xminao"
+	email: "xminao@yeah.net"
+)
+
+type Question {
+	QuestionId   int64  `json:"question_id"`
+	QuestionDesc string `json:"question_desc"`
+	OptionA      string `json:"option_a_desc"`
+	TargetA      string `json:"option_a_target"`
+	OptionB      string `json:"option_b_desc"`
+	TargetB      string `json:"option_b_target"`
+}
+
+type (
+	GetQuestionReq {
+		QuestionId int `form:"id"`
+	}
+
+	GetQuestionResp {
+		QuestionInfo Question `json:"question_info"`
+	}
+)
+
+type (
+	GetQuestionIdListReq {
+	}
+
+	GetQuestionIdListResp {
+		QuestionIdList []int64 `json:"question_id_list"`
+	}
+)
+
+type (
+	CreateQuestionReq {
+		QuestionDesc  string `json:"question_desc"`
+		OptionADesc   string `json:"option_a_desc"`
+		OptionATarget string `json:"option_a_target"`
+		OptionBDesc   string `json:"option_b_desc"`
+		OptionBTarget string `json:"option_b_target"`
+	}
+
+	CreateQuestionResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	DeleteQuestionReq {
+		QuestionId int64 `form:"id"`
+	}
+
+	DeleteQuestionResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	EditQuestionReq {
+		QuestionId   int64  `json:"question_id"`
+		QuestionDesc string `json:"question_desc"`
+		OptionA      string `json:"option_a_desc"`
+		TargetA      string `json:"option_a_target"`
+		OptionB      string `json:"option_b_desc"`
+		TargetB      string `json:"option_b_target"`
+	}
+
+	EditQuestionResp {
+		Msg string `json:"msg"`
+	}
+)
+
+type (
+	GetQuestionListReq {
+	}
+
+	GetQuestionListResp {
+		QuestionList []Question `json:"question_list"`
+	}
+)
+
+@server (
+	jwt: Auth
+)
+service question-api {
+	@handler CreateQuestion
+	post /question/create (CreateQuestionReq) returns (CreateQuestionResp)
+	
+	@handler DeleteQuestion
+	delete /question/delete (DeleteQuestionReq) returns (DeleteQuestionResp)
+	
+	@handler GetQuestion
+	get /question/get (GetQuestionReq) returns(GetQuestionResp)
+	
+	@handler GetQuestionIdList
+	get /question/getidlist (GetQuestionIdListReq) returns (GetQuestionIdListResp)
+	
+	@handler GetQuestionList
+	get /question/getlist (GetQuestionListReq) returns (GetQuestionListResp)
+	
+	@handler EditQuestion
+	post /question/edit (EditQuestionReq) returns (EditQuestionResp)
+}

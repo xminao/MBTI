@@ -1,0 +1,24 @@
+Name: user-api
+Host: 0.0.0.0
+Port: 8882
+
+#postgre sql
+PgSQL:
+  DataSource: postgres://postgres:xmhpgsql@localhost:5432/user?sslmode=disable
+
+#cache use Redis
+CacheRedis:
+  - Host: localhost:6379
+    Pass: root
+    Type: node
+
+#Auth use uuid
+Auth:
+  AccessSecret: 9429d707-f96e-4bc0-8ef6-249e1251cd92
+  AccessExpire: 86400
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc

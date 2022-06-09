@@ -12,6 +12,7 @@ type (
 		Username  string `json:"username"`
 		Type      string `json:"type"`
 		StudentId string `json:"student_id"`
+		Selection string `json:"selection"`
 	}
 
 	AddTestDataResp {

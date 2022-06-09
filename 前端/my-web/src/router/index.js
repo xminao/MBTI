@@ -9,6 +9,8 @@ import Test from '../views/Test.vue'
 import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
 import Data from '../views/Management/Data.vue'
+
+import Pie from '../views/Management/Pie.vue'
 import { ElMessageBox } from 'element-plus'
 
 const routes = [
@@ -22,7 +24,8 @@ const routes = [
                { path: '/test', name: 'test',component: Test, meta: { requiresAuth: true}},
                { path: '/management', 
                  component: Management, 
-                 meta: { requiresAuth: true},
+                 meta: { requiresAuth: true,
+                         roles:['admin']},
                  children: [
                   { path: '/question', component: Question, meta: { requiresAuth: true}},
                   { path: '/user', component: User, meta: { requiresAuth: true}},
@@ -32,6 +35,11 @@ const routes = [
                { path: '/result', name: 'result', component: Result, meta: { requiresAuth: true}}, 
                ], 
   },
+  {
+    path: '/pie',
+    name: 'pie',
+    component: Pie
+  }
   // {
   //   path: '/management',
   //   component: Management,

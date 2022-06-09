@@ -1,6 +1,6 @@
 Name: user-api
-Host: 127.0.0.1
-Port: 8888
+Host: 0.0.0.0
+Port: 8882
 
 #postgre sql
 PgSQL:

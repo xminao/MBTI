@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package user;
+option go_package="./user";
+
+message GetUserInfoReq {
+  string username = 1;
+}
+
+message GetUserInfoResp {
+  string username = 1;
+  string nickname = 2;
+  string gender = 3;
+  string bindingStudentId = 4;
+}
+
+message GetUserListReq {
+
+}
+
+message User {
+  string username = 1;
+  string nickname = 2;
+  string password = 3;
+  string gender = 4;
+  string authGroup = 5;
+  string bindingStudentId = 6;
+  string createAt = 7;
+  string updateAt = 8;
+}
+
+message GetUserListResp {
+  //repeated 声明数组
+  repeated User userList = 1;
+}
+
+service UserRpc {
+  rpc GetUserInfo (GetUserInfoReq) returns(GetUserInfoResp);
+  rpc GetUserList (GetUserListReq) returns (GetUserListResp);
+}

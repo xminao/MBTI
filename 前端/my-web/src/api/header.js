@@ -11,20 +11,19 @@ let instance = axios.create({
     },
 })
 
-// tp拦截，在axios发出请求之前每一个接口携带token去后端校验身份
-// instance.interceptors.request.use(
-//     config =>{
-//         console.log(config.headers)
-//         let token = localStorage.getItem('token')                   // 每次发送请求之前判断是否存在token，如果存在，则统⼀在http请求的header都加上token
-//         if (token) {
-//             config.headers.Authorization = 'Bearer ' + token
-//         }
-//         return config
-//     },
-//     err =>{
-//         return Promise.reject(err)
-//     }
-// )
+instance.interceptors.request.use(
+    config =>{
+        console.log(config.headers)
+        let token = localStorage.getItem('token')                   // 每次发送请求之前判断是否存在token，如果存在，则统⼀在http请求的header都加上token
+        if (token) {
+            config.headers.Authorization = token
+        }
+        return config
+    },
+    err =>{
+        return Promise.reject(err)
+    }
+)
 
 //tp拦截，在axios发出请求之后
 instance.interceptors.response.use(

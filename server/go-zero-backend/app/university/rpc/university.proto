@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package university;
+option go_package="./university";
+
+message Student {
+  string StudentId = 1;
+  string StudentName = 2;
+  string College = 3;
+  string Year = 4;
+  string Major = 5;
+  string Class = 6;
+  bool IsBinding = 7;
+  string BindingUsername = 8;
+  int64 CreatedAt = 9;
+}
+
+message GetStudentInfoReq {
+  string studentId = 1;
+}
+
+message GetStudentInfoResp {
+  Student studentInfo = 1;
+}
+
+service UniversityRpc {
+  rpc GetStudentInfo (GetStudentInfoReq) returns(GetStudentInfoResp);
+}

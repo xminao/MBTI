@@ -25,6 +25,11 @@ func NewAddTestDataLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddTe
 	}
 }
 
+type SelectInfo struct {
+	QuestionId int64  `json:"question_id"`
+	Selection  string `json:"selection"`
+}
+
 func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTestDataResp, error) {
 
 	countBuilder := l.svcCtx.TestDataModel.CountBuilder("*")
@@ -47,9 +52,18 @@ func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTes
 		data.Id = LatestRecord.Id + 1
 	}
 
+	//var sel SelectInfo
+	//err = json.Unmarshal([]byte(req.Selection), &sel)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//fmt.Println(sel)
+
 	data.Username = req.Username
 	data.Type = req.Type
 	data.StudentId = req.StudentId
+	data.Selection = req.Selection
 	data.CreatedAt = time.Now()
 
 	_, err = l.svcCtx.TestDataModel.Insert(l.ctx, data)
