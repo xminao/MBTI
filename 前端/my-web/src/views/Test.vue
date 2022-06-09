@@ -16,7 +16,7 @@
     </el-container>
 </div>
 
-<div class="test" v-if="start == true && finish == false">
+<div v-loading="loading" class="test" v-if="start == true && finish == false">
     <el-container class="step">
         <el-progress :percentage="per" :stroke-width="20">
             {{question_form.progress}}
@@ -49,6 +49,7 @@
 import { reactive, ref, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import qs from "qs"
+import { refAutoReset } from '@vueuse/shared'
 
 export default ({
     setup() {
@@ -59,7 +60,7 @@ export default ({
         const index = ref(0)
         const per = ref(0)
         let finish = ref(false)
-        const ques_count = ref(0)
+        const loading = ref(true)
 
         
 
@@ -108,43 +109,78 @@ export default ({
             }
         }
 
+        let queslist = []
+
         let question_form = reactive({
             id: '',
             desc: '',
             option_a: '',
-            option_b: '',
-            progress: '',
+            option_b: '', 
+            progress: 0,
         })
 
-
-        //初始化第一道题目
-        const initQues=async()=> {
+        const GetQues=async()=> {
             const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
             const idList = listres.question_id_list
-            const obj = {"id":idList[index.value]}
-            const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
-            question_form.desc = res.question_info.question_desc
-            question_form.option_a = res.question_info.option_a_desc
-            question_form.option_b = res.question_info.option_b_desc
-            question_form.progress = '0' + '/' + idList.length
+            console.log(idList.length)
+            // const obj = {"id":idList[index.value]}
+            // const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+
+            for (let i=0; i<idList.length; i++) {
+                const obj = {"id":idList[i]}
+                const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+                console.log(res)
+                queslist.push({
+                    id: res.question_info.question_id,
+                    desc: res.question_info.question_desc,
+                    option_a: res.question_info.option_a_desc,
+                    option_b: res.question_info.option_b_desc,
+                    option_a_target: res.question_info.option_a_target,
+                    option_b_target: res.question_info.option_b_target,
+                })
+            }
+            console.log(queslist)
+
+            question_form.id = queslist[0].id
+            question_form.desc = queslist[0].desc
+            question_form.option_a = queslist[0].option_a
+            question_form.option_b = queslist[0].option_b
+            question_form.progress = '0' + '/' + queslist.length
+
+           loading.value = false
         }
+
+        GetQues()
+
+
+        // //初始化第一道题目
+        // const initQues=async()=> {
+        //     const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
+        //     const idList = listres.question_id_list
+        //     const obj = {"id":idList[index.value]}
+        //     const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+        //     question_form.desc = res.question_info.question_desc
+        //     question_form.option_a = res.question_info.option_a_desc
+        //     question_form.option_b = res.question_info.option_b_desc
+        //     question_form.progress = '0' + '/' + idList.length
+        // }
 
         
         // 选择题目
         const select=async(option)=> {
             //根据索引index获取当前题目的信息
-            const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
-            const idList = listres.question_id_list
-            let obj = {"id":idList[index.value]}
-            let res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+            // const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
+            // const idList = listres.question_id_list
+            // let obj = {"id":idList[index.value]}
+            // let res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
 
-            selection.push({"id":idList[index.value], "option":option})
+            selection.push({"id":queslist[index.value].id, "option":option})
             // 分析传进的选项option A or B
             let target
             if (option == 'A') {
-                target = res.question_info.option_a_target
+                target = queslist[index.value].option_a_target
             } else if (option == 'B') {
-                target = res.question_info.option_b_target
+                target = queslist[index.value].option_b_target
             }
             switch (target) {
                 case 'E':
@@ -176,7 +212,7 @@ export default ({
             }
 
             //判断是否有下一题，如果有则初始化下一题
-            const num = idList.length //获取题目数量
+            const num = queslist.length //获取题目数量
             //如果没有下一道题了（一共n题，索引为n-1则尽头）
             if (index.value == num-1) {
                 per.value = 100
@@ -188,12 +224,11 @@ export default ({
 
             //如果还有下一道题，初始化下一道题目的信息
             index.value++
-            obj = {"id":idList[index.value]}
-            res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
-            question_form.desc = res.question_info.question_desc
-            question_form.option_a = res.question_info.option_a_desc
-            question_form.option_b = res.question_info.option_b_desc
-
+            // obj = {"id":idList[index.value]}
+            // res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+            question_form.desc = queslist[index.value].desc
+            question_form.option_a = queslist[index.value].option_a
+            question_form.option_b = queslist[index.value].option_b
             question_form.progress = index.value + '/' + num
             per.value = (index.value/num)*100
         }
@@ -210,7 +245,10 @@ export default ({
 
         return {
             select,
-            initQues,
+
+            loading,
+            GetQues,
+           // initQues,
             per,
             index,
             start,

@@ -9,7 +9,6 @@ import Test from '../views/Test.vue'
 import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
 import Data from '../views/Management/Data.vue'
-
 import Pie from '../views/Management/Pie.vue'
 import { ElMessageBox } from 'element-plus'
 
