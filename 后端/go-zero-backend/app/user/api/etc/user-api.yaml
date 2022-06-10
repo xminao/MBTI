@@ -22,3 +22,9 @@ UserRpc:
     Hosts:
       - localhost:2379
     Key: user.rpc
+
+UniversityRpc:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: university.rpc

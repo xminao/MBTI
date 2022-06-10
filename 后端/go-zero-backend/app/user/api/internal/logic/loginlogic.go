@@ -59,9 +59,10 @@ func (l *LoginLogic) Login(req *types.LoginReq) (*types.LoginResp, error) {
 	fmt.Println(user.AuthGroup)
 	//return msg and token_info
 	return &types.LoginResp{
-		Msg:      "登录成功",
-		Username: user.Username,
-		Nickname: user.Nickname,
+		Msg:       "登录成功",
+		Username:  user.Username,
+		Nickname:  user.Nickname,
+		AuthGroup: user.AuthGroup,
 		Jwt: types.JwtToken{
 			AccessToken:  jwtToken,
 			AccessExpire: now + accessExpire,

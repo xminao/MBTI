@@ -79,15 +79,13 @@ type Class struct {
 }
 
 type Student struct {
-	StudentId       string `json:"student_id"`
-	StudentName     string `json:"student_name"`
-	College         string `json:"college"`
-	Year            string `json:"year"`
-	Major           string `json:"major"`
-	Class           string `json:"class"`
-	IsBinding       bool   `json:"is_binding"`
-	BindingUsername string `json:"binding_username"`
-	CreatedAt       int64  `json:"created_at"`
+	StudentId   string `json:"student_id"`
+	StudentName string `json:"student_name"`
+	College     string `json:"college"`
+	Year        string `json:"year"`
+	Major       string `json:"major"`
+	Class       string `json:"class"`
+	CreatedAt   int64  `json:"created_at"`
 }
 
 type GetCollegeListReq struct {

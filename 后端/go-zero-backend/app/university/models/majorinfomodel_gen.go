@@ -24,7 +24,7 @@ var (
 
 	cachePublicMajorInfoMajorIdPrefix                = "cache:public:majorInfo:majorId:"
 	cachePublicMajorInfoCollegeIdYearIdMajorIdPrefix = "cache:public:majorInfo:collegeId:yearId:majorId:"
-	cachePublicMajorInfoMajorNamePrefix              = "cache:public:majorInfo:majorName:"
+	cachePublicMajorInfoMajorNameYearIdPrefix        = "cache:public:majorInfo:majorName:yearId:"
 )
 
 type (
@@ -32,7 +32,7 @@ type (
 		Insert(ctx context.Context, data *MajorInfo) (sql.Result, error)
 		FindOne(ctx context.Context, majorId int64) (*MajorInfo, error)
 		FindOneByCollegeIdYearIdMajorId(ctx context.Context, collegeId int64, yearId int64, majorId int64) (*MajorInfo, error)
-		FindOneByMajorName(ctx context.Context, majorName string) (*MajorInfo, error)
+		FindOneByMajorNameYearId(ctx context.Context, majorName string, yearId int64) (*MajorInfo, error)
 		Update(ctx context.Context, data *MajorInfo) error
 		Delete(ctx context.Context, majorId int64) error
 	}
@@ -61,11 +61,11 @@ func newMajorInfoModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultMajorInfoMo
 func (m *defaultMajorInfoModel) Insert(ctx context.Context, data *MajorInfo) (sql.Result, error) {
 	publicMajorInfoCollegeIdYearIdMajorIdKey := fmt.Sprintf("%s%v:%v:%v", cachePublicMajorInfoCollegeIdYearIdMajorIdPrefix, data.CollegeId, data.YearId, data.MajorId)
 	publicMajorInfoMajorIdKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorIdPrefix, data.MajorId)
-	publicMajorInfoMajorNameKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorNamePrefix, data.MajorName)
+	publicMajorInfoMajorNameYearIdKey := fmt.Sprintf("%s%v:%v", cachePublicMajorInfoMajorNameYearIdPrefix, data.MajorName, data.YearId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5)", m.table, majorInfoRowsExpectAutoSet)
 		return conn.ExecCtx(ctx, query, data.MajorId, data.MajorName, data.CollegeId, data.YearId, data.CreatedAt)
-	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameKey)
+	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameYearIdKey)
 	return ret, err
 }
 
@@ -106,12 +106,12 @@ func (m *defaultMajorInfoModel) FindOneByCollegeIdYearIdMajorId(ctx context.Cont
 	}
 }
 
-func (m *defaultMajorInfoModel) FindOneByMajorName(ctx context.Context, majorName string) (*MajorInfo, error) {
-	publicMajorInfoMajorNameKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorNamePrefix, majorName)
+func (m *defaultMajorInfoModel) FindOneByMajorNameYearId(ctx context.Context, majorName string, yearId int64) (*MajorInfo, error) {
+	publicMajorInfoMajorNameYearIdKey := fmt.Sprintf("%s%v:%v", cachePublicMajorInfoMajorNameYearIdPrefix, majorName, yearId)
 	var resp MajorInfo
-	err := m.QueryRowIndexCtx(ctx, &resp, publicMajorInfoMajorNameKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
-		query := fmt.Sprintf("select %s from %s where major_name = $1 limit 1", majorInfoRows, m.table)
-		if err := conn.QueryRowCtx(ctx, &resp, query, majorName); err != nil {
+	err := m.QueryRowIndexCtx(ctx, &resp, publicMajorInfoMajorNameYearIdKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where major_name = $1 and year_id = $2 limit 1", majorInfoRows, m.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, majorName, yearId); err != nil {
 			return nil, err
 		}
 		return resp.MajorId, nil
@@ -129,11 +129,11 @@ func (m *defaultMajorInfoModel) FindOneByMajorName(ctx context.Context, majorNam
 func (m *defaultMajorInfoModel) Update(ctx context.Context, data *MajorInfo) error {
 	publicMajorInfoCollegeIdYearIdMajorIdKey := fmt.Sprintf("%s%v:%v:%v", cachePublicMajorInfoCollegeIdYearIdMajorIdPrefix, data.CollegeId, data.YearId, data.MajorId)
 	publicMajorInfoMajorIdKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorIdPrefix, data.MajorId)
-	publicMajorInfoMajorNameKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorNamePrefix, data.MajorName)
+	publicMajorInfoMajorNameYearIdKey := fmt.Sprintf("%s%v:%v", cachePublicMajorInfoMajorNameYearIdPrefix, data.MajorName, data.YearId)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where major_id = $1", m.table, majorInfoRowsWithPlaceHolder)
 		return conn.ExecCtx(ctx, query, data.MajorId, data.MajorName, data.CollegeId, data.YearId, data.CreatedAt)
-	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameKey)
+	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameYearIdKey)
 	return err
 }
 
@@ -145,11 +145,11 @@ func (m *defaultMajorInfoModel) Delete(ctx context.Context, majorId int64) error
 
 	publicMajorInfoCollegeIdYearIdMajorIdKey := fmt.Sprintf("%s%v:%v:%v", cachePublicMajorInfoCollegeIdYearIdMajorIdPrefix, data.CollegeId, data.YearId, data.MajorId)
 	publicMajorInfoMajorIdKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorIdPrefix, majorId)
-	publicMajorInfoMajorNameKey := fmt.Sprintf("%s%v", cachePublicMajorInfoMajorNamePrefix, data.MajorName)
+	publicMajorInfoMajorNameYearIdKey := fmt.Sprintf("%s%v:%v", cachePublicMajorInfoMajorNameYearIdPrefix, data.MajorName, data.YearId)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where major_id = $1", m.table)
 		return conn.ExecCtx(ctx, query, majorId)
-	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameKey)
+	}, publicMajorInfoCollegeIdYearIdMajorIdKey, publicMajorInfoMajorIdKey, publicMajorInfoMajorNameYearIdKey)
 	return err
 }
 

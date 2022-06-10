@@ -1,6 +1,7 @@
 package svc
 
 import (
+	"backend/app/university/rpc/universityrpc"
 	"backend/app/user/api/internal/config"
 	"backend/app/user/models"
 	"backend/app/user/rpc/userrpc"
@@ -15,7 +16,8 @@ type ServiceContext struct {
 	UserInfoModel models.UserInfoModel
 
 	//rpc
-	UserRpc userrpc.UserRpc
+	UserRpc       userrpc.UserRpc
+	UniversityRpc universityrpc.UniversityRpc
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -25,6 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 		UserInfoModel: models.NewUserInfoModel(conn, c.CacheRedis),
 		//rpc
-		UserRpc: userrpc.NewUserRpc(zrpc.MustNewClient(c.UserRpc)),
+		UserRpc:       userrpc.NewUserRpc(zrpc.MustNewClient(c.UserRpc)),
+		UniversityRpc: universityrpc.NewUniversityRpc(zrpc.MustNewClient(c.UniversityRpc)),
 	}
 }

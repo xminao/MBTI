@@ -39,15 +39,13 @@ type (
 	}
 
 	StudentInfo struct {
-		StudentId       string         `db:"student_id"`       // 学号
-		StudentName     string         `db:"student_name"`     // 姓名
-		CollegeId       int64          `db:"college_id"`       // 所属学院
-		YearId          int64          `db:"year_id"`          // 年级
-		MajorId         int64          `db:"major_id"`         // 专业
-		ClassId         int64          `db:"class_id"`         // 所属班级
-		IsBinding       bool           `db:"is_binding"`       // 是否绑定
-		BindingUsername sql.NullString `db:"binding_username"` // 所绑用户
-		CreatedAt       time.Time      `db:"created_at"`
+		StudentId   string    `db:"student_id"`   // 学号
+		StudentName string    `db:"student_name"` // 姓名
+		CollegeId   int64     `db:"college_id"`   // 所属学院
+		YearId      int64     `db:"year_id"`      // 年级
+		MajorId     int64     `db:"major_id"`     // 专业
+		ClassId     int64     `db:"class_id"`     // 所属班级
+		CreatedAt   time.Time `db:"created_at"`
 	}
 )
 
@@ -61,8 +59,8 @@ func newStudentInfoModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultStudentIn
 func (m *defaultStudentInfoModel) Insert(ctx context.Context, data *StudentInfo) (sql.Result, error) {
 	publicStudentInfoStudentIdKey := fmt.Sprintf("%s%v", cachePublicStudentInfoStudentIdPrefix, data.StudentId)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)", m.table, studentInfoRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.StudentId, data.StudentName, data.CollegeId, data.YearId, data.MajorId, data.ClassId, data.IsBinding, data.BindingUsername, data.CreatedAt)
+		query := fmt.Sprintf("insert into %s (%s) values ($1, $2, $3, $4, $5, $6, $7)", m.table, studentInfoRowsExpectAutoSet)
+		return conn.ExecCtx(ctx, query, data.StudentId, data.StudentName, data.CollegeId, data.YearId, data.MajorId, data.ClassId, data.CreatedAt)
 	}, publicStudentInfoStudentIdKey)
 	return ret, err
 }
@@ -88,7 +86,7 @@ func (m *defaultStudentInfoModel) Update(ctx context.Context, data *StudentInfo)
 	publicStudentInfoStudentIdKey := fmt.Sprintf("%s%v", cachePublicStudentInfoStudentIdPrefix, data.StudentId)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where student_id = $1", m.table, studentInfoRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.StudentId, data.StudentName, data.CollegeId, data.YearId, data.MajorId, data.ClassId, data.IsBinding, data.BindingUsername, data.CreatedAt)
+		return conn.ExecCtx(ctx, query, data.StudentId, data.StudentName, data.CollegeId, data.YearId, data.MajorId, data.ClassId, data.CreatedAt)
 	}, publicStudentInfoStudentIdKey)
 	return err
 }

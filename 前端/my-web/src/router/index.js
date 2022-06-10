@@ -10,9 +10,8 @@ import Result from '../views/Result.vue'
 import University from '../views/Management/University.vue'
 import Data from '../views/Management/Data.vue'
 import Pie from '../views/Management/Pie.vue'
-
-import Pies from '../views/Management/Pies.vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus';
+import { encrypt, decrypt } from '@/utils/jsencrypt'
 
 const routes = [
   {
@@ -28,7 +27,6 @@ const routes = [
                  meta: { requiresAuth: true,
                          roles:['admin']},
                  children: [
-                  { path: '/pies', component: Pies, meta: { requiresAuth: true}},
                   { path: '/question', component: Question, meta: { requiresAuth: true}},
                   { path: '/user', component: User, meta: { requiresAuth: true}},
                   { path: '/pie', component: Pie, meta: { requiresAuth: true}},
@@ -56,24 +54,25 @@ const router = createRouter({
 //路由守卫
 router.beforeEach((to, from, next) => {
   if (to.path == '/management') {
-    if (localStorage.getItem('user') != 'xminao') {
-      ElMessageBox.alert('没有权限访问，请登录','出错啦',{
-        confirmButtonText: '好的',
-        type:"error",
-        center: true,
-      })
+    console.log(localStorage.getItem('user'))
+    if (decrypt(localStorage.getItem('user')) != 'admin') {
+      ElMessage({
+        message: "没有权限进行访问",
+        type: 'warning',
+        })
       router.push('/home')
+    } else {
+      next()
     }
   }
   if (to.meta.requiresAuth == true) {
     if (localStorage.getItem('token')) {
       next()
     } else {
-      ElMessageBox.alert('没有权限访问，请登录','出错啦',{
-        confirmButtonText: '好的',
-        type:"error",
-        center: true,
-      })
+      ElMessage({
+        message: "请登录后操作",
+        type: 'warning',
+        })
       router.push('/home')
     }
   } else {

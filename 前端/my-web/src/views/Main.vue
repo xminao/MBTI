@@ -200,6 +200,8 @@
 
 
 <script>
+//加密引入
+import { encrypt, decrypt } from '@/utils/jsencrypt'
 import { useRouter } from 'vue-router';
 import { getCurrentInstance, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
@@ -267,10 +269,15 @@ export default {
                 type: 'success',
                 center: true,
             })
-            if (res.data.username == 'xminao') {
-              localStorage.setItem('user', 'xminao')
-            }
+            // if (res.data.username == 'xminao') {
+            //   localStorage.setItem('user', 'xminao')
+            // } else {
+            //   localStorage.setItem('user', ' ')
+            // }
+
             localStorage.setItem('token', res.data.jwt_token.access_token)
+            localStorage.setItem('user', encrypt(res.data.auth_group))
+
             login_status.value = true
             close_dialog()
         }
@@ -319,7 +326,7 @@ export default {
                 return
             }
 
-            const obj = {"username":register_form.username, "nickname":register_form.nickname, "password":register_form.passwd, "gender":register_form.gender, "binding_student_id":register_form.studentId}
+            const obj = {"username":register_form.username, "nickname":register_form.nickname, "password":register_form.passwd, "gender":register_form.gender, "binding_student_id":register_form.studentId, "binding_student_name":register_form.name}
             const res = await new proxy.$request(proxy.$urls.m().register, obj).post()
             console.log(res)
             ElMessage({

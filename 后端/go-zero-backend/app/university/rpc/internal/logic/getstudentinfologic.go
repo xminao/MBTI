@@ -4,7 +4,6 @@ import (
 	"backend/util/xerr"
 	"context"
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"backend/app/university/rpc/internal/svc"
@@ -28,7 +27,6 @@ func NewGetStudentInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 }
 
 func (l *GetStudentInfoLogic) GetStudentInfo(in *university.GetStudentInfoReq) (*university.GetStudentInfoResp, error) {
-	fmt.Println("哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈RPC")
 	stu, err := l.svcCtx.StudentInfoModel.FindOne(l.ctx, in.StudentId)
 	if err != nil {
 		return nil, xerr.NewErrCode(xerr.DB_ERROR)
@@ -75,15 +73,13 @@ func (l *GetStudentInfoLogic) GetStudentInfo(in *university.GetStudentInfoReq) (
 	})
 
 	var resp = university.Student{
-		StudentId:       stu.StudentId,
-		StudentName:     stu.StudentName,
-		College:         string(college),
-		Year:            string(year),
-		Major:           string(major),
-		Class:           string(class),
-		IsBinding:       false,
-		BindingUsername: stu.BindingUsername.String,
-		CreatedAt:       time.Now().Unix(),
+		StudentId:   stu.StudentId,
+		StudentName: stu.StudentName,
+		College:     string(college),
+		Year:        string(year),
+		Major:       string(major),
+		Class:       string(class),
+		CreatedAt:   time.Now().Unix(),
 	}
 
 	return &university.GetStudentInfoResp{

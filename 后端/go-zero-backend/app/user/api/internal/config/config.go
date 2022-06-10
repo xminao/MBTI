@@ -21,5 +21,6 @@ type Config struct {
 	}
 
 	//rpc
-	UserRpc zrpc.RpcClientConf
+	UserRpc       zrpc.RpcClientConf
+	UniversityRpc zrpc.RpcClientConf
 }

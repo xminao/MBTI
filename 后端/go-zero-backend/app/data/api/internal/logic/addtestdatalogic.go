@@ -34,6 +34,7 @@ type SelectInfo struct {
 func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTestDataResp, error) {
 	var c []SelectInfo
 	err := json.Unmarshal([]byte(req.Selection), &c)
+	save, err := json.Marshal(c)
 
 	countBuilder := l.svcCtx.TestDataModel.CountBuilder("*")
 	count, err := l.svcCtx.TestDataModel.FindCount(l.ctx, countBuilder)
@@ -65,6 +66,7 @@ func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTes
 
 	data.Username = req.Username
 	data.Type = req.Type
+	data.Selection = string(save)
 	data.StudentId = req.StudentId
 	data.CreatedAt = time.Now()
 

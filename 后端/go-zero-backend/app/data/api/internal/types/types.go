@@ -17,6 +17,7 @@ type Data struct {
 	StudentId string `json:"student_id"`
 	Type      string `json:"type"`
 	Time      string `json:"time"`
+	Selection string `json:"selection"`
 }
 
 type GetTestDataListReq struct {

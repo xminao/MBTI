@@ -19,11 +19,12 @@ type JwtToken struct {
 }
 
 type RegisterReq struct {
-	Username         string `json:"username"`
-	NickName         string `json:"nickname"`
-	Password         string `json:"password"`
-	Gender           string `json:"gender"`
-	BindingStudentId string `json:"binding_student_id"`
+	Username           string `json:"username"`
+	NickName           string `json:"nickname"`
+	Password           string `json:"password"`
+	Gender             string `json:"gender"`
+	BindingStudentId   string `json:"binding_student_id"`
+	BindingStudentName string `json:"binding_student_name"`
 }
 
 type RegisterResp struct {
@@ -37,10 +38,11 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Msg      string   `json:"msg"`
-	Username string   `json:"username"`
-	Nickname string   `json:"nickname"`
-	Jwt      JwtToken `json:"jwt_token"`
+	Msg       string   `json:"msg"`
+	Username  string   `json:"username"`
+	Nickname  string   `json:"nickname"`
+	AuthGroup string   `json:"auth_group"`
+	Jwt       JwtToken `json:"jwt_token"`
 }
 
 type GetUserInfoReq struct {

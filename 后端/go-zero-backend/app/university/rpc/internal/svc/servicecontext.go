@@ -3,6 +3,7 @@ package svc
 import (
 	"backend/app/university/models"
 	"backend/app/university/rpc/internal/config"
+	_ "github.com/lib/pq"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 

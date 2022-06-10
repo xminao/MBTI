@@ -44,7 +44,7 @@ type (
 		Type      string    `db:"type"`
 		CreatedAt time.Time `db:"created_at"`
 		StudentId string    `db:"student_id"`
-		Selection []string  `db:"selection"`
+		Selection string    `db:"selection"`
 	}
 )
 

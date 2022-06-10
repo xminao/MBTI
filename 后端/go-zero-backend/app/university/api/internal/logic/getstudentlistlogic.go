@@ -76,15 +76,13 @@ func (l *GetStudentListLogic) GetStudentList(req *types.GetStudentListReq) (*typ
 			})
 
 			var temp = types.Student{
-				StudentId:       item.StudentId,
-				StudentName:     item.StudentName,
-				College:         string(college),
-				Year:            string(year),
-				Major:           string(major),
-				Class:           string(class),
-				IsBinding:       false,
-				BindingUsername: item.BindingUsername.String,
-				CreatedAt:       time.Now().Unix(),
+				StudentId:   item.StudentId,
+				StudentName: item.StudentName,
+				College:     string(college),
+				Year:        string(year),
+				Major:       string(major),
+				Class:       string(class),
+				CreatedAt:   time.Now().Unix(),
 			}
 			resp = append(resp, temp)
 		}

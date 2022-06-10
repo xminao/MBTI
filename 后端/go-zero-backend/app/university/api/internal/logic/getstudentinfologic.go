@@ -40,8 +40,6 @@ func (l *GetStudentInfoLogic) GetStudentInfo(req *types.GetStudentInfoReq) (*typ
 	temp.Major = stu.StudentInfo.Major
 	temp.Class = stu.StudentInfo.Class
 	temp.CreatedAt = stu.StudentInfo.CreatedAt
-	temp.IsBinding = stu.StudentInfo.IsBinding
-	temp.BindingUsername = stu.StudentInfo.BindingUsername
 
 	return &types.GetStudentInfoResp{StudentInfo: temp}, nil
 }

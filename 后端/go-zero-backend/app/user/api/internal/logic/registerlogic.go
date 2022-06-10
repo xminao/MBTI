@@ -1,10 +1,12 @@
 package logic
 
 import (
+	"backend/app/university/rpc/university"
 	"backend/app/user/models"
 	"backend/util/xerr"
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
@@ -62,6 +64,18 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 	stu, err := l.svcCtx.UserInfoModel.FindOneByBindingStudentId(l.ctx, req.BindingStudentId)
 	if stu != nil {
 		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "学号已经绑定别的用户啦")
+	}
+
+	student, err := l.svcCtx.UniversityRpc.GetStudentInfo(l.ctx, &university.GetStudentInfoReq{StudentId: req.BindingStudentId})
+
+	fmt.Println(student)
+
+	if err != nil {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "学号不存在")
+	}
+
+	if student.StudentInfo.StudentName != req.BindingStudentName {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "学号姓名不匹配")
 	}
 
 	_, err = l.svcCtx.UserInfoModel.Insert(l.ctx, &models.UserInfo{

@@ -36,13 +36,13 @@ func (l *AddStudentLogic) AddStudent(req *types.AddStudentReq) (resp *types.AddS
 	}
 
 	student := new(models.StudentInfo)
-	student.StudentId = req.StudentId
-	student.StudentName = req.StudentName
-	student.CollegeId = req.CollegeId
-	student.YearId = req.YearId
-	student.MajorId = req.MajorId
-	student.ClassId = req.ClassId
-	student.CreatedAt = time.Now()
+	student.StudentId = req.StudentId     //学号
+	student.StudentName = req.StudentName //姓名
+	student.CollegeId = req.CollegeId     //学院
+	student.YearId = req.YearId           //年级
+	student.MajorId = req.MajorId         //专业
+	student.ClassId = req.ClassId         //班级
+	student.CreatedAt = time.Now()        //创建事件
 
 	_, err = l.svcCtx.StudentInfoModel.Insert(l.ctx, student)
 	if err != nil {

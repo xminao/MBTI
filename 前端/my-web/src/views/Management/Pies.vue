@@ -35,9 +35,22 @@ export default {
                     // [' Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1]
                     //['product', '2022-06-08', '2022-06-09', '2022-06-10', '2022-06-11'],
                     ['date'],
-                    ['INFJ'],
-                    ['ESTJ'],
+                    ['INTJ'],
+                    ['INTP'],
                     ['ENTJ'],
+                    ['ENTP'],
+                    ['INFJ'],
+                    ['INFP'],
+                    ['ENFJ'],
+                    ['ENFP'],
+                    ['ISTJ'],
+                    ['ISFJ'],
+                    ['ESTJ'],
+                    ['ESFJ'],
+                    ['ISTP'],
+                    ['ISFP'],
+                    ['ESTP'],
+                    ['ESFP'],
                 ]
             },
 
@@ -45,6 +58,78 @@ export default {
             yAxis: { gridIndex: 0 },
             grid: { top: '55%' },
             series: [
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
+            {
+                type: 'line',
+                smooth: true,
+                seriesLayoutBy: 'row',
+                emphasis: { focus: 'series' }
+            },
             {
                 type: 'line',
                 smooth: true,
