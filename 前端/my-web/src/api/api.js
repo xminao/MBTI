@@ -17,6 +17,7 @@ const urls = class{
         const getquestionidlist = `${question}/question/getidlist`
         const editquestion = `${question}/question/edit`
         const deletequestion = `${question}/question/delete`
+        const createquestion = `${question}/question/create`
 
         const university = `${server}:8889`
         const getcollegelist =  `${university}/university/getcollegelist`
@@ -54,6 +55,7 @@ const urls = class{
             getdatalist,
             getstudentinfo,
             getdata,
+            createquestion,
         }
     }
 

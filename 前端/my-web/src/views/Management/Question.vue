@@ -121,7 +121,7 @@
             size="large">
             <el-input 
             :prefix-icon="User"
-            v-model="edit.question_desc"
+            v-model="add.question_desc"
             show-word-limit
             autocomplete="off"
             style="width:350px;"/>
@@ -132,7 +132,7 @@
             size="large">
             <el-input 
             :prefix-icon="User"
-            v-model="edit.option_a_desc"
+            v-model="add.option_a_desc"
             show-word-limit
             autocomplete="off"
             style="width:350px;"/>
@@ -141,9 +141,9 @@
         label="选项A倾向" 
         :label-width="formLabelWidth" 
         style="font-size: 30px">
-            <el-select v-model="edit.option_a_target" size="large" suffix-icon="CaretBottom">
+            <el-select v-model="add.option_a_target" size="large" suffix-icon="CaretBottom">
                 <el-option
-                    v-for="item in A"
+                    v-for="item in targets"
                     :key="item"
                     :value="item"
                     >
@@ -156,7 +156,7 @@
             size="large">
             <el-input 
             :prefix-icon="User"
-            v-model="edit.option_b_desc"
+            v-model="add.option_b_desc"
             show-word-limit
             autocomplete="off"
             style="width:350px;"/>
@@ -165,9 +165,9 @@
         label="选项B倾向" 
         :label-width="formLabelWidth" 
         style="font-size: 30px">
-            <el-select v-model="edit.option_b_target" size="large" suffix-icon="CaretBottom">
+            <el-select v-model="add.option_b_target" size="large" suffix-icon="CaretBottom">
             <el-option
-                v-for="item in B"
+                v-for="item in targets"
                 :key="item"
                 :value="item"
             >
@@ -182,14 +182,14 @@
             class="edit_button"
             id="register"
             type="primary" 
-            @click="save_edit()"
+            @click="save_add()"
             color="#CC0033"
             >保存</el-button>
             <el-button
             class="edit_button"
             id="register"
             type="primary" 
-            @click="close_editdialog()"
+            @click="close_adddialog()"
             color="#CCCCCC"
             >取消</el-button>
         </span>
@@ -258,6 +258,14 @@ export default ({
         const goHome=()=> {
             router.push('/home')
         }
+
+        const add = reactive({
+            question_desc: '',
+            option_a_desc: '',
+            option_a_target: '',
+            option_b_desc: '',
+            option_b_target: '',
+        })
         
         const edit = reactive({
             question_id: 0,
@@ -274,7 +282,7 @@ export default ({
             edit.option_a_desc = index.option_a_desc
             edit.option_a_target = index.option_a_target
             edit.option_b_desc = index.option_b_desc
-            edit.option_b_target = index.option_b_targets
+            edit.option_b_target = index.option_b_target
         }
         const handleDelete = async(index) => {
             const obj = {"id":index.question_id}
@@ -284,6 +292,7 @@ export default ({
                 message: "删除成功",
                 type: 'success',
             })
+            location.reload()
         }
 
         const handleAdd=()=> {
@@ -292,6 +301,21 @@ export default ({
 
         const close_editdialog=()=> {
             edit_dialog.value = false
+        }
+
+     const close_adddialog=()=> {
+            add_dialog.value = false
+        }
+
+        const save_add=async()=> {
+            const listres = await new proxy.$request(proxy.$urls.m().createquestion, add).post()
+            location.reload();
+            ElMessage({
+                message: listres.msg,
+                type: 'success',
+                center: true,
+            })
+            add_dialog.value = false
         }
 
         const save_edit=async()=> {
@@ -309,6 +333,7 @@ export default ({
         return {
             targets,
             edit,
+            add,
             loading,
             add_dialog,
             handleEdit,
@@ -320,6 +345,7 @@ export default ({
             handleDelete,
             result,
             goHome,
+            save_add,
         }
     },
 })
