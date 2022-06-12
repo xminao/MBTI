@@ -29,8 +29,12 @@ const urls = class{
         const data = `${server}:8886`
         const addtestdata =  `${data}/data/add`
         const getdatalist = `${data}/data/getlist`
-        const getlatestdata = `${data}/data/get`
+        const getlatestdata = `${data}/data/getlatest`
+        const getdata = `${data}/data/get`
+        const getdataidlist = `${data}/data/getdataidlist`
+
         return {
+            getdataidlist,
             register,
             login,
             getuserinfo,
@@ -49,6 +53,7 @@ const urls = class{
             getlatestdata,
             getdatalist,
             getstudentinfo,
+            getdata,
         }
     }
 

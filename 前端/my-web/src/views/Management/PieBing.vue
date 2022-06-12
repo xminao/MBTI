@@ -11,7 +11,7 @@
     check-strictly/>
   </el-radio-group>
 </el-container>
-<el-container v-loading="loading" class="chart">
+<el-container class="chart">
 <div id="charts"/>
 </el-container>
 <!-- <el-container>
@@ -32,9 +32,6 @@ export default ({
         const {proxy} = getCurrentInstance()
         const index = ref(0)
         const value = ref('')
-        const loading = ref(false)
-
-            var option;
 
         const defaultProps = {  
             children: "children",  //"children"内的每个对象解析为一个子项;
@@ -181,7 +178,7 @@ export default ({
                     data[i]["year_name"] = JSON.parse(listres.student_list[i].year).year_name
                     data[i]["major_name"] = JSON.parse(listres.student_list[i].major).major_name
                     data[i]["class_name"] = JSON.parse(listres.student_list[i].class).class_name
-                   //console.log(data)
+                   // console.log(data)
                 }
                 if (node == 1) { //学院
                     for (let k=0; k<data.length; k++) {
@@ -215,28 +212,15 @@ export default ({
             }
            
             const datalistres = await new proxy.$request(proxy.$urls.m().getdatalist).get()
-            console.log(datalistres)
             let datas = datalistres.data_list //测试结果
-            const userlistres = await new proxy.$request(proxy.$urls.m().getuserlist).get()
-            const userlist = userlistres.userlist //用户表
-            console.log(userlist)
-            console.log(data)
 
+            console.log(datas)
             for (let i=0; i<datas.length; i++) {
                 let flag = false
                 for (let j=0; j<data.length; j++) {
-                    for (let k=0; k<userlist.length; k++) {
-                        // console.log(data[j].student_id)
-                        // console.log(datas[i].username)
-                        // console.log(userlist[k].username)
-                        if ((datas[i].username == userlist[k].username) && (userlist[k].binding_student_id == data[j].student_id)) {
-                            flag = true
-                            break
-                        }
-                        //if(datas[i].use)
-                        // if (datas[i].username == userlist[k].username && userlist[k].binding_student_id == data[j].student_id)
-                        //     flag = true
-                        //     break;
+                    if (datas[i].username == data[j].binding_username) {
+                        flag = true
+                        break;
                     }
                 }
                 if (flag == false) {
@@ -245,225 +229,171 @@ export default ({
                 }
             }
 
-        let myChart = echarts.init(document.getElementById("charts"));
+            let rest = reactive({
+                INTJ: 0,
+                INTP: 0,
+                ENTJ: 0,
+                ENTP: 0,
+                ENFJ: 0,
+                INFJ: 0,
+                INFP: 0,
+                ENFP: 0,
+                ISTJ: 0,
+                ISFJ: 0,
+                ESTJ: 0,
+                ESFJ: 0,
+                ISTP: 0,
+                ISFP: 0,
+                ESTP: 0,
+                ESFP: 0,
+            })
 
-        option = {
-            legend: {},
-            tooltip: {
-            trigger: 'axis',
-            showContent: false
-            },
-            dataset: {
-                source: [
-                    // ['product', '2012', '2013', '2014', '2015', '2016', '2017'],
-                    // ['Milk Tea', 56.5, 82.1, 88.7, 70.1, 53.4, 85.1],
-                    // ['Matcha Latte', 51.1, 51.4, 55.1, 53.3, 73.8, 68.7],
-                    // ['Cheese Cocoa', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5],
-                    // ['Walnut Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1],
-                    // ['Walnut', 25.2, 37.1, 41.2, 18, 33.9, 49.1],
-                    // [' Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1]
-                    //['product', '2022-06-08', '2022-06-09', '2022-06-10', '2022-06-11'],
-                    ['date'],
-                    ['INTJ'],
-                    ['INTP'],
-                    ['ENTJ'],
-                    ['ENTP'],
-                    ['INFJ'],
-                    ['INFP'],
-                    ['ENFJ'],
-                    ['ENFP'],
-                    ['ISTJ'],
-                    ['ISFJ'],
-                    ['ESTJ'],
-                    ['ESFJ'],
-                    ['ISTP'],
-                    ['ISFP'],
-                    ['ESTP'],
-                    ['ESFP'],
-                ]
-            },
+            for (let i=0; i<datas.length; i++) {
 
-            xAxis: { type: 'category' },
-            yAxis: { gridIndex: 0 },
-            grid: { top: '55%' },
-            series: [
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                seriesLayoutBy: 'row',
-                emphasis: { focus: 'series' }
-            },
-            {
-                type: 'pie',
-                id: 'pie',
-                radius: '30%',
-                center: ['50%', '25%'],
-                emphasis: {
-                focus: 'self'
-                },
-                label: {
-                formatter: '{b}: {@2022-06-10} ({d}%)'
-                },
-                encode: {
-                itemName: 'date',
-                value: '2022-06-10',
-                tooltip: '2022-06-10'
+                switch (datas[i].type) {
+                    case 'INTJ':
+                        rest.INTJ++
+                        break;
+                    case 'INTP':
+                        rest.INTP++
+                        break;
+                    case 'ENTJ':
+                        rest.ENTJ++
+                        break;
+                    case 'ENTP':
+                        rest.ENTP++
+                        break;
+                    case 'ENFJ':
+                        rest.ENFJ++
+                        break;
+                    case 'INFJ':
+                        rest.INFJ++
+                        break;
+                    case 'INFP':
+                        rest.INFP++
+                        break;
+                    case 'ENFP':
+                        rest.ENFP++
+                        break;
+                    case 'ISTJ':
+                        rest.ISTJ++
+                        break;
+                    case 'ISFJ':
+                        rest.ISFJ++
+                        break;
+                    case 'ESTJ':
+                        rest.ESTJ++
+                        break;
+                    case 'ESFJ':
+                        rest.ESFJ++
+                        break;
+                    case 'ISTP':
+                        rest.ISTP++
+                        break;
+                    case 'ISFP':
+                        rest.ISFP++
+                        break;
+                    case 'ESTP':
+                        rest.ESTP++
+                        break;
+                    case 'ESFP':
+                        rest.ESFP++
+                        break;
+                    default:
+                        break;
                 }
-            }
-            ]
-        };
 
-        for (let i=0; i<datas.length; i++) {
-            let date = (datas[i].time).split(' ')[0]
-            let flag = false
-            for (let k=1 ;k<option.dataset.source[0].length; k++) {
-                if (option.dataset.source[0][k] == date) {
-                    flag = true
-                }
             }
-            if (flag == false) {
-                option.dataset.source[0].push(date)
-                for (let k=1; k<option.dataset.source.length; k++) {
-                    option.dataset.source[k].push(0)
-                }
-            }
-        }
 
-        //二维遍历，横竖
-        for (let i=0; i<datas.length; i++) {
-            let date = (datas[i].time).split(' ')[0]
-            //寻找是哪个人格
-            for (let j=1; j<option.dataset.source.length; j++) {
-                if (datas[i].type == option.dataset.source[j][0]) {
-                    //寻找日期
-                    for (let k=1; k<option.dataset.source[0].length; k++) {
-                        if (date == option.dataset.source[0][k]) {
-                            option.dataset.source[j][k]++
-                        }
-                    }
-                }
-            }
-        }
-        
-
-        /******************* */
-
-        myChart.on('updateAxisPointer', function (event) {
-            const xAxisInfo = event.axesInfo[0];
-            if (xAxisInfo) {
-            const dimension = xAxisInfo.value + 1;
+            let myChart = echarts.init(document.getElementById("charts"));
+            // 绘制图表
             myChart.setOption({
-                series: {
-                id: 'pie',
-                label: {
-                    formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-                },
-                encode: {
-                    value: dimension,
-                    tooltip: dimension
-                }
-                }
+                // title: { text: "测试结果图" },
+                series: [
+                    {
+                        type: 'pie',
+                        data: [
+                            {
+                                value: rest.ENFJ,
+                                name: 'ENFJ'
+                            },
+                            {
+                                value: rest.ENFP,
+                                name: 'ENFP'
+                            },
+                            {
+                                value: rest.ENTJ,
+                                name: 'ENTJ'
+                            },
+                            {
+                                value: rest.ENTP,
+                                name: 'ENTP'
+                            },
+                            {
+                                value: rest.ESFJ,
+                                name: 'ESFJ'
+                            },
+                            {
+                                value: rest.ESFP,
+                                name: 'ESFP'
+                            },
+                            {
+                               value: rest.ESTJ,
+                                name: 'ESTJ'
+                            },
+                            {
+                                value: rest.ESTP,
+                                name: 'ESTP'
+                            },
+                            {
+                               value: rest.INFJ,
+                                name: 'INFJ'
+                            },
+                            {
+                                value: rest.INFP,
+                                name: 'INFP'
+                            },
+                            {
+                                value: rest.INTJ,
+                                name: 'INTJ'
+                            },
+                            {
+                                value: rest.INTP,
+                                name: 'INTP'
+                            },
+                            {
+                                value: rest.ISFJ,
+                                name: 'ISFJ'
+                            },
+                            {
+                                value: rest.ISFP,
+                                name: 'ISFP'
+                            },
+                            {
+                                value: rest.ISTJ,
+                                name: 'ISTJ'
+                            },
+                            {
+                                value: rest.ISTP,
+                                name: 'ISTP'
+                            }
+                        ],
+                        roseType: 'area'
+                    }
+                ]
             });
-            }
-        });
-        myChart.setOption(option);
-        loading.value = false
+            window.onresize = function () {//自适应大小
+                myChart.resize();
+            };
+
+
         }
 
 
         const getNodeValue=(val)=> {
             data = []
             getStuList(val.value.length, val.id)
+            //getinfo()
         }
 
         const getinfo=async()=> {
@@ -635,7 +565,6 @@ export default ({
         }
 
         return {
-            loading,
 
             getinfo,
             getNodeValue,
@@ -682,7 +611,7 @@ export default ({
 }
 .chart {
     width: 100%;
-    padding-left: 5%;
+    padding-left: 10%;
     height: 80%;
     background-color: #fff;
 }
