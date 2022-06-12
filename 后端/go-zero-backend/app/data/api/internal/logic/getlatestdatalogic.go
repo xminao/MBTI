@@ -35,7 +35,8 @@ func (l *GetLatestDataLogic) GetLatestData(req *types.GetLatestDataReq) (resp *t
 	LatestRecord, err := l.svcCtx.TestDataModel.FindOneByQuery(l.ctx, maxBuilder)
 
 	if err != nil {
-		return nil, xerr.NewErrCodeMsg(xerr.DATA_ERROR, "没有记录哟，快去测试吧")
+		return nil, xerr.NewErrCode(xerr.RESULT_NOT_FOUND)
+		//return nil, xerr.NewErrCodeMsg(xerr.DATA_ERROR, "没有记录哟，快去测试吧")
 	}
 
 	return &types.GetLatestDataResp{Type: LatestRecord.Type}, nil

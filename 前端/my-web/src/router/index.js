@@ -54,7 +54,6 @@ const router = createRouter({
 //路由守卫
 router.beforeEach((to, from, next) => {
   if (to.path == '/management') {
-    console.log(localStorage.getItem('user'))
     if (decrypt(localStorage.getItem('user')) != 'admin') {
       ElMessage({
         message: "没有权限进行访问",

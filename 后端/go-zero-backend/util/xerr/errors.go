@@ -24,7 +24,8 @@ func (e *CodeError) GetErrMsg() string {
 }
 
 func (e *CodeError) Error() string {
-	return fmt.Sprintf("ErrCode:%d，ErrMsg:%s", e.errCode, e.errMsg)
+	//改成可JSONparse格式 前端可解析
+	return fmt.Sprintf("{\"ErrCode\":%d, \"ErrMsg\":\"%s\"}", e.errCode, e.errMsg)
 }
 
 func NewErrCodeMsg(errCode uint32, errMsg string) *CodeError {

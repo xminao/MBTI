@@ -14,8 +14,8 @@
           >
           <el-menu-item index="/home"><List style="width: 1em; height: 1em; margin-right: 8px" />人格测试</el-menu-item>
           <el-menu-item> </el-menu-item>
-          <!-- <el-menu-item index="/question"><Menu style="width: 1em; height: 1em; margin-right: 8px" />人格类型</el-menu-item>
-          <el-menu-item> </el-menu-item> -->
+          <el-menu-item index="/result"><Menu style="width: 1em; height: 1em; margin-right: 8px" />测试结果</el-menu-item>
+          <el-menu-item> </el-menu-item>
           <!-- <el-menu-item index="/user"><Promotion style="width: 1em; height: 1em; margin-right: 8px" />个人中心</el-menu-item>
           <el-menu-item> </el-menu-item> -->
           <el-menu-item index="/management"><Setting style="width: 1em; height: 1em; margin-right: 8px" />后台管理</el-menu-item>
@@ -276,7 +276,7 @@ export default {
             // }
 
             localStorage.setItem('token', res.data.jwt_token.access_token)
-            localStorage.setItem('user', encrypt(res.data.auth_group))
+            localStorage.setItem('user', encrypt(res.data.auth_group)) //权限组
 
             login_status.value = true
             close_dialog()
@@ -326,7 +326,7 @@ export default {
                 return
             }
 
-            const obj = {"username":register_form.username, "nickname":register_form.nickname, "password":register_form.passwd, "gender":register_form.gender, "binding_student_id":register_form.studentId, "binding_student_name":register_form.name}
+            const obj = {"binding_student_name":register_form.name, "username":register_form.username, "nickname":register_form.nickname, "password":register_form.passwd, "gender":register_form.gender, "binding_student_id":register_form.studentId}
             const res = await new proxy.$request(proxy.$urls.m().register, obj).post()
             console.log(res)
             ElMessage({

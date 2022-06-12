@@ -14,5 +14,6 @@ const DB_ERROR uint32 = 100005
 const DB_UPDATE_AFFECTED_ZERO_ERROR uint32 = 100006
 const USER_ERROR uint32 = 100007
 const DATA_ERROR uint32 = 100008
+const RESULT_NOT_FOUND uint32 = 100009
 
 //用户模块

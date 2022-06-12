@@ -6,7 +6,6 @@ import (
 	"backend/app/university/models"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 	"strings"
 	"time"
@@ -27,7 +26,6 @@ func NewAddCollegeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddCol
 }
 
 func (l *AddCollegeLogic) AddCollege(req *types.AddCollegeReq) (*types.AddCollegeResp, error) {
-	fmt.Println(l.ctx.Value("authGroup"))
 	if l.ctx.Value("authGroup") != "admin" {
 		return nil, errors.New("非管理员用户")
 	}

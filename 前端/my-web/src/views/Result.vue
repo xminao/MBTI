@@ -940,6 +940,9 @@ import { reactive, getCurrentInstance } from 'vue'
 
 export default({
     setup() {
+
+       // console.log(JSON.parse("{\"ErrCode\":100008, \"ErrMsg\":\"没有记录哟，快去测试吧\"}"))
+
         const router = useRouter()
         const route = useRoute()
         const {proxy} = getCurrentInstance()
@@ -1042,6 +1045,7 @@ export default({
             attri.bcolor = colors[group].bg
             attri.name_color = colors[group].name
             attri.label_color = colors[group].label
+            return res
         }
 
         getTypeRecord()
@@ -1077,7 +1081,7 @@ export default({
     }
 
     .context {
-        height: 2000px;
+        height: 2300px;
         background-color: v-bind("attri.bcolor");
     }
 

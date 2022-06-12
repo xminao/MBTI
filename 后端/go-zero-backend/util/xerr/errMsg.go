@@ -13,6 +13,7 @@ func init() {
 	message[DB_UPDATE_AFFECTED_ZERO_ERROR] = "更新数据影响行数为0"
 	message[USER_ERROR] = "用户验证错误"
 	message[DATA_ERROR] = "数据获取错误"
+	message[RESULT_NOT_FOUND] = "没有测试结果，快去测试吧"
 }
 
 func MapErrMsg(errcode uint32) string {

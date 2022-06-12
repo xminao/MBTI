@@ -26,6 +26,10 @@ func NewEditQuestionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Edit
 }
 
 func (l *EditQuestionLogic) EditQuestion(req *types.EditQuestionReq) (resp *types.EditQuestionResp, err error) {
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	ques, err := l.svcCtx.QuestionInfoModel.FindOne(l.ctx, int64(req.QuestionId))
 	if err == models.ErrNotFound {
 		return nil, errors.New("题目不存在")

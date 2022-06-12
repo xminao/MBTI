@@ -24,8 +24,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/data/get",
+				Path:    "/data/getlatest",
 				Handler: GetLatestDataHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/data/get",
+				Handler: GetDataHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/data/getdataidlist",
+				Handler: GetDataIdListHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

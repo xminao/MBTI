@@ -26,7 +26,10 @@ func NewDeleteQuestionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *De
 }
 
 func (l *DeleteQuestionLogic) DeleteQuestion(req *types.DeleteQuestionReq) (*types.DeleteQuestionResp, error) {
-
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	_, err := l.svcCtx.QuestionInfoModel.FindOne(l.ctx, int64(req.QuestionId))
 	if err == models.ErrNotFound {
 		return nil, errors.New("题目不存在")

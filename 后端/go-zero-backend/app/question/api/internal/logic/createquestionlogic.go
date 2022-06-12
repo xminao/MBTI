@@ -36,6 +36,10 @@ type Option struct {
 }
 
 func (l *CreateQuestionLogic) CreateQuestion(req *types.CreateQuestionReq) (*types.CreateQuestionResp, error) {
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	if len(strings.TrimSpace(req.QuestionDesc)) == 0 {
 		return nil, errors.New("题目描述不能为空")
 	}

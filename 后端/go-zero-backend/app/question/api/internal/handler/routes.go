@@ -18,7 +18,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: CreateQuestionHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodDelete,
+				Method:  http.MethodPost,
 				Path:    "/question/delete",
 				Handler: DeleteQuestionHandler(serverCtx),
 			},

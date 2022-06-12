@@ -1,3 +1,4 @@
+import router from '@/router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 //创建axios通用配置
@@ -13,7 +14,6 @@ let instance = axios.create({
 
 instance.interceptors.request.use(
     config =>{
-        console.log(config.headers)
         let token = localStorage.getItem('token')                   // 每次发送请求之前判断是否存在token，如果存在，则统⼀在http请求的header都加上token
         if (token) {
             config.headers.Authorization = token
@@ -31,27 +31,30 @@ instance.interceptors.response.use(
         return response.data
     },
     error =>{
-        console.log(error.response)
+        //console.log(error.response)
         if(error.response){
-            let errcode = error.response.data.code
+            let errcode = error.response.data['ErrCode']
+            // router.push('/home')
+            //console.log(errcode['ErrCode'])
             let msg = error.response.data.msg
-
-            // switch (errcode) {
-            //     case 100007:
-            //         ElMessage({
-            //             message: msg,
-            //             type: 'warning',
-            //         })
-            //         break;
-            //     case 100008:
-
-            // }
-            ElMessage({
-                message: msg,
-                type: 'warning',
-            })
-        }
+            
+            switch (errcode) {
+                case 100009:
+                    ElMessage({
+                        message: error.response.data['ErrMsg'],
+                        type: 'warning',
+                    })
+                    router.push('/home')
+                    break;
+                default:
+                    ElMessage({
+                        message: msg,
+                        type: 'warning',
+                    })
+                    break;
+             }
         return Promise.reject(error.response)
+        }
     }
 )
 

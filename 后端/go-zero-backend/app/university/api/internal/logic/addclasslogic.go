@@ -28,6 +28,10 @@ func NewAddClassLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddClass
 }
 
 func (l *AddClassLogic) AddClass(req *types.AddClassReq) (resp *types.AddClassResp, err error) {
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	if len(strings.TrimSpace(req.ClassName)) == 0 {
 		return nil, errors.New("年级不能为空")
 	}

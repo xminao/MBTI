@@ -38,6 +38,16 @@ type (
 )
 
 type (
+	GetTestDataReq {
+		DataId int64 `json:"data_id"`
+	}
+
+	GetTestDataResp {
+		DataInfo Data `json:"data_info"`
+	}
+)
+
+type (
 	GetLatestDataReq {
 		//		Username string `form:"username"`
 	}
@@ -46,6 +56,18 @@ type (
 		Type string `json:"type"`
 	}
 )
+
+type (
+	GetDataIdListReq {
+		//
+	}
+
+	GetDataIdListResp {
+		DataIdList []int64 `json:"data_id_list"`
+	}
+)
+
+
 
 @server (
 	jwt: Auth
@@ -58,5 +80,11 @@ service data-api {
 	get /data/getlist (GetTestDataListReq) returns (GetTestDataListResp)
 	
 	@handler GetLatestData
-	get /data/get (GetLatestDataReq) returns (GetLatestDataResp)
+	get /data/getlatest (GetLatestDataReq) returns (GetLatestDataResp)
+	
+	@handler GetData
+	get /data/get (GetTestDataReq) returns (GetTestDataResp)
+	
+	@handler GetDataIdList
+	get /data/getdataidlist (GetDataIdListReq) returns (GetDataIdListResp)
 }

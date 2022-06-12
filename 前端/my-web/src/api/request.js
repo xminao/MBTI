@@ -34,6 +34,21 @@ const request = class {
         });
     }
 
+    delete() 
+    {
+        return new Promise((resolve, reject) => {
+            instance.get(this.url, {
+                params: this.arg
+            })
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                reject(err);
+            });
+        });
+    }
+
     // //post请求
     // modepost() {
     //     return new Promise((resolve, reject)=>{

@@ -27,11 +27,19 @@ func NewAddTestDataLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddTe
 }
 
 type SelectInfo struct {
-	Id     int64
-	Option string
+	Id         int64  `json:"id"`
+	Desc       string `json:"desc"`
+	Option     string `json:"option"`
+	OptionDesc string `json:"option_desc"`
 }
 
 func (l *AddTestDataLogic) AddTestData(req *types.AddTestDataReq) (*types.AddTestDataResp, error) {
+	username := l.ctx.Value("userName")
+
+	if username == nil {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "无效的登录令牌")
+	}
+
 	var c []SelectInfo
 	err := json.Unmarshal([]byte(req.Selection), &c)
 	save, err := json.Marshal(c)

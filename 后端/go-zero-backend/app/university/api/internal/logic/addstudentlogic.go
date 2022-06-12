@@ -28,6 +28,10 @@ func NewAddStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddStu
 }
 
 func (l *AddStudentLogic) AddStudent(req *types.AddStudentReq) (resp *types.AddStudentResp, err error) {
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	if len(strings.TrimSpace(req.StudentId)) == 0 {
 		return nil, errors.New("学号不能为空")
 	}

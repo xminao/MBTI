@@ -11,7 +11,7 @@
     check-strictly/>
   </el-radio-group>
 </el-container>
-<el-container class="chart">
+<el-container v-model="loading" class="chart">
 <div id="charts"/>
 </el-container>
 <!-- <el-container>
@@ -32,6 +32,7 @@ export default ({
         const {proxy} = getCurrentInstance()
         const index = ref(0)
         const value = ref('')
+        const loading = ref(false)
 
             var option;
 
@@ -180,7 +181,7 @@ export default ({
                     data[i]["year_name"] = JSON.parse(listres.student_list[i].year).year_name
                     data[i]["major_name"] = JSON.parse(listres.student_list[i].major).major_name
                     data[i]["class_name"] = JSON.parse(listres.student_list[i].class).class_name
-                   // console.log(data)
+                   //console.log(data)
                 }
                 if (node == 1) { //学院
                     for (let k=0; k<data.length; k++) {
@@ -214,22 +215,28 @@ export default ({
             }
            
             const datalistres = await new proxy.$request(proxy.$urls.m().getdatalist).get()
+            console.log(datalistres)
             let datas = datalistres.data_list //测试结果
-
             const userlistres = await new proxy.$request(proxy.$urls.m().getuserlist).get()
-            const userlist = userlistres.userlist
+            const userlist = userlistres.userlist //用户表
+            console.log(userlist)
+            console.log(data)
 
-            console.log(datas)
             for (let i=0; i<datas.length; i++) {
                 let flag = false
                 for (let j=0; j<data.length; j++) {
                     for (let k=0; k<userlist.length; k++) {
-                        console.log(datas[i])
-                        console.log(userlist[k])
-                        console.log(data[j])
-                        if (datas[i].username == userlist[k].username && userlist[k].binding_student_id == data[j].student_id)
+                        // console.log(data[j].student_id)
+                        // console.log(datas[i].username)
+                        // console.log(userlist[k].username)
+                        if ((datas[i].username == userlist[k].username) && (userlist[k].binding_student_id == data[j].student_id)) {
                             flag = true
-                            break;
+                            break
+                        }
+                        //if(datas[i].use)
+                        // if (datas[i].username == userlist[k].username && userlist[k].binding_student_id == data[j].student_id)
+                        //     flag = true
+                        //     break;
                     }
                 }
                 if (flag == false) {
@@ -450,15 +457,13 @@ export default ({
             }
         });
         myChart.setOption(option);
-
-
+        loading.value(true)
         }
 
 
         const getNodeValue=(val)=> {
             data = []
             getStuList(val.value.length, val.id)
-            //getinfo()
         }
 
         const getinfo=async()=> {

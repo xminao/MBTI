@@ -27,9 +27,24 @@ type GetTestDataListResp struct {
 	List []Data `json:"data_list"`
 }
 
+type GetTestDataReq struct {
+	DataId int64 `json:"data_id"`
+}
+
+type GetTestDataResp struct {
+	DataInfo Data `json:"data_info"`
+}
+
 type GetLatestDataReq struct {
 }
 
 type GetLatestDataResp struct {
 	Type string `json:"type"`
+}
+
+type GetDataIdListReq struct {
+}
+
+type GetDataIdListResp struct {
+	DataIdList []int64 `json:"data_id_list"`
 }

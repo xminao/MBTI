@@ -28,6 +28,10 @@ func NewAddYearLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddYearLo
 }
 
 func (l *AddYearLogic) AddYear(req *types.AddYearReq) (resp *types.AddYearResp, err error) {
+	if l.ctx.Value("authGroup") != "admin" {
+		return nil, errors.New("非管理员用户")
+	}
+	logx.Infof("操作用户名：%v", l.ctx.Value("userName")) // 与传入一致
 	if len(strings.TrimSpace(req.YearName)) == 0 {
 		return nil, errors.New("年级不能为空")
 	}

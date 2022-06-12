@@ -13,7 +13,7 @@
       <template #default="scope">
         <el-button type="primary" size="small" @click="handleEdit(scope.row)"
           >编辑</el-button>
-        <el-button type="danger" size="small" @click="handleDelete">删除</el-button>
+        <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -274,10 +274,16 @@ export default ({
             edit.option_a_desc = index.option_a_desc
             edit.option_a_target = index.option_a_target
             edit.option_b_desc = index.option_b_desc
-            edit.option_b_target = index.option_b_target
+            edit.option_b_target = index.option_b_targets
         }
-        const handleDelete = (index, row) => {
-            console.log(index, row)
+        const handleDelete = async(index) => {
+            const obj = {"id":index.question_id}
+            const res = await new proxy.$request(proxy.$urls.m().deletequestion, obj).post()
+            console.log(res)
+            ElMessage({
+                message: "删除成功",
+                type: 'success',
+            })
         }
 
         const handleAdd=()=> {

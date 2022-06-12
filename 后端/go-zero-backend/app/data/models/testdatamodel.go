@@ -22,6 +22,7 @@ type (
 		MaxRowBuilderByUser(field string, username string) squirrel.SelectBuilder
 		RowBuilder() squirrel.SelectBuilder
 		GetDataList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]*TestData, error)
+		GetIDList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]int64, error)
 	}
 
 	customTestDataModel struct {
@@ -68,6 +69,29 @@ func (m *defaultTestDataModel) FindOneByQuery(ctx context.Context, rowBuilder sq
 	switch err {
 	case nil:
 		return &resp, nil
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultTestDataModel) GetIDList(ctx context.Context, rowBuilder squirrel.SelectBuilder) ([]int64, error) {
+
+	query, values, err := rowBuilder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	var list []*TestData
+	err = m.QueryRowsNoCacheCtx(ctx, &list, query, values...)
+
+	var resp []int64
+	for _, value := range list {
+		resp = append(resp, value.Id)
+	}
+
+	switch err {
+	case nil:
+		return resp, nil
 	default:
 		return nil, err
 	}

@@ -1,7 +1,7 @@
 //所有请求接口
 
-//const server = "http://43.138.137.222"
-const server = "http://localhost"
+const server = "http://43.138.137.222"
+//const server = "http://localhost"
 const urls = class{
     static m(){
 
@@ -16,6 +16,7 @@ const urls = class{
         const getquestion = `${question}/question/get`
         const getquestionidlist = `${question}/question/getidlist`
         const editquestion = `${question}/question/edit`
+        const deletequestion = `${question}/question/delete`
 
         const university = `${server}:8889`
         const getcollegelist =  `${university}/university/getcollegelist`
@@ -37,6 +38,7 @@ const urls = class{
             getuserlist,
             getquestion,
             getquestionidlist,
+            deletequestion,
             getcollegelist,
             getyearlist,
             getmajorlist,

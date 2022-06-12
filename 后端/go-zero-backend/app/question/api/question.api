@@ -82,7 +82,7 @@ service question-api {
 	post /question/create (CreateQuestionReq) returns (CreateQuestionResp)
 	
 	@handler DeleteQuestion
-	delete /question/delete (DeleteQuestionReq) returns (DeleteQuestionResp)
+	post /question/delete (DeleteQuestionReq) returns (DeleteQuestionResp)
 	
 	@handler GetQuestion
 	get /question/get (GetQuestionReq) returns(GetQuestionResp)

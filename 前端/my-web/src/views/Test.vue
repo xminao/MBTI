@@ -122,14 +122,14 @@ export default ({
         const GetQues=async()=> {
             const listres = await new proxy.$request(proxy.$urls.m().getquestionidlist).get()
             const idList = listres.question_id_list
-            console.log(idList.length)
+            //console.log(idList.length)
             // const obj = {"id":idList[index.value]}
             // const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
 
             for (let i=0; i<idList.length; i++) {
                 const obj = {"id":idList[i]}
                 const res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
-                console.log(res)
+               // console.log(res)
                 queslist.push({
                     id: res.question_info.question_id,
                     desc: res.question_info.question_desc,
@@ -139,7 +139,6 @@ export default ({
                     option_b_target: res.question_info.option_b_target,
                 })
             }
-            console.log(queslist)
 
             question_form.id = queslist[0].id
             question_form.desc = queslist[0].desc
@@ -173,8 +172,12 @@ export default ({
             // const idList = listres.question_id_list
             // let obj = {"id":idList[index.value]}
             // let res = await new proxy.$request(proxy.$urls.m().getquestion, obj).get()
+            if (option == 'A') {
+                selection.push({"id":queslist[index.value].id, "desc":queslist[index.value].desc, "option":option, "option_desc": queslist[index.value].option_a})
+            } else if (option == 'B') {
+                selection.push({"id":queslist[index.value].id, "desc":queslist[index.value].desc, "option":option, "option_desc": queslist[index.value].option_b})
+            }
 
-            selection.push({"id":queslist[index.value].id, "option":option})
             // 分析传进的选项option A or B
             let target
             if (option == 'A') {
@@ -238,7 +241,7 @@ export default ({
             const token = await new proxy.$request(proxy.$urls.m().verifytoken).get()
             const token_obj = {"username": token.username}
             const userres= await new proxy.$request(proxy.$urls.m().getuserinfo, token_obj).get()
-            const obj = {"username":token.username, "type":param, "student_id": userres.data.userinfo.binding_student_id, "selection": JSON.stringify(selection)}
+            const obj = {"username":token.username, "type":param, "student_id":userres.data.userinfo.binding_student_id, "selection": JSON.stringify(selection)}
             await new proxy.$request(proxy.$urls.m().addtestdata, JSON.stringify(obj)).post()
             router.push('/result')
         }

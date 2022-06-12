@@ -17,7 +17,6 @@
     <el-table-column prop="year_name"  label="年级"/>
     <el-table-column prop="major_name" label="专业" />
     <el-table-column prop="class_name" label="班级" />
-    <el-table-column prop="binding_username" label="用户名" />
   </el-table>
 </template>
 
@@ -50,40 +49,6 @@ export default ({
             major_table: [],
             class_table: [],
         })
-
-        const handleCollege=(parm)=> {
-            let data = []
-        }
-
-        const func=async()=> {
-            const collegeres = await new proxy.$request(proxy.$urls.m().getcollegelist).get()
-            let datas = collegeres.college_list
-            for (let i=0; i<datas.length; i++) {
-                datas = collegeres.college_list
-                result.college_table.push(datas[i])
-
-                //获取该学院的年级列表
-                const yearobj = {"college_id": datas[i].college_id}
-                const yearres = await new proxy.$request(proxy.$urls.m().getyearlist, yearobj).get()
-                //该学院有年级
-                if (yearres.year_list != null) {
-                    datas = yearres.year_list
-                    for (let k=0; k<yearres.year_list.length; k++) {
-                        var str = toString(datas[k].college_id)
-                        if (result.year_table.length == 0) {
-                            result.year_table.push({str : datas[k]})
-                        } else {
-                            for (let h=0; h<result.year_table.length; h++) {
-                                //if (result.year_table[h])
-                            }
-                        }
-                    }
-                }
-            }
-            console.log(result.year_table.length)
-        }
-
-        //func()
         
 
         const goHome=()=> {

@@ -1,6 +1,6 @@
 <template>
 <el-container>
-  <el-table :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
+  <el-table v-model="loading" :data="result.table" height="100%" stripe style="width: 100%; padding-left: 15px; padding-right: 15px;" :table-layout="fixed">
     <el-table-column fixed type="index" :index="indexMethod" />
     <el-table-column id="id" prop="username" sortable label="用户名" width="150"/>
     <el-table-column prop="type" label="测试结果" width="100"/>
@@ -14,8 +14,10 @@
   </el-table>
   <el-dialog v-model="dialogTableVisible" title="题目细则">
     <el-table :data="options.datas[0]">
-      <el-table-column property="Id" label="题号"  />
-      <el-table-column property="Option" label="选项" />
+      <el-table-column property="id" label="题号"  />
+        <el-table-column property="desc" label="题目描述"  />
+      <el-table-column property="option" label="选项" />
+            <el-table-column property="option_desc" label="选项描述"  />
     </el-table>
   </el-dialog>
 </el-container>
@@ -25,8 +27,10 @@
 import { getCurrentInstance, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 export default ({
     setup() {
+        const loading = ref(true)
         const router = useRouter()
         const {proxy} = getCurrentInstance()
 
@@ -51,7 +55,7 @@ export default ({
             for (let i=0; i<datas.length; i++) {
                 result.table.push(datas[i])
             }
-            console.log(result.table)
+            
         }
 
         func()
@@ -62,10 +66,12 @@ export default ({
         const handleClick=(parm)=> {
             for (let i=0; i<result.table.length; i++) {
                 if (result.table[i]['time'] == parm.time) {
+                    //console.log(result.table)
                     dialogTableVisible.value = true
                     options.datas.push(JSON.parse(result.table[i]['selection']))
                 }
             }
+            loading.value(false)
         }
 
         

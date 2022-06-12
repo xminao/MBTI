@@ -3,6 +3,7 @@ package logic
 import (
 	"backend/app/data/api/internal/svc"
 	"backend/app/data/api/internal/types"
+	"backend/util/xerr"
 	"context"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -22,6 +23,12 @@ func NewGetTestDataListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *G
 }
 
 func (l *GetTestDataListLogic) GetTestDataList(req *types.GetTestDataListReq) (*types.GetTestDataListResp, error) {
+	username := l.ctx.Value("userName")
+
+	if username == nil {
+		return nil, xerr.NewErrCodeMsg(xerr.USER_ERROR, "无效的登录令牌")
+	}
+
 	whereBuilder := l.svcCtx.TestDataModel.RowBuilder()
 
 	userList, err := l.svcCtx.TestDataModel.GetDataList(l.ctx, whereBuilder)
@@ -41,6 +48,7 @@ func (l *GetTestDataListLogic) GetTestDataList(req *types.GetTestDataListReq) (*
 			//学号
 			temp.Time = item.CreatedAt.String()
 			temp.Type = item.Type
+			temp.Selection = item.Selection
 			resp = append(resp, temp)
 		}
 	}
